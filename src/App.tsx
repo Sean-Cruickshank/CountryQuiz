@@ -34,7 +34,7 @@ export default function App() {
     'high-area',
     'low-area'
   ]
-  let category = 'test'
+  let category = ''
 
   function generateQuestion() {
     setRound(prev => prev + 1)
@@ -43,9 +43,8 @@ export default function App() {
     if (countryData) {
       // Selects the question category
       const categoryNum = Math.floor(Math.random() * categories.length)
-      // category = categories[categoryNum]
-      category = 'low-area'
-      console.log(category)
+      category = categories[categoryNum]
+      // category = 'low-area'
 
       // Selects four countries at random from the array
       while (countryAnswers.length < 4) {
@@ -59,76 +58,29 @@ export default function App() {
           countryAnswers.push(country)
         }
       }
-      let answer
-
-      // Determines the answer with the highest population
-      function highPop() {
-        let population = 0
-        let answer = ''
-        countryAnswers.forEach((country) => {
-          if (country.population > population) {
-            population = country.population
-            answer = country.name.common
-          }
-        })
-        console.log('Highest Population: ', answer, population)
-        return population
-      }
-
-      // Determines the answer with the lowest population
-      function lowPop() {
-        let population = 999999999999
-        let answer = ''
-        countryAnswers.forEach((country) => {
-          if (country.population < population) {
-            population = country.population
-            answer = country.name.common
-          }
-        })
-        console.log('Lowest Population: ', answer, population)
-        return population
-      }
-
-      // Determines the answer with the largest area
-      function highArea() {
-        let area = 0
-        let answer = ''
-        countryAnswers.forEach((country) => {
-          if (country.area > area) {
-            area = country.area
-            answer = country.name.common
-          }
-        })
-        console.log('Largest Area: ', answer, area)
-        return area
-      }
-
-      // Determines the answer with the smallest area
-      function lowArea() {
-        let area = 999999999999
-        let answer = ''
-        countryAnswers.forEach((country) => {
-          if (country.area < area) {
-            area = country.area
-            answer = country.name.common
-          }
-        })
-        console.log('Smallest Area: ', answer, area)
-        return area
-      }
 
       // Determines the answer based on the category
-      if (category === 'high-population') {
-        answer = highPop()
-      } else if (category === 'low-population') {
-        answer = lowPop()
-      } else if (category === 'high-area') {
-        answer = highArea()
-      } else if (category === 'low-area') {
-        answer = lowArea()
-      } else {
-        console.error('Invalid category selected')
+      function generateAnswer(category: string) {
+        const size = category.split('-')[0]
+        const type = category.split('-')[1]
+        let valArray: number[] = []
+        let answer
+        countryAnswers.forEach((country) => {
+          valArray.push(country[type])
+        })
+        if (type === 'area') {
+          size === 'high'
+            ? answer = Math.max(...valArray)
+            : answer = Math.min(...valArray)
+        } else if (type === 'population') {
+          size === 'high'
+            ? answer = Math.max(...valArray)
+            : answer = Math.min(...valArray)
+        }
+        console.log(category, answer)
+        return answer
       }
+      const answer = generateAnswer(category)
 
       // Generates the HTML for the four answers
       const countryAnswersHTML = countryAnswers.map((country) => {
@@ -147,13 +99,8 @@ export default function App() {
   }
 
   function answerCheck(category: string, answer: number, country: {}) {
-    if (category === 'high-population' && answer === country.population) {
-      setScore(prev => prev + 1)
-    } else if (category === 'low-population' && answer === country.population) {
-      setScore(prev => prev + 1)
-    } else if (category === 'high-area' && answer === country.area) {
-      setScore(prev => prev + 1)
-    } else if (category === 'low-area' && answer === country.area) {
+    const type = category.split('-')[1]
+    if (answer === country[type]) {
       setScore(prev => prev + 1)
     }
     generateQuestion()
