@@ -7,11 +7,7 @@ export default function App() {
 
   const [score, setScore] = React.useState(0)
   const [highscore, setHighscore] = React.useState(0)
-  const [round, setRound] = React.useState(0)
-
-  React.useEffect(() => {
-
-  },[])
+  const [round, setRound] = React.useState(1)
   
   React.useEffect(() => {
     fetch('https://restcountries.com/v3.1/independent?status=true')
@@ -34,18 +30,26 @@ export default function App() {
     'high-area',
     'low-area'
   ]
-  let category = ''
+
+  const [category, setCategory] = React.useState('')
+
+  // Selects the question category
+  function generateCategory() {
+    // Selects the category at random
+    const categoryNum = Math.floor(Math.random() * categories.length)
+    // Appends a unique ID so that if the same category is picked twice in a row it will still trigger the useEffect
+    const categoryID = `${categories[categoryNum]}-${Date.now()}`
+    setCategory(categoryID)
+  }
+
+  // Generates a new question when the category is selected
+  React.useEffect(() => {
+    generateQuestion()
+  },[category])
 
   function generateQuestion() {
-    setRound(prev => prev + 1)
-
     let countryAnswers: {}[] = []
-    if (countryData) {
-      // Selects the question category
-      const categoryNum = Math.floor(Math.random() * categories.length)
-      category = categories[categoryNum]
-      // category = 'low-area'
-
+    if (countryData.length > 0) {
       // Selects four countries at random from the array
       while (countryAnswers.length < 4) {
         const num = Math.floor(Math.random() * countryData.length)
@@ -77,9 +81,9 @@ export default function App() {
             ? answer = Math.max(...valArray)
             : answer = Math.min(...valArray)
         }
-        console.log(category, answer)
         return answer
       }
+
       const answer = generateAnswer(category)
 
       // Generates the HTML for the four answers
@@ -89,8 +93,8 @@ export default function App() {
             <button
               onClick={() => answerCheck(category, answer, country)}
             >{country.name.common}</button>
-            <i>Population: {country.population} </i>
-            <i>Area: {country.area} </i>
+            <i>Population: {country.population.toLocaleString()} </i>
+            <i>Area: {country.area.toLocaleString()} </i>
           </div>
         )
       })
@@ -98,24 +102,40 @@ export default function App() {
     }
   }
 
+  // The onClick function for the four answer buttons
+  // Determines whether to award a point based on the users selected answer, increments round counter, generates next question if round counter is below 30 
   function answerCheck(category: string, answer: number, country: {}) {
     const type = category.split('-')[1]
-    if (answer === country[type]) {
+    if (answer && answer === country[type]) {
       setScore(prev => prev + 1)
     }
-    generateQuestion()
+    setRound(prev => prev + 1)
+    generateCategory()
   }
 
+  React.useEffect(() => {
+    // console.log('Current Round: ', round)
+    if (round > 30) {
+      endMatch()
+      console.log('Game over!')
+    } else {
+
+    }
+  },[round])
+
   function endMatch() {
-    setHighscore(score)
+    if (score > highscore) {
+      setHighscore(score)
+    }
+    alert("Game Over")
     setScore(0)
-    setRound(0)
+    setRound(1)
   }
   
   return (
     <>
     <h2>Category: {category}</h2>
-    <button onClick={generateQuestion}>Next Question</button>
+    <button onClick={generateCategory}>Next Question</button>
     {displayData}
     <p>Score: {score}</p>
     <p>Highscore: {highscore}</p>
