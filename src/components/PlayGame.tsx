@@ -1,27 +1,12 @@
 import React from "react"
+import { Navigate } from "react-router-dom"
 
-export default function PlayGame() {
-  const [countryData, setCountryData] = React.useState([])
+export default function PlayGame({ countryData }) {
   const [displayData, setDisplayData] = React.useState([])
 
   const [score, setScore] = React.useState(0)
   const [highscore, setHighscore] = React.useState(0)
   const [round, setRound] = React.useState(1)
-  
-  React.useEffect(() => {
-    fetch('https://restcountries.com/v3.1/independent?status=true')
-    .then(response => {
-      console.log('API data retrieved...')
-      if (!response.ok) {
-        throw new Error("Could not fetch resource");
-      }
-      return response.json()
-    })
-    .then(data => {
-      setCountryData(data)
-    })
-    .catch(error => console.error(error))
-  },[])
 
   const categories = [
     'high-population',
@@ -29,8 +14,10 @@ export default function PlayGame() {
     'high-area',
     'low-area'
   ]
+  const [category, setCategory] = React.useState([])
 
-  const [category, setCategory] = React.useState('')
+  const [prevGuess, setPrevGuess] = React.useState(null)
+  const [prevAnswer, setPrevAnswer] = React.useState([])
 
   // Selects the question category
   function generateCategory() {
@@ -38,12 +25,19 @@ export default function PlayGame() {
     const categoryNum = Math.floor(Math.random() * categories.length)
     // Appends a unique ID so that if the same category is picked twice in a row it will still trigger the useEffect
     const categoryID = `${categories[categoryNum]}-${Date.now()}`
-    setCategory(categoryID)
+    setCategory([...category, categoryID])
   }
 
   // Generates a new question when the category is selected
+  const firstRender = React.useRef(true)
   React.useEffect(() => {
-    generateQuestion()
+    if (firstRender.current) {
+      firstRender.current = false
+      generateCategory()
+    } else {
+      generateQuestion()
+    }
+
   },[category])
 
   function generateQuestion() {
@@ -80,17 +74,21 @@ export default function PlayGame() {
             ? answer = Math.max(...valArray)
             : answer = Math.min(...valArray)
         }
+        const answerCountry = countryAnswers.find((country) => {
+          return country[type] === answer
+        })
+        setPrevAnswer([...prevAnswer, answerCountry])
         return answer
       }
 
-      const answer = generateAnswer(category)
+      const answer = generateAnswer(category[category.length - 1])
     
       // Generates the HTML for the four answers
       const countryAnswersHTML = countryAnswers.map((country) => {
         return (
           <div key={country.name.common}>
             <button
-              onClick={() => answerCheck(category, answer, country)}
+              onClick={() => answerCheck(category[category.length - 1], answer, country)}
             >{country.name.common}</button>
             <i>Population: {country.population.toLocaleString()} </i>
             <i>Area: {country.area.toLocaleString()} </i>
@@ -109,11 +107,11 @@ export default function PlayGame() {
       setScore(prev => prev + 1)
     }
     setRound(prev => prev + 1)
+    setPrevGuess(country)
     generateCategory()
   }
 
   React.useEffect(() => {
-    // console.log('Current Round: ', round)
     if (round > 30) {
       endMatch()
       console.log('Game over!')
@@ -131,16 +129,38 @@ export default function PlayGame() {
     setRound(1)
   }
   
-  return (
-    <>
-    <h2>Category: {category}</h2>
-    <button onClick={generateCategory}>Next Question</button>
-    {displayData}
-    <p>Score: {score}</p>
-    <p>Highscore: {highscore}</p>
-    <p>Round: {round}/30</p>
-    <p>You picked: {}</p>
-    <p>Correct answer: {}</p>
-    </>
-  )
+  if (countryData.length > 0 && category) {
+    return (
+      <>
+      {category.length > 0 && category.toReversed()[0].includes('high-population') && <h2>Guess the country with the <i>highest population</i>!</h2>}
+      {category.length > 0 && category.toReversed()[0].includes('low-population') && <h2>Guess the country with the <i>lowest population</i>!</h2>}
+      {category.length > 0 && category.toReversed()[0].includes('high-area') && <h2>Guess the country with the <i>largest land area</i>!</h2>}
+      {category.length > 0 && category.toReversed()[0].includes('low-area') && <h2>Guess the country with the <i>smallest land area</i>!</h2>}
+      {displayData}
+      <p>Score: {score}</p>
+      <p>Highscore: {highscore}</p>
+      <p>Round: {round}/30</p>
+      {/* Displays previous guess and previous correct answer if they both exist and the category is 'area' */}
+      {/* .toReversed()[1] grabs the secound to last entry in the array */}
+      {prevAnswer[prevAnswer.length - 2] && category.toReversed()[1].split('-')[1] === 'area' && 
+          <div>
+            <p>You picked: {prevGuess.name.common} (Area: {prevGuess.area.toLocaleString()}m^2)</p>
+            <p>Correct answer: {prevAnswer.toReversed()[1].name.common} (Area: {prevAnswer.toReversed()[1].area.toLocaleString()}m^2)</p>
+          </div>
+      }
+      {/* Displays previous guess and previous correct answer if they both exist and the category is 'population' */}
+      {/* .toReversed()[1] grabs the secound to last entry in the array */}
+      {prevAnswer.toReversed()[1] && category.toReversed()[1].split('-')[1] === 'population' &&
+        <div>
+          <p>You picked: {prevGuess.name.common} (Population: {prevGuess.population.toLocaleString()})</p>
+          <p>Correct answer: {prevAnswer.toReversed()[1].name.common} (Population: {prevAnswer.toReversed()[1].population.toLocaleString()})</p>
+        </div>
+      }
+      </>
+    )
+    // Returns user to the Home page if the page loads before the API has finished loading (happens if you refresh on /play)
+  } else {
+    return <Navigate to='/' />
+  }
+
 }
