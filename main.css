@@ -1,0 +1,31 @@
+.play-game {
+  text-align: center;
+}
+
+.answers-grid {
+  width: 80%;
+  display: grid;
+  margin-inline: auto;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.answers-grid__option {
+  display: flex;
+  justify-content: center;
+}
+.answers-grid__button {
+  width: 100%;
+  aspect-ratio: 4;
+  border: none;
+}
+
+.answers-recap {
+  background-color: red;
+  display: flex;
+  justify-content: space-around;
+}
+
+.answers-log__entry {
+  display: flex;
+  justify-content: space-around;
+}/*# sourceMappingURL=main.css.map */
