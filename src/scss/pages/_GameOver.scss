@@ -1,0 +1,25 @@
+.gameover {
+
+
+  &_subheaders {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.answers-log {
+  &__entry {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    &--red {
+      @extend .answers-log__entry;
+      background-color: red;
+    }
+
+    &--green {
+      @extend .answers-log__entry;
+      background-color: green;
+    }
+  }
+}

@@ -1,7 +1,8 @@
 import { nanoid } from "nanoid"
-
 import React from "react"
 import { Navigate } from "react-router-dom"
+
+import GameOver from "./GameOver"
 
 export default function PlayGame({ countryData }) {
   // Contains the HTML for the four answer buttons
@@ -22,6 +23,21 @@ export default function PlayGame({ countryData }) {
 
   // Contains an object array with the names and values of all previous guesses and answers
   const [answersLog, setAnswersLog] = React.useState<{}[]>([])
+
+  const [answerStats, setAnswerStats] = React.useState({
+    highpopulation: {
+      Q: 0, A: 0
+    },
+    lowpopulation: {
+      Q: 0, A: 0
+    },
+    higharea: {
+      Q: 0, A: 0
+    },
+    lowarea: {
+      Q: 0, A: 0
+    }
+  })
 
   // Contains the HTML for the previous questions guess and answer
   const [recap, setRecap] = React.useState()
@@ -114,15 +130,33 @@ export default function PlayGame({ countryData }) {
     // Determines whether to award a point based on the users selected answer, increments round counter
     function answerCheck(category: string, answer: number, country: {}) {
       const type = category.split('-')[1]
+      const size = category.split('-')[0]
+      const sizetype = `${size}${type}`
+
+      // If the answer matches the category value for the country selected (correct answer)
+      //    Add a point to the score
+      //    Add a point to the Q and the A tally for the respective     category in AnswerStats
+      // Otherwise just add a point to the Q tally (incorrect answer)
       if (answer && answer === country[type]) {
         setScore(prev => prev + 1)
+        setAnswerStats({
+          ...answerStats,
+          [sizetype]: {Q: answerStats[sizetype].Q + 1, A: answerStats[sizetype].A + 1}
+        })
+      } else {
+        setAnswerStats({
+          ...answerStats,
+          [sizetype]: {...answerStats[sizetype], Q: answerStats[sizetype].Q + 1}
+        })
       }
       setRound(prev => prev + 1)
+      // Grabs the corresponding country for the correct answer and saves it to state, also saves the guessed country to state
       const answerCountry = countryAnswers.find((country) => {
         return country[type] === answer
       })
       setPrevAnswer(answerCountry)
       setPrevGuess(country)
+      // Generates the category for the next round (useEffect triggers the next question to also generate)
       generateCategory()
     }
   }
@@ -143,7 +177,6 @@ export default function PlayGame({ countryData }) {
     alert("Game Over")
     setScore(0)
     setRound(1)
-    setAnswersLog([])
   }
 
   // Generates the recap for the previous question, shows the correct answer and the guessed answer
@@ -160,6 +193,7 @@ export default function PlayGame({ countryData }) {
         prevGuessValue = prevGuess.area.toLocaleString()
         prevAnswerValue = prevAnswer.area.toLocaleString()
         setAnswersLog([...answersLog, {
+          categoryPrev,
           prevGuessName,
           prevGuessValue,
           prevAnswerName,
@@ -177,6 +211,7 @@ export default function PlayGame({ countryData }) {
         prevGuessValue = prevGuess.population.toLocaleString()
         prevAnswerValue = prevAnswer.population.toLocaleString()
         setAnswersLog([...answersLog, {
+          categoryPrev,
           prevGuessName,
           prevGuessValue,
           prevAnswerName,
@@ -191,18 +226,6 @@ export default function PlayGame({ countryData }) {
       }
     }
   }
-
-  // Generates the HTML for the Answers Log
-  const generateLog = answersLog.map((question) => {
-    if (answersLog.length > 1) {
-      return (
-        <div className="answers-log__entry" key={nanoid()}>
-          <p>{question.prevGuessName} {question.prevGuessValue}</p>
-          <p>{question.prevAnswerName} {question.prevAnswerValue}</p>
-        </div>
-      )
-    }
-  })
 
   // Generates the question title based on the category selected
   function generateTitle() {
@@ -235,9 +258,7 @@ export default function PlayGame({ countryData }) {
           <p>Highscore: {highscore}</p>
         </div>
         {recap}
-        <div className="answers-log">
-          {generateLog}
-        </div>
+        <GameOver answersLog={answersLog} answerStats={answerStats} score={score} />
       </div>
     )
     // Returns user to the Home page if the page loads before the API has finished loading (happens if you refresh on /play)

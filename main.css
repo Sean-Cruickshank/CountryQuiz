@@ -25,7 +25,18 @@
   justify-content: space-around;
 }
 
-.answers-log__entry {
-  display: flex;
-  justify-content: space-around;
+.gameover_subheaders {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.answers-log__entry, .answers-log__entry--green, .answers-log__entry--red {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.answers-log__entry--red {
+  background-color: red;
+}
+.answers-log__entry--green {
+  background-color: green;
 }/*# sourceMappingURL=main.css.map */
