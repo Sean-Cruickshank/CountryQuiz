@@ -11,6 +11,7 @@ export default function PlayGame({ countryData }) {
   const [score, setScore] = React.useState(0)
   const [highscore, setHighscore] = React.useState(0)
   const [round, setRound] = React.useState(1)
+  let gameLength = 10
 
   // Contains an array of all category IDs for that match
   const [category, setCategory] = React.useState<string[]>([])
@@ -112,16 +113,26 @@ export default function PlayGame({ countryData }) {
     
       // Generates the HTML for the four answers
       const countryAnswersHTML = countryAnswers.map((country) => {
-        return (
-          <div className="answers-grid__option" key={nanoid()}>
-            <button
-              className="answers-grid__button"
-              onClick={() => answerCheck(category[category.length - 1], answer, country)}
-            >{country.name.common}</button>
-            {/* <i>Population: {country.population.toLocaleString()} </i>
-            <i>Area: {country.area.toLocaleString()} </i> */}
-          </div>
-        )
+        if (round <= gameLength) {
+          return (
+            <div className="answers-grid__option" key={nanoid()}>
+              <button
+                className="answers-grid__button"
+                onClick={() => answerCheck(category[category.length - 1], answer, country)}
+              >{country.name.common}</button>
+            </div>
+          )
+        } else {
+          return (
+            <div className="answers-grid__option" key={nanoid()}>
+              <button disabled
+                className="answers-grid__button"
+                onClick={() => answerCheck(category[category.length - 1], answer, country)}
+              >{country.name.common}</button>
+            </div>
+          )
+        }
+
       })
       setDisplayData(countryAnswersHTML)
     }
@@ -149,7 +160,6 @@ export default function PlayGame({ countryData }) {
           [sizetype]: {...answerStats[sizetype], Q: answerStats[sizetype].Q + 1}
         })
       }
-      setRound(prev => prev + 1)
       // Grabs the corresponding country for the correct answer and saves it to state, also saves the guessed country to state
       const answerCountry = countryAnswers.find((country) => {
         return country[type] === answer
@@ -158,25 +168,25 @@ export default function PlayGame({ countryData }) {
       setPrevGuess(country)
       // Generates the category for the next round (useEffect triggers the next question to also generate)
       generateCategory()
+      setRound(prev => prev + 1)
     }
   }
 
   React.useEffect(() => {
-    if (round > 10) {
+    if (round > gameLength) {
+      setRound(gameLength)
       endMatch()
-      console.log('Game over!')
     } else {
 
     }
   },[round])
 
   function endMatch() {
+    console.log('Game over!')
     if (score > highscore) {
       setHighscore(score)
     }
-    alert("Game Over")
-    setScore(0)
-    setRound(1)
+    document.querySelector('.gameover')?.classList.remove('hidden')
   }
 
   // Generates the recap for the previous question, shows the correct answer and the guessed answer
@@ -249,7 +259,7 @@ export default function PlayGame({ countryData }) {
     return (
       <div className="play-game">
         {generateTitle()}
-        <p>Question {round}/30</p>
+        <p>Question {round}/{gameLength}</p>
         <div className="answers-grid">
           {displayData}
         </div>
@@ -258,7 +268,15 @@ export default function PlayGame({ countryData }) {
           <p>Highscore: {highscore}</p>
         </div>
         {recap}
-        <GameOver answersLog={answersLog} answerStats={answerStats} score={score} />
+        <GameOver
+          answersLog={answersLog}
+          setAnswersLog={setAnswersLog} answerStats={answerStats}
+          setAnswerStats={setAnswerStats}
+          score={score}
+          setScore={setScore}
+          setRound={setRound}
+          generateCategory={generateCategory}
+        />
       </div>
     )
     // Returns user to the Home page if the page loads before the API has finished loading (happens if you refresh on /play)

@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid"
 
-export default function GameOver({ answersLog, answerStats, score }) {
+export default function GameOver({ answersLog, setAnswersLog, answerStats, setAnswerStats, score, setScore, setRound, generateCategory }) {
   
   function titleCase(string: string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase()
@@ -66,12 +66,34 @@ export default function GameOver({ answersLog, answerStats, score }) {
     )
   }
 
+  function resetGame() {
+    setAnswersLog([])
+    setAnswerStats({
+      highpopulation: {
+        Q: 0, A: 0
+      },
+      lowpopulation: {
+        Q: 0, A: 0
+      },
+      higharea: {
+        Q: 0, A: 0
+      },
+      lowarea: {
+        Q: 0, A: 0
+      }
+    })
+    setScore(0)
+    setRound(1)
+    generateCategory()
+    document.querySelector('.gameover')?.classList.add('hidden')
+  }
+
   return (
-    <div>
+    <div className="gameover hidden">
       <h2>Game Over!</h2>
       <p>You got {score} out of 30 questions correct!</p>
       {generateStats()}
-      <button>Play Again</button>
+      <button onClick={resetGame}>Play Again</button>
       <button>View History</button>
       <div className="answers-log">
         <div className="gameover_subheaders">
