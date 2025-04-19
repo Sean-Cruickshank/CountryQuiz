@@ -43,4 +43,16 @@
 }
 .answers-log__entry--green {
   background-color: green;
+}
+
+.profile {
+  text-align: center;
+}
+.profile__entries {
+  margin-inline: auto;
+}
+.profile__entry, .profile__entry-titles {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
+  text-align: center;
 }/*# sourceMappingURL=main.css.map */

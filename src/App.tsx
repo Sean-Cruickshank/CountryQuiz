@@ -7,25 +7,37 @@ import GameOver from './components/GameOver';
 import Profile from './components/Profile';
 import Layout from './components/Layout';
 
+import { countryData as cd } from './data/countryData';
+
 import '../main.css'
 export default function App() {
   
-  const [countryData, setCountryData] = React.useState([])
+  interface Country {
+    id: number,
+    name: string,
+    population: number,
+    area: number
+  }
 
+  const [countryData, setCountryData] = React.useState<Country>([])
   React.useEffect(() => {
-      fetch('https://restcountries.com/v3.1/independent?status=true')
-      .then(response => {
-        console.log('API data retrieved...')
-        if (!response.ok) {
-          throw new Error("Could not fetch resource");
-        }
-        return response.json()
-      })
-      .then(data => {
-        setCountryData(data)
-      })
-      .catch(error => console.error(error))
-    },[])
+    setCountryData(cd)
+  },[])
+
+  // React.useEffect(() => {
+  //     fetch('https://restcountries.com/v3.1/independent?status=true')
+  //     .then(response => {
+  //       console.log('API data retrieved...')
+  //       if (!response.ok) {
+  //         throw new Error("Could not fetch resource");
+  //       }
+  //       return response.json()
+  //     })
+  //     .then(data => {
+  //       setCountryData(data)
+  //     })
+  //     .catch(error => console.error(error))
+  //   },[])
   
   return (
     <BrowserRouter>

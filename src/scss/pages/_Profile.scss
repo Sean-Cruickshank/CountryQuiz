@@ -1,0 +1,17 @@
+.profile {
+  text-align: center;
+  
+  &__entries {
+    margin-inline: auto;
+  }
+  
+  &__entry-titles {
+
+  }
+  
+  &__entry, &__entry-titles {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
+    text-align: center;
+  }
+}

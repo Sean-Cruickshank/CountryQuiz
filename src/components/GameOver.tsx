@@ -1,6 +1,10 @@
 import { nanoid } from "nanoid"
 
-export default function GameOver({ answersLog, setAnswersLog, answerStats, setAnswerStats, score, setScore, setRound, generateCategory }) {
+import convertToMiles from '../util/convertToMiles.js'
+import { Link } from "react-router-dom"
+import Profile from "./Profile.js"
+
+export default function GameOver({ answersLog, setAnswersLog, answerStats, setAnswerStats, score, setScore, setRound, gameLength, generateCategory }) {
   
   function titleCase(string: string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase()
@@ -19,16 +23,16 @@ export default function GameOver({ answersLog, setAnswersLog, answerStats, setAn
         return (
           <div className={classname} key={nanoid()}>
             <p>{titleCase(size)} {titleCase(type)}:</p>
-            <p>{question.prevGuessName} ({question.prevGuessValue})</p>
-            <p>{question.prevAnswerName} ({question.prevAnswerValue})</p>
+            <p>{question.prevGuessName} - {question.prevGuessValue.toLocaleString()}</p>
+            <p>{question.prevAnswerName} - {question.prevAnswerValue.toLocaleString()}</p>
           </div>
         )
       } else {
         return (
           <div className={classname} key={nanoid()}>
             <p>{titleCase(size)} {titleCase(type)}:</p>
-            <p>{question.prevGuessName} ({question.prevGuessValue}km²)</p>
-            <p>{question.prevAnswerName} ({question.prevAnswerValue}km²)</p>
+            <p>{question.prevGuessName} - {question.prevGuessValue.toLocaleString()}km² ({convertToMiles(question.prevGuessValue)}mi²)</p>
+            <p>{question.prevAnswerName} - {question.prevAnswerValue.toLocaleString()}km² ({convertToMiles(question.prevAnswerValue)}mi²)</p>
           </div>
         )
       }
@@ -91,10 +95,10 @@ export default function GameOver({ answersLog, setAnswersLog, answerStats, setAn
   return (
     <div className="gameover hidden">
       <h2>Game Over!</h2>
-      <p>You got {score} out of 30 questions correct!</p>
+      <p>You got {score} out of {gameLength} questions correct!</p>
       {generateStats()}
       <button onClick={resetGame}>Play Again</button>
-      <button>View History</button>
+      <Link to='/profile'>View History</Link>
       <div className="answers-log">
         <div className="gameover_subheaders">
           <h3>Category:</h3>

@@ -1,15 +1,23 @@
 import { nanoid } from "nanoid"
+import dayjs from "dayjs"
 import React from "react"
 import { Navigate } from "react-router-dom"
 
 import GameOver from "./GameOver"
+
+import convertToMiles from '../util/convertToMiles.js'
 
 export default function PlayGame({ countryData }) {
   // Contains the HTML for the four answer buttons
   const [displayData, setDisplayData] = React.useState([])
 
   const [score, setScore] = React.useState(0)
-  const [highscore, setHighscore] = React.useState(0)
+  const [highscore, setHighscore] = React.useState(JSON.parse(localStorage.getItem('highscore')) || 0)
+
+  React.useEffect(() => {
+    localStorage.setItem('highscore', JSON.stringify(highscore))
+  },[highscore])
+
   const [round, setRound] = React.useState(1)
   let gameLength = 10
 
@@ -119,7 +127,7 @@ export default function PlayGame({ countryData }) {
               <button
                 className="answers-grid__button"
                 onClick={() => answerCheck(category[category.length - 1], answer, country)}
-              >{country.name.common}</button>
+              >{country.name}</button>
             </div>
           )
         } else {
@@ -128,7 +136,7 @@ export default function PlayGame({ countryData }) {
               <button disabled
                 className="answers-grid__button"
                 onClick={() => answerCheck(category[category.length - 1], answer, country)}
-              >{country.name.common}</button>
+              >{country.name}</button>
             </div>
           )
         }
@@ -183,6 +191,15 @@ export default function PlayGame({ countryData }) {
 
   function endMatch() {
     console.log('Game over!')
+    const playerHistory = JSON.parse(localStorage.getItem('history')) || []
+    playerHistory.push({
+      id: nanoid(),
+      score,
+      gameLength,
+      date: dayjs().format('D MMMM YYYY h:mma'),
+      answerStats
+    })
+    localStorage.setItem('history', JSON.stringify(playerHistory))
     if (score > highscore) {
       setHighscore(score)
     }
@@ -194,14 +211,14 @@ export default function PlayGame({ countryData }) {
     if (category.length > 1) {
       // Grabs some values from the previous quesiton
       const categoryPrev = category.toReversed()[1]
-      const prevGuessName = prevGuess.name.common
+      const prevGuessName = prevGuess.name
       let prevGuessValue
-      const prevAnswerName = prevAnswer.name.common
+      const prevAnswerName = prevAnswer.name
       let prevAnswerValue
       // If the previous category type was 'area' grab the area values from the previous guess/answer, save all values in the answers log, generate and return the HTML for the previous question recap
       if (categoryPrev.split('-')[1] === 'area') {
-        prevGuessValue = prevGuess.area.toLocaleString()
-        prevAnswerValue = prevAnswer.area.toLocaleString()
+        prevGuessValue = prevGuess.area
+        prevAnswerValue = prevAnswer.area
         setAnswersLog([...answersLog, {
           categoryPrev,
           prevGuessName,
@@ -211,15 +228,15 @@ export default function PlayGame({ countryData }) {
         }])
         return (
           <div className="answers-recap">
-            <p>You picked: {prevGuessName} (Area: {prevGuessValue}km²)</p>
-            <p>Correct answer: {prevAnswerName} (Area: {prevAnswerValue}km²)</p>
+            <p>You picked: {prevGuessName} - {prevGuessValue.toLocaleString()}km² ({convertToMiles(prevGuess.area)}mi²)</p>
+            <p>Correct answer: {prevAnswerName} - {prevAnswerValue.toLocaleString()}km² ({convertToMiles(prevAnswer.area)}mi²)</p>
           </div>
         )
       }
       // Same as above but for 'population'
       if (categoryPrev.split('-')[1] === 'population') {
-        prevGuessValue = prevGuess.population.toLocaleString()
-        prevAnswerValue = prevAnswer.population.toLocaleString()
+        prevGuessValue = prevGuess.population
+        prevAnswerValue = prevAnswer.population
         setAnswersLog([...answersLog, {
           categoryPrev,
           prevGuessName,
@@ -229,8 +246,8 @@ export default function PlayGame({ countryData }) {
         }])
         return (
           <div className="answers-recap">
-            <p>You picked: {prevGuessName} (Population: {prevGuessValue})</p>
-            <p>Correct answer: {prevAnswerName} (Population: {prevAnswerValue})</p>
+            <p>You picked: {prevGuessName} (Population: {prevGuessValue.toLocaleString()})</p>
+            <p>Correct answer: {prevAnswerName} (Population: {prevAnswerValue.toLocaleString()})</p>
           </div>
         )
       }
@@ -275,6 +292,7 @@ export default function PlayGame({ countryData }) {
           score={score}
           setScore={setScore}
           setRound={setRound}
+          gameLength={gameLength}
           generateCategory={generateCategory}
         />
       </div>
