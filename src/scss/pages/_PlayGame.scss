@@ -1,5 +1,9 @@
 .play-game {
   text-align: center;
+
+  &__correct {
+    color: green;
+  }
 }
 
 .answers-grid {
@@ -25,4 +29,29 @@
   background-color: red;
   display: flex;
   justify-content: space-around;
+}
+
+.answers-nodes {
+  margin-inline: auto;
+  text-align: left;
+  width: 80%;
+}
+
+.node {
+  width: 2.9%;
+  aspect-ratio: 2;
+  background-color: black;
+
+  margin: 0.2%;
+  display: inline-block;
+
+  &--red {
+    @extend .node;
+    background-color: red;
+  }
+
+  &--green {
+    @extend .node;
+    background-color: green;
+  }
 }

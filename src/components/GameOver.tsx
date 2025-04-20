@@ -4,7 +4,7 @@ import convertToMiles from '../util/convertToMiles.js'
 import { Link } from "react-router-dom"
 import Profile from "./Profile.js"
 
-export default function GameOver({ answersLog, setAnswersLog, answerStats, setAnswerStats, score, setScore, setRound, gameLength, generateCategory }) {
+export default function GameOver({ answersLog, answerStats, score, gameLength, resetGame}) {
   
   function titleCase(string: string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase()
@@ -60,36 +60,33 @@ export default function GameOver({ answersLog, setAnswersLog, answerStats, setAn
       ? lowArea = answerStats.lowarea.A / answerStats.lowarea.Q
       : lowArea = 0
 
+      function formatStats(stat: number): string {
+        return (stat * 100).toFixed(0)
+      }
+
     return (
       <div>
-        <p>High Population: {(highPopulation * 100).toFixed(0)}% ({answerStats.highpopulation.A}/{answerStats.highpopulation.Q})</p>
-        <p>Low Population: {(lowPopulation * 100).toFixed(0)}% ({answerStats.lowpopulation.A}/{answerStats.lowpopulation.Q})</p>
-        <p>High Area: {(highArea * 100).toFixed(0)}% ({answerStats.higharea.A}/{answerStats.higharea.Q})</p>
-        <p>Low Area: {(lowArea * 100).toFixed(0)}% ({answerStats.lowarea.A}/{answerStats.lowarea.Q})</p>
+        <div className="gameover__category">
+          <meter value={formatStats(highPopulation)} max='100'></meter>
+          <p>High Population: {formatStats(highPopulation)}% ({answerStats.highpopulation.A}/{answerStats.highpopulation.Q})</p>
+        </div>
+
+        <div className="gameover__category">
+          <meter value={formatStats(lowPopulation)} max='100'></meter>
+          <p>Low Population: {formatStats(lowPopulation)}% ({answerStats.lowpopulation.A}/{answerStats.lowpopulation.Q})</p>
+        </div>
+
+        <div className="gameover__category">
+          <meter value={formatStats(highArea)} max='100'></meter>
+          <p>High Area: {formatStats(highArea)}% ({answerStats.higharea.A}/{answerStats.higharea.Q})</p>      
+        </div>
+
+        <div className="gameover__category">
+          <meter value={formatStats(lowArea)} max='100'></meter>
+          <p>Low Area: {formatStats(lowArea)}% ({answerStats.lowarea.A}/{answerStats.lowarea.Q})</p>
+        </div>
       </div>
     )
-  }
-
-  function resetGame() {
-    setAnswersLog([])
-    setAnswerStats({
-      highpopulation: {
-        Q: 0, A: 0
-      },
-      lowpopulation: {
-        Q: 0, A: 0
-      },
-      higharea: {
-        Q: 0, A: 0
-      },
-      lowarea: {
-        Q: 0, A: 0
-      }
-    })
-    setScore(0)
-    setRound(1)
-    generateCategory()
-    document.querySelector('.gameover')?.classList.add('hidden')
   }
 
   return (

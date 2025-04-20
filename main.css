@@ -5,6 +5,9 @@
 .play-game {
   text-align: center;
 }
+.play-game__correct {
+  color: green;
+}
 
 .answers-grid {
   width: 80%;
@@ -29,11 +32,38 @@
   justify-content: space-around;
 }
 
+.answers-nodes {
+  margin-inline: auto;
+  text-align: left;
+  width: 80%;
+}
+
+.node, .node--green, .node--red {
+  width: 2.9%;
+  aspect-ratio: 2;
+  background-color: black;
+  margin: 0.2%;
+  display: inline-block;
+}
+.node--red {
+  background-color: red;
+}
+.node--green {
+  background-color: green;
+}
+
 .gameover_subheaders {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
-
+.gameover__category meter {
+  width: 80%;
+  max-width: 600px;
+  margin-bottom: 0;
+}
+.gameover__category p {
+  margin-top: 0;
+}
 .answers-log__entry, .answers-log__entry--green, .answers-log__entry--red {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

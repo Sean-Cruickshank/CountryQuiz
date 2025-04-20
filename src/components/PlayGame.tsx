@@ -19,7 +19,7 @@ export default function PlayGame({ countryData }) {
   },[highscore])
 
   const [round, setRound] = React.useState(1)
-  let gameLength = 10
+  let gameLength = 30
 
   // Contains an array of all category IDs for that match
   const [category, setCategory] = React.useState<string[]>([])
@@ -200,11 +200,14 @@ export default function PlayGame({ countryData }) {
       answerStats
     })
     localStorage.setItem('history', JSON.stringify(playerHistory))
+
     if (score > highscore) {
       setHighscore(score)
     }
     document.querySelector('.gameover')?.classList.remove('hidden')
   }
+
+  const [answerNodes, setAnswerNodes] = React.useState([])
 
   // Generates the recap for the previous question, shows the correct answer and the guessed answer
   function generateRecap() {
@@ -215,6 +218,16 @@ export default function PlayGame({ countryData }) {
       let prevGuessValue
       const prevAnswerName = prevAnswer.name
       let prevAnswerValue
+
+      // Sets the answer node for the previous question (the little red or green ball)
+      if (round !== 1) {
+        if (prevGuessName === prevAnswerName) {
+          setAnswerNodes(prev => [...prev, 'green'])
+        } else {
+          setAnswerNodes(prev => [...prev, 'red'])
+        }
+      }
+
       // If the previous category type was 'area' grab the area values from the previous guess/answer, save all values in the answers log, generate and return the HTML for the previous question recap
       if (categoryPrev.split('-')[1] === 'area') {
         prevGuessValue = prevGuess.area
@@ -271,6 +284,39 @@ export default function PlayGame({ countryData }) {
       }
     }
   }
+
+  function generateAnswerNodes() {
+    return answerNodes.map(node => {
+      return (
+        <span key={nanoid()} className={`node--${node}`}></span>
+      )
+    })
+  }
+
+  // Resets all stats when a new game is started
+  // Passed as a prop to GameOver for the "Play Again" button
+  function resetGame() {
+    setAnswersLog([])
+    setAnswerStats({
+      highpopulation: {
+        Q: 0, A: 0
+      },
+      lowpopulation: {
+        Q: 0, A: 0
+      },
+      higharea: {
+        Q: 0, A: 0
+      },
+      lowarea: {
+        Q: 0, A: 0
+      }
+    })
+    setScore(0)
+    setRound(1)
+    generateCategory()
+    setAnswerNodes([])
+    document.querySelector('.gameover')?.classList.add('hidden')
+  }
   
   if (countryData.length > 0) {
     return (
@@ -284,16 +330,16 @@ export default function PlayGame({ countryData }) {
           <p>Score: {score}</p>
           <p>Highscore: {highscore}</p>
         </div>
+        <div className="answers-nodes">
+          {generateAnswerNodes()}
+        </div>
         {recap}
         <GameOver
           answersLog={answersLog}
-          setAnswersLog={setAnswersLog} answerStats={answerStats}
-          setAnswerStats={setAnswerStats}
+          answerStats={answerStats}
           score={score}
-          setScore={setScore}
-          setRound={setRound}
           gameLength={gameLength}
-          generateCategory={generateCategory}
+          resetGame={resetGame}
         />
       </div>
     )
