@@ -85,4 +85,8 @@
   display: grid;
   grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
   text-align: center;
+}
+.profile__category-averages {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }/*# sourceMappingURL=main.css.map */

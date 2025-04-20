@@ -1,8 +1,8 @@
 import { nanoid } from "nanoid"
 
 import convertToMiles from '../util/convertToMiles.js'
+import breakCategory from '../util/breakCategory.js'
 import { Link } from "react-router-dom"
-import Profile from "./Profile.js"
 
 export default function GameOver({ answersLog, answerStats, score, gameLength, resetGame}) {
   
@@ -12,17 +12,15 @@ export default function GameOver({ answersLog, answerStats, score, gameLength, r
   
   // Generates the HTML for the Answers Log
   const generateLog = answersLog.map((question) => {
-    const size = question.categoryPrev.split('-')[0]
-    const type = question.categoryPrev.split('-')[1]
     let classname = ''
     question.prevGuessName === question.prevAnswerName
       ? classname = "answers-log__entry--green"
       : classname = "answers-log__entry--red"
     if (answersLog.length > 1) {
-      if (type === 'population') {
+      if (question.type === 'population') {
         return (
           <div className={classname} key={nanoid()}>
-            <p>{titleCase(size)} {titleCase(type)}:</p>
+            <p>{titleCase(question.size)} {titleCase(question.type)}:</p>
             <p>{question.prevGuessName} - {question.prevGuessValue.toLocaleString()}</p>
             <p>{question.prevAnswerName} - {question.prevAnswerValue.toLocaleString()}</p>
           </div>
@@ -30,7 +28,7 @@ export default function GameOver({ answersLog, answerStats, score, gameLength, r
       } else {
         return (
           <div className={classname} key={nanoid()}>
-            <p>{titleCase(size)} {titleCase(type)}:</p>
+            <p>{titleCase(question.size)} {titleCase(question.type)}:</p>
             <p>{question.prevGuessName} - {question.prevGuessValue.toLocaleString()}km² ({convertToMiles(question.prevGuessValue)}mi²)</p>
             <p>{question.prevAnswerName} - {question.prevAnswerValue.toLocaleString()}km² ({convertToMiles(question.prevAnswerValue)}mi²)</p>
           </div>

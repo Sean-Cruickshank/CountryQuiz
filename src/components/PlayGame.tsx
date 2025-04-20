@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom"
 import GameOver from "./GameOver"
 
 import convertToMiles from '../util/convertToMiles.js'
+import breakCategory from '../util/breakCategory.js'
 
 export default function PlayGame({ countryData }) {
   // Contains the HTML for the four answer buttons
@@ -19,7 +20,13 @@ export default function PlayGame({ countryData }) {
   },[highscore])
 
   const [round, setRound] = React.useState(1)
-  let gameLength = 30
+  let gameLength = 10
+  React.useEffect(() => {
+    if (round > gameLength) {
+      setRound(gameLength)
+      endMatch()
+    }
+  },[round])
 
   // Contains an array of all category IDs for that match
   const [category, setCategory] = React.useState<string[]>([])
@@ -34,18 +41,10 @@ export default function PlayGame({ countryData }) {
   const [answersLog, setAnswersLog] = React.useState<{}[]>([])
 
   const [answerStats, setAnswerStats] = React.useState({
-    highpopulation: {
-      Q: 0, A: 0
-    },
-    lowpopulation: {
-      Q: 0, A: 0
-    },
-    higharea: {
-      Q: 0, A: 0
-    },
-    lowarea: {
-      Q: 0, A: 0
-    }
+    highpopulation: { Q: 0, A: 0 },
+    lowpopulation: { Q: 0, A: 0 },
+    higharea: { Q: 0, A: 0 },
+    lowarea: { Q: 0, A: 0 }
   })
 
   // Contains the HTML for the previous questions guess and answer
@@ -96,98 +95,145 @@ export default function PlayGame({ countryData }) {
         }
       }
 
-      // Determines the answer based on the category
-      function generateAnswer(category: string) {
-        const size = category.split('-')[0]
-        const type = category.split('-')[1]
-        let valArray: number[] = []
-        let answer: number = 0
-        countryAnswers.forEach((country) => {
-          valArray.push(country[type])
-        })
-        if (type === 'area') {
-          size === 'high'
-            ? answer = Math.max(...valArray)
-            : answer = Math.min(...valArray)
-        } else if (type === 'population') {
-          size === 'high'
-            ? answer = Math.max(...valArray)
-            : answer = Math.min(...valArray)
-        }
-        return answer
-      }
-
-      const answer = generateAnswer(category[category.length - 1])
+      const answer = generateAnswer(category[category.length - 1], countryAnswers)
     
       // Generates the HTML for the four answers
       const countryAnswersHTML = countryAnswers.map((country) => {
-        if (round <= gameLength) {
-          return (
-            <div className="answers-grid__option" key={nanoid()}>
-              <button
-                className="answers-grid__button"
-                onClick={() => answerCheck(category[category.length - 1], answer, country)}
-              >{country.name}</button>
-            </div>
-          )
-        } else {
-          return (
-            <div className="answers-grid__option" key={nanoid()}>
-              <button disabled
-                className="answers-grid__button"
-                onClick={() => answerCheck(category[category.length - 1], answer, country)}
-              >{country.name}</button>
-            </div>
-          )
-        }
-
+        return (
+          <div className="answers-grid__option" key={nanoid()}>
+            <button
+              disabled = {round <= gameLength ? false : true}
+              className="answers-grid__button"
+              onClick={() => answerCheck(category[category.length - 1], answer, country, countryAnswers)}
+            >{country.name}</button>
+          </div>
+        )
       })
       setDisplayData(countryAnswersHTML)
     }
+  }
 
-    // The onClick function for the four answer buttons
-    // Determines whether to award a point based on the users selected answer, increments round counter
-    function answerCheck(category: string, answer: number, country: {}) {
-      const type = category.split('-')[1]
-      const size = category.split('-')[0]
-      const sizetype = `${size}${type}`
+  // Determines the answer based on the category
+  function generateAnswer(category: string, countryAnswers: {}[]) {
+    const [type, size] = breakCategory(category)
+    let valArray: number[] = []
+    let answer: number = 0
+    countryAnswers.forEach((country) => {
+      valArray.push(country[type])
+    })
+    if (type === 'area') {
+      size === 'high'
+        ? answer = Math.max(...valArray)
+        : answer = Math.min(...valArray)
+    } else if (type === 'population') {
+      size === 'high'
+        ? answer = Math.max(...valArray)
+        : answer = Math.min(...valArray)
+    }
+    return answer
+  }
 
-      // If the answer matches the category value for the country selected (correct answer)
-      //    Add a point to the score
-      //    Add a point to the Q and the A tally for the respective     category in AnswerStats
-      // Otherwise just add a point to the Q tally (incorrect answer)
-      if (answer && answer === country[type]) {
-        setScore(prev => prev + 1)
-        setAnswerStats({
-          ...answerStats,
-          [sizetype]: {Q: answerStats[sizetype].Q + 1, A: answerStats[sizetype].A + 1}
-        })
-      } else {
-        setAnswerStats({
-          ...answerStats,
-          [sizetype]: {...answerStats[sizetype], Q: answerStats[sizetype].Q + 1}
-        })
-      }
-      // Grabs the corresponding country for the correct answer and saves it to state, also saves the guessed country to state
-      const answerCountry = countryAnswers.find((country) => {
-        return country[type] === answer
+  // The onClick function for the four answer buttons
+  // Determines whether to award a point based on the users selected answer, increments round counter
+  function answerCheck(category: string, answer: number, country: {}, countryAnswers: {}[]) {
+    const type = category.split('-')[1]
+    const size = category.split('-')[0]
+    const sizetype = `${size}${type}`
+
+    // If the answer matches the category value for the country selected (correct answer)
+    //    Add a point to the score
+    //    Add a point to the Q and the A tally for the respective     category in AnswerStats
+    // Otherwise just add a point to the Q tally (incorrect answer)
+    if (answer && answer === country[type]) {
+      setScore(prev => prev + 1)
+      setAnswerStats({
+        ...answerStats,
+        [sizetype]: {Q: answerStats[sizetype].Q + 1, A: answerStats[sizetype].A + 1}
       })
-      setPrevAnswer(answerCountry)
-      setPrevGuess(country)
-      // Generates the category for the next round (useEffect triggers the next question to also generate)
-      generateCategory()
-      setRound(prev => prev + 1)
+    } else {
+      setAnswerStats({
+        ...answerStats,
+        [sizetype]: {...answerStats[sizetype], Q: answerStats[sizetype].Q + 1}
+      })
+    }
+
+    // Grabs the corresponding country for the correct answer and saves it to state, also saves the guessed country to state
+    const answerCountry = countryAnswers.find((country) => {
+      return country[type] === answer
+    })
+
+    setPrevAnswer(answerCountry)
+    setPrevGuess(country)
+    // Generates the category for the next round (useEffect triggers the next question to also generate)
+    generateCategory()
+    setRound(prev => prev + 1)
+  }
+
+  const [answerNodes, setAnswerNodes] = React.useState([])
+
+  function generateAnswerNodes() {
+    return answerNodes.map(node => {
+      return (
+        <span key={nanoid()} className={`node--${node}`}></span>
+      )
+    })
+  }
+
+  // Generates the recap for the previous question, shows the correct answer and the guessed answer
+  function generateRecap() {
+    if (category.length > 1) {
+      // Grabs some values from the previous quesiton
+      const [type, size] = breakCategory(category.toReversed()[1])
+      const prevGuessName = prevGuess.name
+      let prevGuessValue
+      const prevAnswerName = prevAnswer.name
+      let prevAnswerValue
+
+      // Sets the answer node for the previous question (the little red or green ball)
+      if (round !== 1) {
+        if (prevGuessName === prevAnswerName) {
+          setAnswerNodes(prev => [...prev, 'green'])
+        } else {
+          setAnswerNodes(prev => [...prev, 'red'])
+        }
+      }
+
+      // Grab the category values from the previous guess/answer, save all values in the answers log, generate and return the HTML for the previous question recap
+      prevGuessValue = prevGuess[type]
+      prevAnswerValue = prevAnswer[type]
+      setAnswersLog([...answersLog, {
+        type, size,
+        prevGuessName, prevGuessValue,
+        prevAnswerName, prevAnswerValue
+      }])
+
+      if (type === 'area') {
+        return (
+          <div className="answers-recap">
+            <p>You picked: {prevGuessName} - {prevGuessValue.toLocaleString()}km² ({convertToMiles(prevGuess.area)}mi²)</p>
+            <p>Correct answer: {prevAnswerName} - {prevAnswerValue.toLocaleString()}km² ({convertToMiles(prevAnswer.area)}mi²)</p>
+          </div>
+        )
+      } else if (type === 'population') {
+        return (
+          <div className="answers-recap">
+            <p>You picked: {prevGuessName} (Population: {prevGuessValue.toLocaleString()})</p>
+            <p>Correct answer: {prevAnswerName} (Population: {prevAnswerValue.toLocaleString()})</p>
+          </div>
+        )
+      }
     }
   }
 
-  React.useEffect(() => {
-    if (round > gameLength) {
-      setRound(gameLength)
-      endMatch()
-    } else {
-
+  // Generates the question title based on the category selected
+  function generateTitle() {
+    if (category.length > 0) {
+      const [type, size] = breakCategory(category[category.length - 1])
+      const typeText = type === 'population' ? 'population' : 'land area'
+      const sizeText = size === 'high' ? 'largest' : 'smallest'
+      return <h2>Guess the country with the <i>{sizeText} {typeText}</i>!</h2>
     }
-  },[round])
+  }
 
   function endMatch() {
     console.log('Game over!')
@@ -207,109 +253,15 @@ export default function PlayGame({ countryData }) {
     document.querySelector('.gameover')?.classList.remove('hidden')
   }
 
-  const [answerNodes, setAnswerNodes] = React.useState([])
-
-  // Generates the recap for the previous question, shows the correct answer and the guessed answer
-  function generateRecap() {
-    if (category.length > 1) {
-      // Grabs some values from the previous quesiton
-      const categoryPrev = category.toReversed()[1]
-      const prevGuessName = prevGuess.name
-      let prevGuessValue
-      const prevAnswerName = prevAnswer.name
-      let prevAnswerValue
-
-      // Sets the answer node for the previous question (the little red or green ball)
-      if (round !== 1) {
-        if (prevGuessName === prevAnswerName) {
-          setAnswerNodes(prev => [...prev, 'green'])
-        } else {
-          setAnswerNodes(prev => [...prev, 'red'])
-        }
-      }
-
-      // If the previous category type was 'area' grab the area values from the previous guess/answer, save all values in the answers log, generate and return the HTML for the previous question recap
-      if (categoryPrev.split('-')[1] === 'area') {
-        prevGuessValue = prevGuess.area
-        prevAnswerValue = prevAnswer.area
-        setAnswersLog([...answersLog, {
-          categoryPrev,
-          prevGuessName,
-          prevGuessValue,
-          prevAnswerName,
-          prevAnswerValue
-        }])
-        return (
-          <div className="answers-recap">
-            <p>You picked: {prevGuessName} - {prevGuessValue.toLocaleString()}km² ({convertToMiles(prevGuess.area)}mi²)</p>
-            <p>Correct answer: {prevAnswerName} - {prevAnswerValue.toLocaleString()}km² ({convertToMiles(prevAnswer.area)}mi²)</p>
-          </div>
-        )
-      }
-      // Same as above but for 'population'
-      if (categoryPrev.split('-')[1] === 'population') {
-        prevGuessValue = prevGuess.population
-        prevAnswerValue = prevAnswer.population
-        setAnswersLog([...answersLog, {
-          categoryPrev,
-          prevGuessName,
-          prevGuessValue,
-          prevAnswerName,
-          prevAnswerValue
-        }])
-        return (
-          <div className="answers-recap">
-            <p>You picked: {prevGuessName} (Population: {prevGuessValue.toLocaleString()})</p>
-            <p>Correct answer: {prevAnswerName} (Population: {prevAnswerValue.toLocaleString()})</p>
-          </div>
-        )
-      }
-    }
-  }
-
-  // Generates the question title based on the category selected
-  function generateTitle() {
-    if (category.length > 0) {
-      if (category && category[category.length - 1].includes('high-population')) {
-        return <h2>Guess the country with the <i>highest population</i>!</h2>
-      }
-      if (category && category[category.length - 1].includes('low-population')) {
-        return <h2>Guess the country with the <i>lowest population</i>!</h2>
-      }
-      if (category && category[category.length - 1].includes('high-area')) {
-        return <h2>Guess the country with the <i>largest land area</i>!</h2>
-      }
-      if (category && category[category.length - 1].includes('low-area')) {
-        return <h2>Guess the country with the <i>smallest land area</i>!</h2>
-      }
-    }
-  }
-
-  function generateAnswerNodes() {
-    return answerNodes.map(node => {
-      return (
-        <span key={nanoid()} className={`node--${node}`}></span>
-      )
-    })
-  }
-
   // Resets all stats when a new game is started
   // Passed as a prop to GameOver for the "Play Again" button
   function resetGame() {
     setAnswersLog([])
     setAnswerStats({
-      highpopulation: {
-        Q: 0, A: 0
-      },
-      lowpopulation: {
-        Q: 0, A: 0
-      },
-      higharea: {
-        Q: 0, A: 0
-      },
-      lowarea: {
-        Q: 0, A: 0
-      }
+      highpopulation: { Q: 0, A: 0 },
+      lowpopulation: { Q: 0, A: 0 },
+      higharea: { Q: 0, A: 0 },
+      lowarea: { Q: 0, A: 0 }
     })
     setScore(0)
     setRound(1)

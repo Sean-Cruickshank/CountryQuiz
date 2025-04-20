@@ -81,28 +81,44 @@ export default function Profile() {
   
   return (
     <div className="profile">
-      <div className="profile__entries">
-        <div className="profile__entry-titles">
-          <p>Date:</p>
-          <p>Score:</p>
+      <h2>User Stats</h2>
+      <p>Average Score: {(scoreSum / playerHistory.length).toFixed(1)}</p>
+      <p>Highscore: {highscore}</p>
+      <p>Matches Played: {playerHistory.length}</p>
+      {playerHistory.length > 0 ? <div className="profile__averages">
+        
+        <div className="profile__category-averages">
           <p>High Population:</p>
           <p>Low Population:</p>
           <p>High Area:</p>
           <p>Low Area:</p>
-        </div>
-        {historyList}
-        {playerHistory.length > 0 ? <div className="profile__averages">
-          <p>Average Score: {formatStats(scoreSum, gameLengthSum)} </p>
           <p>{formatStats(statsSum.hpa, statsSum.hpq)} ({statsSum.hpa}/{statsSum.hpq})</p>
           <p>{formatStats(statsSum.lpa, statsSum.lpq)} ({statsSum.lpa}/{statsSum.lpq})</p>
           <p>{formatStats(statsSum.haa, statsSum.haq)} ({statsSum.haa}/{statsSum.haq})</p>
           <p>{formatStats(statsSum.laa, statsSum.laq)} ({statsSum.laa}/{statsSum.laq})</p>
-        </div>: ""}
-      </div>
-      <p>Highscore: {highscore}</p>
-      <Link to='/'>New Game</Link>
+        </div>
+      </div>: ""}
+      <Link to='/play'>Play Again</Link>
       <button onClick={resetHistory} className="profile__reset-history">Reset History</button>
       <button onClick={resetHighscore} className="profile__reset-highscore">Reset Highscore</button>
+      {playerHistory.length > 0
+      ?
+        <div className="profile__entries">
+          <h2>Match History</h2>
+          <div className="profile__entry-titles">
+            <p>Date:</p>
+            <p>Score:</p>
+            <p>High Population:</p>
+            <p>Low Population:</p>
+            <p>High Area:</p>
+            <p>Low Area:</p>
+          </div>
+          {historyList}
+        </div>
+      :
+        <p>You have no matches recorded!</p>
+      }
+      
     </div>
   )
 }
