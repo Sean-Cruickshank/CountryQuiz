@@ -1,10 +1,33 @@
 import { nanoid } from "nanoid"
 
-import convertToMiles from '../util/convertToMiles.js'
-import breakCategory from '../util/breakCategory.js'
+import convertToMiles from '../util/convertToMiles.ts'
 import { Link } from "react-router-dom"
 
-export default function GameOver({ answersLog, answerStats, score, gameLength, resetGame}) {
+interface AnswersLog {
+  type: string,
+  size: string,
+  prevGuessName: string,
+  prevGuessValue: number,
+  prevAnswerName: string,
+  prevAnswerValue: number
+}
+
+interface AnswerStats {
+  highpopulation: {Q: number, A: number},
+  lowpopulation:  {Q: number, A: number},
+  higharea:  {Q: number, A: number},
+  lowarea:  {Q: number, A: number},
+}
+
+interface GameOverProps {
+  answersLog: AnswersLog[],
+  answerStats: AnswerStats,
+  score: number,
+  gameLength: number,
+  resetGame: () => void
+}
+
+export default function GameOver({ answersLog, answerStats, score, gameLength, resetGame}: GameOverProps) {
   
   function titleCase(string: string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase()

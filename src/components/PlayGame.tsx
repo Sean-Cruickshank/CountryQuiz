@@ -1,19 +1,32 @@
 import { nanoid } from "nanoid"
 import dayjs from "dayjs"
-import React from "react"
+import React, { JSX } from "react"
 import { Navigate } from "react-router-dom"
 
 import GameOver from "./GameOver"
 
-import convertToMiles from '../util/convertToMiles.js'
-import breakCategory from '../util/breakCategory.js'
+import convertToMiles from '../util/convertToMiles.ts'
+import breakCategory from '../util/breakCategory.ts'
 
-export default function PlayGame({ countryData }) {
+interface PlayGameProps {
+  countryData: Country[]
+}
+
+interface Country {
+  id: number,
+  name: string,
+  population: number,
+  area: number
+}
+
+export default function PlayGame({ countryData }: PlayGameProps) {
   // Contains the HTML for the four answer buttons
-  const [displayData, setDisplayData] = React.useState([])
+  const [displayData, setDisplayData] = React.useState<JSX.Element[]>([])
 
   const [score, setScore] = React.useState(0)
-  const [highscore, setHighscore] = React.useState(JSON.parse(localStorage.getItem('highscore')) || 0)
+
+  const lsHighscore = localStorage.getItem('highscore')
+  const [highscore, setHighscore] = React.useState(lsHighscore !== null ? JSON.parse(lsHighscore) : 0)
 
   React.useEffect(() => {
     localStorage.setItem('highscore', JSON.stringify(highscore))
@@ -32,15 +45,31 @@ export default function PlayGame({ countryData }) {
   const [category, setCategory] = React.useState<string[]>([])
 
   // Contains the country object for the previous questions guess
-  const [prevGuess, setPrevGuess] = React.useState<{}>({})
+  const [prevGuess, setPrevGuess] = React.useState<Country>()
 
   // Contains the country object for the previous questions answer
-  const [prevAnswer, setPrevAnswer] = React.useState<{}>({})
+  const [prevAnswer, setPrevAnswer] = React.useState<Country>()
+
+  const [answerNodes, setAnswerNodes] = React.useState<string[]>([])
 
   // Contains an object array with the names and values of all previous guesses and answers
-  const [answersLog, setAnswersLog] = React.useState<{}[]>([])
+  interface AnswersLog {
+    type: string,
+    size: string,
+    prevGuessName: string,
+    prevGuessValue: number,
+    prevAnswerName: string,
+    prevAnswerValue: number
+  }
+  const [answersLog, setAnswersLog] = React.useState<AnswersLog[]>([])
 
-  const [answerStats, setAnswerStats] = React.useState({
+  interface AnswerStats {
+    highpopulation: {Q: number, A: number},
+    lowpopulation:  {Q: number, A: number},
+    higharea:  {Q: number, A: number},
+    lowarea:  {Q: number, A: number},
+  }
+  const [answerStats, setAnswerStats] = React.useState<AnswerStats>({
     highpopulation: { Q: 0, A: 0 },
     lowpopulation: { Q: 0, A: 0 },
     higharea: { Q: 0, A: 0 },
@@ -48,7 +77,7 @@ export default function PlayGame({ countryData }) {
   })
 
   // Contains the HTML for the previous questions guess and answer
-  const [recap, setRecap] = React.useState()
+  const [recap, setRecap] = React.useState<JSX.Element>()
 
   const categories = [
     'high-population',
@@ -80,7 +109,7 @@ export default function PlayGame({ countryData }) {
   },[category])
 
   function generateQuestion() {
-    let countryAnswers: {}[] = []
+    let countryAnswers: Country[] = []
     if (countryData.length > 0) {
       // Selects four countries at random from the array
       while (countryAnswers.length < 4) {
@@ -114,31 +143,33 @@ export default function PlayGame({ countryData }) {
   }
 
   // Determines the answer based on the category
-  function generateAnswer(category: string, countryAnswers: {}[]) {
+  function generateAnswer(category: string, countryAnswers: Country[]) {
     const [type, size] = breakCategory(category)
     let valArray: number[] = []
     let answer: number = 0
+
     countryAnswers.forEach((country) => {
-      valArray.push(country[type])
+      if (type === 'area' || type === 'population') {
+        valArray.push(country[type])
+      }
     })
-    if (type === 'area') {
-      size === 'high'
+    size === 'high'
         ? answer = Math.max(...valArray)
         : answer = Math.min(...valArray)
-    } else if (type === 'population') {
-      size === 'high'
-        ? answer = Math.max(...valArray)
-        : answer = Math.min(...valArray)
-    }
     return answer
   }
 
   // The onClick function for the four answer buttons
   // Determines whether to award a point based on the users selected answer, increments round counter
-  function answerCheck(category: string, answer: number, country: {}, countryAnswers: {}[]) {
-    const type = category.split('-')[1]
-    const size = category.split('-')[0]
-    const sizetype = `${size}${type}`
+  function answerCheck(category: string, answer: number, country: Country, countryAnswers: Country[]) {
+    const [type, size] = breakCategory(category)
+
+    let sizetype: keyof AnswerStats
+    if ((size === 'high' || size === 'low') && (type === 'area' || type === 'population')) {
+      sizetype = `${size}${type}`
+    } else {
+      sizetype = 'highpopulation'
+    }
 
     // If the answer matches the category value for the country selected (correct answer)
     //    Add a point to the score
@@ -161,15 +192,12 @@ export default function PlayGame({ countryData }) {
     const answerCountry = countryAnswers.find((country) => {
       return country[type] === answer
     })
-
     setPrevAnswer(answerCountry)
     setPrevGuess(country)
     // Generates the category for the next round (useEffect triggers the next question to also generate)
     generateCategory()
     setRound(prev => prev + 1)
   }
-
-  const [answerNodes, setAnswerNodes] = React.useState([])
 
   function generateAnswerNodes() {
     return answerNodes.map(node => {
@@ -183,11 +211,17 @@ export default function PlayGame({ countryData }) {
   function generateRecap() {
     if (category.length > 1) {
       // Grabs some values from the previous quesiton
-      const [type, size] = breakCategory(category.toReversed()[1])
-      const prevGuessName = prevGuess.name
-      let prevGuessValue
-      const prevAnswerName = prevAnswer.name
-      let prevAnswerValue
+      const [type, size] = breakCategory(category[category.length - 2])
+
+      const prevGuessName: string = prevGuess
+        ? prevGuess.name
+        : ''
+      let prevGuessValue: number
+
+      const prevAnswerName = prevAnswer
+      ? prevAnswer.name
+      : ''
+      let prevAnswerValue: number
 
       // Sets the answer node for the previous question (the little red or green ball)
       if (round !== 1) {
@@ -199,29 +233,33 @@ export default function PlayGame({ countryData }) {
       }
 
       // Grab the category values from the previous guess/answer, save all values in the answers log, generate and return the HTML for the previous question recap
-      prevGuessValue = prevGuess[type]
-      prevAnswerValue = prevAnswer[type]
+      prevGuess
+      ? prevGuessValue = prevGuess[type]
+      : prevGuessValue = 0
+      prevAnswer
+      ? prevAnswerValue = prevAnswer[type]
+      : prevAnswerValue = 0
       setAnswersLog([...answersLog, {
         type, size,
         prevGuessName, prevGuessValue,
         prevAnswerName, prevAnswerValue
       }])
 
-      if (type === 'area') {
+      if (type === 'area' && prevGuess && prevAnswer) {
         return (
           <div className="answers-recap">
             <p>You picked: {prevGuessName} - {prevGuessValue.toLocaleString()}km² ({convertToMiles(prevGuess.area)}mi²)</p>
             <p>Correct answer: {prevAnswerName} - {prevAnswerValue.toLocaleString()}km² ({convertToMiles(prevAnswer.area)}mi²)</p>
           </div>
         )
-      } else if (type === 'population') {
+      } else if (type === 'population' && prevGuess && prevAnswer) {
         return (
           <div className="answers-recap">
             <p>You picked: {prevGuessName} (Population: {prevGuessValue.toLocaleString()})</p>
             <p>Correct answer: {prevAnswerName} (Population: {prevAnswerValue.toLocaleString()})</p>
           </div>
         )
-      }
+      } else console.error('prevGuess or prevAnswer undefined!')
     }
   }
 
@@ -237,7 +275,8 @@ export default function PlayGame({ countryData }) {
 
   function endMatch() {
     console.log('Game over!')
-    const playerHistory = JSON.parse(localStorage.getItem('history')) || []
+    const lsHistory = localStorage.getItem('history')
+    const playerHistory = lsHistory !== null ? JSON.parse(lsHistory) : []
     playerHistory.push({
       id: nanoid(),
       score,
@@ -255,7 +294,7 @@ export default function PlayGame({ countryData }) {
 
   // Resets all stats when a new game is started
   // Passed as a prop to GameOver for the "Play Again" button
-  function resetGame() {
+  function resetGame(): void {
     setAnswersLog([])
     setAnswerStats({
       highpopulation: { Q: 0, A: 0 },

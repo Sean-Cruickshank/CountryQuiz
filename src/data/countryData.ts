@@ -1,4 +1,11 @@
-export const countryData = [
+interface Country {
+  id: number,
+  name: string,
+  population: number,
+  area: number
+}
+
+export const countryData: Country[] = [
   {
     id: 1,
     name: 'Afghanistan',

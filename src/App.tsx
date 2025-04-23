@@ -3,7 +3,6 @@ import React from 'react';
 
 import Home from './components/Home';
 import PlayGame from './components/PlayGame';
-import GameOver from './components/GameOver';
 import Profile from './components/Profile';
 import Layout from './components/Layout';
 
@@ -19,7 +18,7 @@ export default function App() {
     area: number
   }
 
-  const [countryData, setCountryData] = React.useState<Country>([])
+  const [countryData, setCountryData] = React.useState<Country[]>([])
   React.useEffect(() => {
     setCountryData(cd)
   },[])
@@ -45,7 +44,6 @@ export default function App() {
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path='play' element={<PlayGame countryData={countryData} />} />
-          <Route path='game-over' element={<GameOver />} />
           <Route path='profile' element={<Profile />} />
         </Route>
       </Routes>

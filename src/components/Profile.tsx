@@ -3,10 +3,24 @@ import React from "react"
 
 export default function Profile() {
 
+  interface PlayerHistory {
+    id: string,
+    score: number,
+    gameLength: number,
+    date: string,
+    answerStats: {
+      highpopulation: {Q: number, A: number},
+      lowpopulation:  {Q: number, A: number},
+      higharea:  {Q: number, A: number},
+      lowarea:  {Q: number, A: number},
+    }
+  }
+
   // Handles Player History array
   // Pulls playerHistory from localStorage and saves to state
   // Reset playerHistory sets state to 0 and then updates localStorage
-  const [playerHistory, setPlayerHistory] = React.useState(JSON.parse(localStorage.getItem('history')) || [])
+  const lsHistory = localStorage.getItem('history')
+  const [playerHistory, setPlayerHistory] = React.useState<PlayerHistory[]>(lsHistory !== null ? JSON.parse(lsHistory) : [])
 
   function resetHistory() {
     setPlayerHistory([])
@@ -23,7 +37,8 @@ export default function Profile() {
   // Handles Highscore
   // Pulls highscore from localStorage and saves to state
   // Reset Highscore sets state to 0 and then updates localStorage
-  const [highscore, setHighscore] = React.useState(JSON.parse(localStorage.getItem('highscore')))
+  const lsHighscore = localStorage.getItem('highscore')
+  const [highscore, setHighscore] = React.useState(lsHighscore !== null ? JSON.parse(lsHighscore) : 0)
 
   function resetHighscore() {
     setHighscore(0)
