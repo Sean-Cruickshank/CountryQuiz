@@ -79,6 +79,9 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   // Contains the HTML for the previous questions guess and answer
   const [recap, setRecap] = React.useState<JSX.Element>()
 
+  // Handles the game active status, used for triggering things when the game starts/ends
+  const [gameOver, setGameOver] = React.useState(false)
+
   const categories = [
     'high-population',
     'low-population',
@@ -131,7 +134,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
         return (
           <div className="answers-grid__option" key={nanoid()}>
             <button
-              disabled = {round <= gameLength ? false : true}
+              disabled = {!gameOver ? false : true}
               className="answers-grid__button"
               onClick={() => answerCheck(category[category.length - 1], answer, country, countryAnswers)}
             >{country.name}</button>
@@ -175,7 +178,12 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     //    Add a point to the score
     //    Add a point to the Q and the A tally for the respective     category in AnswerStats
     // Otherwise just add a point to the Q tally (incorrect answer)
+    const answerCheck = document.querySelector('.answers-correct')
     if (answer && answer === country[type]) {
+      answerCheck?.classList.remove('hidden')
+      setTimeout(() => {
+        answerCheck?.classList.add('hidden')
+      },1000)
       setScore(prev => prev + 1)
       setAnswerStats({
         ...answerStats,
@@ -274,6 +282,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   }
 
   function endMatch() {
+    setGameOver(true)
     console.log('Game over!')
     const lsHistory = localStorage.getItem('history')
     const playerHistory = lsHistory !== null ? JSON.parse(lsHistory) : []
@@ -295,7 +304,8 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   // Resets all stats when a new game is started
   // Passed as a prop to GameOver for the "Play Again" button
   function resetGame(): void {
-    setAnswersLog([])
+    setGameOver(false)
+    generateCategory()
     setAnswerStats({
       highpopulation: { Q: 0, A: 0 },
       lowpopulation: { Q: 0, A: 0 },
@@ -304,32 +314,51 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     })
     setScore(0)
     setRound(1)
-    generateCategory()
     setAnswerNodes([])
     document.querySelector('.gameover')?.classList.add('hidden')
   }
+
+  // Functionality for the resign button
+  function resign() {
+    setGameOver(true)
+    endMatch()
+  }
+
+  // When true (game has ended) regenerates the question buttons so that disabled = true
+  // When false (new game started) refreshes the answers log
+  React.useEffect(() => {
+    if (gameOver) {
+      generateQuestion()
+    } else {
+      setAnswersLog([])
+    }
+  },[gameOver])
   
   if (countryData.length > 0) {
     return (
       <div className="play-game">
         {generateTitle()}
+        {/* <p className="answers-correct hidden">CORRECT!</p> */}
         <p>Question {round}/{gameLength}</p>
         <div className="answers-grid">
           {displayData}
         </div>
+
         <div className="answers-score">
           <p>Score: {score}</p>
           <p>Highscore: {highscore}</p>
         </div>
+
+        <button disabled = {!gameOver ? false : true} className="resign-button" onClick={resign}>Resign</button>
+
         <div className="answers-nodes">
           {generateAnswerNodes()}
         </div>
-        {recap}
+        {answersLog.length > 0 && recap}
         <GameOver
           answersLog={answersLog}
           answerStats={answerStats}
           score={score}
-          gameLength={gameLength}
           resetGame={resetGame}
         />
       </div>

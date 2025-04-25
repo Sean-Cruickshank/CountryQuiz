@@ -37,6 +37,12 @@
   width: 80%;
 }
 
+.answers-correct {
+  transition: 0.5s;
+  color: darkgreen;
+  font-weight: bold;
+}
+
 .node {
   width: 2.9%;
   aspect-ratio: 2;

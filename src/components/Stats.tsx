@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import React from "react"
 
-export default function Profile() {
+export default function Stats() {
 
   interface PlayerHistory {
     id: string,
@@ -93,11 +93,19 @@ export default function Profile() {
     const split = date.split(' ')
     return `${split[0]}th ${split[1]} ${split[2]} (${split[3]})`
   }
+
+  let averageScore
+
+  if (playerHistory.length > 0) {
+    averageScore = (scoreSum / playerHistory.length).toFixed(1)
+  } else {
+    averageScore = 0
+  }
   
   return (
     <div className="profile">
       <h2>User Stats</h2>
-      <p>Average Score: {(scoreSum / playerHistory.length).toFixed(1)}</p>
+      <p>Average Score: {averageScore}</p>
       <p>Highscore: {highscore}</p>
       <p>Matches Played: {playerHistory.length}</p>
       {playerHistory.length > 0 ? <div className="profile__averages">
@@ -131,7 +139,7 @@ export default function Profile() {
           {historyList}
         </div>
       :
-        <p>You have no matches recorded!</p>
+        <p>You have no matches on record!</p>
       }
       
     </div>

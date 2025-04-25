@@ -3,7 +3,7 @@ import React from 'react';
 
 import Home from './components/Home';
 import PlayGame from './components/PlayGame';
-import Profile from './components/Profile';
+import Stats from './components/Stats';
 import Layout from './components/Layout';
 
 import { countryData as cd } from './data/countryData';
@@ -44,7 +44,7 @@ export default function App() {
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path='play' element={<PlayGame countryData={countryData} />} />
-          <Route path='profile' element={<Profile />} />
+          <Route path='stats' element={<Stats />} />
         </Route>
       </Routes>
     </BrowserRouter>

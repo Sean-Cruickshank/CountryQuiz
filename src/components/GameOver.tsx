@@ -23,11 +23,10 @@ interface GameOverProps {
   answersLog: AnswersLog[],
   answerStats: AnswerStats,
   score: number,
-  gameLength: number,
   resetGame: () => void
 }
 
-export default function GameOver({ answersLog, answerStats, score, gameLength, resetGame}: GameOverProps) {
+export default function GameOver({ answersLog, answerStats, score, resetGame}: GameOverProps) {
   
   function titleCase(string: string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase()
@@ -39,7 +38,7 @@ export default function GameOver({ answersLog, answerStats, score, gameLength, r
     question.prevGuessName === question.prevAnswerName
       ? classname = "answers-log__entry--green"
       : classname = "answers-log__entry--red"
-    if (answersLog.length > 1) {
+    if (answersLog.length > 0) {
       if (question.type === 'population') {
         return (
           <div className={classname} key={nanoid()}>
@@ -113,16 +112,16 @@ export default function GameOver({ answersLog, answerStats, score, gameLength, r
   return (
     <div className="gameover hidden">
       <h2>Game Over!</h2>
-      <p>You got {score} out of {gameLength} questions correct!</p>
+      <p>You got {score} out of {answersLog.length} questions correct!</p>
       {generateStats()}
       <button onClick={resetGame}>Play Again</button>
-      <Link to='/profile'>View History</Link>
+      <Link to='/stats'>View Stats</Link>
       <div className="answers-log">
-        <div className="gameover_subheaders">
+        {answersLog.length > 0 && <div className="gameover_subheaders">
           <h3>Category:</h3>
           <h3>You Guessed:</h3>
           <h3>Correct Answer:</h3>
-        </div>
+        </div>}
         {generateLog}
       </div>
     </div>
