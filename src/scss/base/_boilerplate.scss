@@ -1,3 +1,26 @@
+html {
+  box-sizing: border-box;
+  font-size: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(173, 230, 230);
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+a, a:visited, a:active {
+  text-decoration: none;
+}
+
 .hidden {
   display: none;
+}
+
+.opacity {
+  opacity: 1 !important;
 }

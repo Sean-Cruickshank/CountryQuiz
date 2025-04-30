@@ -1,6 +1,10 @@
 .gameover {
 
-  &_subheaders {
+  &__title {
+    padding-top: 50px;
+  }
+  
+  &__subheaders {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
   }
@@ -14,11 +18,7 @@
     }
 
     & p {
-      margin-top: 0;
-    }
-    
-    & p, & meter {
-
+      margin-bottom: 0;
     }
   }
 }
@@ -30,12 +30,12 @@
 
     &--red {
       @extend .answers-log__entry;
-      background-color: red;
+      background-color: var(--red);
     }
 
     &--green {
       @extend .answers-log__entry;
-      background-color: green;
+      background-color: var(--green);
     }
   }
 }

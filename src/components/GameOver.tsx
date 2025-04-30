@@ -87,23 +87,23 @@ export default function GameOver({ answersLog, answerStats, score, resetGame}: G
     return (
       <div>
         <div className="gameover__category">
+         <p>High Population: {formatStats(highPopulation)}% ({answerStats.highpopulation.A}/{answerStats.highpopulation.Q})</p>
           <meter value={formatStats(highPopulation)} max='100'></meter>
-          <p>High Population: {formatStats(highPopulation)}% ({answerStats.highpopulation.A}/{answerStats.highpopulation.Q})</p>
         </div>
 
         <div className="gameover__category">
-          <meter value={formatStats(lowPopulation)} max='100'></meter>
           <p>Low Population: {formatStats(lowPopulation)}% ({answerStats.lowpopulation.A}/{answerStats.lowpopulation.Q})</p>
+          <meter value={formatStats(lowPopulation)} max='100'></meter>
         </div>
 
         <div className="gameover__category">
+          <p>High Area: {formatStats(highArea)}% ({answerStats.higharea.A}/{answerStats.higharea.Q})</p>  
           <meter value={formatStats(highArea)} max='100'></meter>
-          <p>High Area: {formatStats(highArea)}% ({answerStats.higharea.A}/{answerStats.higharea.Q})</p>      
         </div>
 
         <div className="gameover__category">
-          <meter value={formatStats(lowArea)} max='100'></meter>
           <p>Low Area: {formatStats(lowArea)}% ({answerStats.lowarea.A}/{answerStats.lowarea.Q})</p>
+          <meter value={formatStats(lowArea)} max='100'></meter>
         </div>
       </div>
     )
@@ -111,13 +111,13 @@ export default function GameOver({ answersLog, answerStats, score, resetGame}: G
 
   return (
     <div className="gameover hidden">
-      <h2>Game Over!</h2>
+      <h2 className="gameover__title" id="gameover__title">Game Over!</h2>
       <p>You got {score} out of {answersLog.length} questions correct!</p>
       {generateStats()}
       <button onClick={resetGame}>Play Again</button>
       <Link to='/stats'>View Stats</Link>
       <div className="answers-log">
-        {answersLog.length > 0 && <div className="gameover_subheaders">
+        {answersLog.length > 0 && <div className="gameover__subheaders">
           <h3>Category:</h3>
           <h3>You Guessed:</h3>
           <h3>Correct Answer:</h3>

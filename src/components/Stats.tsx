@@ -72,7 +72,7 @@ export default function Stats() {
     statsSum.laq += match.answerStats.lowarea.Q
     statsSum.laa += match.answerStats.lowarea.A
     return (
-      <div key={match.id} className="profile__entry">
+      <div key={match.id} className="stats__entry">
         <p>{formatDate(match.date)}</p>
         <p>{formatStats(match.score, match.gameLength)} ({match.score}/{match.gameLength})</p>
         <p>{formatStats(match.answerStats.highpopulation.A, match.answerStats.highpopulation.Q)}</p>
@@ -103,32 +103,42 @@ export default function Stats() {
   }
   
   return (
-    <div className="profile">
-      <h2>User Stats</h2>
+    <div className="stats">
+      <h2>Statistics</h2>
       <p>Average Score: {averageScore}</p>
       <p>Highscore: {highscore}</p>
       <p>Matches Played: {playerHistory.length}</p>
-      {playerHistory.length > 0 ? <div className="profile__averages">
-        
-        <div className="profile__category-averages">
-          <p>High Population:</p>
-          <p>Low Population:</p>
-          <p>High Area:</p>
-          <p>Low Area:</p>
-          <p>{formatStats(statsSum.hpa, statsSum.hpq)} ({statsSum.hpa}/{statsSum.hpq})</p>
-          <p>{formatStats(statsSum.lpa, statsSum.lpq)} ({statsSum.lpa}/{statsSum.lpq})</p>
-          <p>{formatStats(statsSum.haa, statsSum.haq)} ({statsSum.haa}/{statsSum.haq})</p>
-          <p>{formatStats(statsSum.laa, statsSum.laq)} ({statsSum.laa}/{statsSum.laq})</p>
-        </div>
-      </div>: ""}
+      {playerHistory.length > 0 ?
+        <div className="stats__averages">
+          <div className="stats__category">
+            <p>High Population: {formatStats(statsSum.hpa, statsSum.hpq)} ({statsSum.hpa}/{statsSum.hpq})</p>
+            <meter value={statsSum.hpa} max={statsSum.hpq}></meter>
+          </div>
+
+          <div className="stats__category">
+            <p>Low Population: {formatStats(statsSum.lpa, statsSum.lpq)} ({statsSum.lpa}/{statsSum.lpq})</p>
+            <meter value={statsSum.lpa} max={statsSum.lpq}></meter>
+          </div>
+
+          <div className="stats__category">
+            <p>High Area: {formatStats(statsSum.haa, statsSum.haq)} ({statsSum.haa}/{statsSum.haq})</p>
+            <meter value={statsSum.haa} max={statsSum.haq}></meter>
+          </div>
+
+          <div className="stats__category">
+            <p>Low Area: {formatStats(statsSum.laa, statsSum.laq)} ({statsSum.laa}/{statsSum.laq})</p>
+            <meter value={statsSum.laa} max={statsSum.laq}></meter>
+          </div>
+
+        </div>: ""}
       <Link to='/play'>Play Again</Link>
-      <button onClick={resetHistory} className="profile__reset-history">Reset History</button>
-      <button onClick={resetHighscore} className="profile__reset-highscore">Reset Highscore</button>
+      <button onClick={resetHistory} className="stats__reset-history">Reset History</button>
+      <button onClick={resetHighscore} className="stats__reset-highscore">Reset Highscore</button>
       {playerHistory.length > 0
       ?
-        <div className="profile__entries">
+        <div className="stats__entries">
           <h2>Match History</h2>
-          <div className="profile__entry-titles">
+          <div className="stats__entry-titles">
             <p>Date:</p>
             <p>Score:</p>
             <p>High Population:</p>

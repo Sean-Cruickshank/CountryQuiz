@@ -1,12 +1,22 @@
-.profile {
+.stats {
   text-align: center;
   
   &__entries {
     margin-inline: auto;
   }
-  
-  &__entry-titles {
 
+  &__category {
+
+    & meter {
+      width: 80%;
+      max-width: 600px;
+      margin-bottom: 0;
+    }
+
+    & p {
+      margin-bottom: 0;
+    }
+    
   }
   
   &__entry, &__entry-titles {

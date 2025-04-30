@@ -132,10 +132,10 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       // Generates the HTML for the four answers
       const countryAnswersHTML = countryAnswers.map((country) => {
         return (
-          <div className="answers-grid__option" key={nanoid()}>
+          <div className="answers__option" key={nanoid()}>
             <button
               disabled = {!gameOver ? false : true}
-              className="answers-grid__button"
+              className="answers__button"
               onClick={() => answerCheck(category[category.length - 1], answer, country, countryAnswers)}
             >{country.name}</button>
           </div>
@@ -178,17 +178,18 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     //    Add a point to the score
     //    Add a point to the Q and the A tally for the respective     category in AnswerStats
     // Otherwise just add a point to the Q tally (incorrect answer)
-    const answerCheck = document.querySelector('.answers-correct')
+    const answerCorrect = document.querySelector('.answers__correct')
     if (answer && answer === country[type]) {
-      answerCheck?.classList.remove('hidden')
+      answerCorrect?.classList.add('opacity')
       setTimeout(() => {
-        answerCheck?.classList.add('hidden')
-      },1000)
+        answerCorrect?.classList.remove('opacity')
+      },1500)
       setScore(prev => prev + 1)
       setAnswerStats({
         ...answerStats,
         [sizetype]: {Q: answerStats[sizetype].Q + 1, A: answerStats[sizetype].A + 1}
       })
+
     } else {
       setAnswerStats({
         ...answerStats,
@@ -255,14 +256,14 @@ export default function PlayGame({ countryData }: PlayGameProps) {
 
       if (type === 'area' && prevGuess && prevAnswer) {
         return (
-          <div className="answers-recap">
+          <div className={prevGuessName === prevAnswerName ? 'recap--correct' : 'recap--incorrect'}>
             <p>You picked: {prevGuessName} - {prevGuessValue.toLocaleString()}km² ({convertToMiles(prevGuess.area)}mi²)</p>
             <p>Correct answer: {prevAnswerName} - {prevAnswerValue.toLocaleString()}km² ({convertToMiles(prevAnswer.area)}mi²)</p>
           </div>
         )
       } else if (type === 'population' && prevGuess && prevAnswer) {
         return (
-          <div className="answers-recap">
+          <div className={prevGuessName === prevAnswerName ? 'recap--correct' : 'recap--incorrect'}>
             <p>You picked: {prevGuessName} (Population: {prevGuessValue.toLocaleString()})</p>
             <p>Correct answer: {prevAnswerName} (Population: {prevAnswerValue.toLocaleString()})</p>
           </div>
@@ -277,7 +278,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       const [type, size] = breakCategory(category[category.length - 1])
       const typeText = type === 'population' ? 'population' : 'land area'
       const sizeText = size === 'high' ? 'largest' : 'smallest'
-      return <h2>Guess the country with the <i>{sizeText} {typeText}</i>!</h2>
+      return <h2 className="play-game__question">Guess the country with the <i>{sizeText} {typeText}</i>!</h2>
     }
   }
 
@@ -299,6 +300,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       setHighscore(score)
     }
     document.querySelector('.gameover')?.classList.remove('hidden')
+    document.getElementById('gameover__title')?.scrollIntoView({behavior: "smooth"})
   }
 
   // Resets all stats when a new game is started
@@ -338,23 +340,27 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     return (
       <div className="play-game">
         {generateTitle()}
-        {/* <p className="answers-correct hidden">CORRECT!</p> */}
-        <p>Question {round}/{gameLength}</p>
-        <div className="answers-grid">
+        <p className="play-game__progress">Question {round}/{gameLength}</p>
+        <div className="answers">
           {displayData}
         </div>
+        <div className="answers__correct-div">
+          <p className="answers__correct">CORRECT!</p>
+        </div>
 
-        <div className="answers-score">
+        <div className="scoreboard">
           <p>Score: {score}</p>
           <p>Highscore: {highscore}</p>
         </div>
 
         <button disabled = {!gameOver ? false : true} className="resign-button" onClick={resign}>Resign</button>
 
-        <div className="answers-nodes">
+        <div className="nodes">
           {generateAnswerNodes()}
         </div>
+
         {answersLog.length > 0 && recap}
+
         <GameOver
           answersLog={answersLog}
           answerStats={answerStats}

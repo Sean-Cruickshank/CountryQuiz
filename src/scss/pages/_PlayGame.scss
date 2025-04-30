@@ -1,12 +1,16 @@
 .play-game {
   text-align: center;
 
-  &__correct {
-    color: green;
+  &__question {
+    font-size: clamp(1.5rem, -0.0882rem + 4.4118vw, 3rem);
+  }
+
+  &__progress {
+
   }
 }
 
-.answers-grid {
+.answers {
   width: 80%;
   display: grid;
   margin-inline: auto;
@@ -22,25 +26,54 @@
     width: 100%;
     aspect-ratio: 4;
     border: none;
+    transition: 0.3s;
+    background-color: rgb(79, 135, 190);
+
+    &:hover {
+      transform: scale(0.95)
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+
+    &.blue {
+      background-color: lightblue;
+    }
+
+    &.yellow {
+      background-color: yellow;
+    }
+
+    &.pink {
+      background-color: pink;
+    }
+
+    &.teal {
+      background-color: teal;
+    }
+  }
+
+  &__correct {
+    transition: 0.2s;
+    color: darkgreen;
+    font-weight: bold;
+    margin: 0;
+    opacity: 0;
+  }
+
+  &__correct-div {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
-.answers-recap {
-  background-color: red;
-  display: flex;
-  justify-content: space-around;
-}
-
-.answers-nodes {
+.nodes {
   margin-inline: auto;
   text-align: left;
   width: 80%;
-}
-
-.answers-correct {
-  transition: 0.5s;
-  color: darkgreen;
-  font-weight: bold;
 }
 
 .node {
@@ -53,11 +86,26 @@
 
   &--red {
     @extend .node;
-    background-color: red;
+    background-color: var(--red);
   }
 
   &--green {
     @extend .node;
-    background-color: green;
+    background-color: var(--green);
+  }
+}
+
+.recap {
+  display: flex;
+  justify-content: space-around;
+
+  &--correct {
+    @extend .recap;
+    background-color: var(--green);
+  }
+
+  &--incorrect {
+    @extend .recap;
+    background-color: var(--red);
   }
 }

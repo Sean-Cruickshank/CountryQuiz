@@ -1,5 +1,17 @@
-export default function Navbar() {
+interface NavbarProps {
+  selectTheme: (data: React.ChangeEvent<HTMLSelectElement>) => void
+}
+
+export default function Navbar({ selectTheme }: NavbarProps) {
+
   return (
-    <p>Navbar</p>
+    <nav>
+      <select onChange={selectTheme}>
+        <option value='blue'>Blue</option>
+        <option value='yellow'>Yellow</option>
+        <option value='pink'>Pink</option>
+        <option value='teal'>Teal</option>
+      </select>
+    </nav>
   )
 }
