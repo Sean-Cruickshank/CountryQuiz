@@ -8,15 +8,15 @@ import GameOver from "./GameOver"
 import convertToMiles from '../util/convertToMiles.ts'
 import breakCategory from '../util/breakCategory.ts'
 
-interface PlayGameProps {
-  countryData: Country[]
-}
-
 interface Country {
   id: number,
   name: string,
   population: number,
   area: number
+}
+
+interface PlayGameProps {
+  countryData: Country[]
 }
 
 export default function PlayGame({ countryData }: PlayGameProps) {
@@ -89,6 +89,9 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     'low-area'
   ]
 
+  // Grabs the current page theme so it can be applied to the answer buttons
+  const currentTheme = localStorage.getItem('theme') || 'blue'
+
   // Selects the question category
   function generateCategory() {
     // Selects the category at random
@@ -135,7 +138,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
           <div className="answers__option" key={nanoid()}>
             <button
               disabled = {!gameOver ? false : true}
-              className="answers__button"
+              className={`answers__button ${currentTheme}`}
               onClick={() => answerCheck(category[category.length - 1], answer, country, countryAnswers)}
             >{country.name}</button>
           </div>
