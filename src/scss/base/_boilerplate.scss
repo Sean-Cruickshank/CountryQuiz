@@ -24,3 +24,38 @@ a, a:visited, a:active {
 .opacity {
   opacity: 1 !important;
 }
+
+meter {
+  &.blue {
+    &::-moz-meter-bar {
+      background: var(--buttonblue);
+    }
+    &::-webkit-meter-optimum-value {
+      background: var(--buttonblue);
+    }
+  }
+  &.yellow {
+    &::-moz-meter-bar {
+      background: var(--buttonyellow);
+    }
+    &::-webkit-meter-optimum-value {
+      background: var(--buttonyellow);
+    }
+  }
+  &.pink {
+    &::-moz-meter-bar {
+      background: var(--buttonpink);
+    }
+    &::-webkit-meter-optimum-value {
+      background: var(--buttonpink);
+    }
+  }
+  &.teal {
+    &::-moz-meter-bar {
+      background: var(--buttonteal);
+    }
+    &::-webkit-meter-optimum-value {
+      background: var(--buttonteal);
+    }
+  }
+}

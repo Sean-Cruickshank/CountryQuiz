@@ -25,13 +25,42 @@ a, a:visited, a:active {
   opacity: 1 !important;
 }
 
+meter.blue::-moz-meter-bar {
+  background: var(--buttonblue);
+}
+meter.blue::-webkit-meter-optimum-value {
+  background: var(--buttonblue);
+}
+meter.yellow::-moz-meter-bar {
+  background: var(--buttonyellow);
+}
+meter.yellow::-webkit-meter-optimum-value {
+  background: var(--buttonyellow);
+}
+meter.pink::-moz-meter-bar {
+  background: var(--buttonpink);
+}
+meter.pink::-webkit-meter-optimum-value {
+  background: var(--buttonpink);
+}
+meter.teal::-moz-meter-bar {
+  background: var(--buttonteal);
+}
+meter.teal::-webkit-meter-optimum-value {
+  background: var(--buttonteal);
+}
+
 :root {
   --green: #73d673;
   --red: #f48484;
-  --blue: #0000ff;
-  --yellow: #ffff00;
-  --pink: #ff8888;
-  --teal: #00ffff;
+  --bgblue: #eeeeff;
+  --bgyellow: #ffffee;
+  --bgpink: #ffeeee;
+  --bgteal: #eeffee;
+  --buttonblue: rgb(200, 200, 255);
+  --buttonyellow: rgb(255, 255, 200);
+  --buttonpink: rgb(255, 200, 200);
+  --buttonteal: rgb(200, 255, 223);
 }
 
 .play-game {
@@ -44,7 +73,8 @@ a, a:visited, a:active {
   width: 80%;
   display: grid;
   margin-inline: auto;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(100px, 400px));
+  justify-content: center;
   gap: 20px;
 }
 .answers__option {
@@ -52,29 +82,46 @@ a, a:visited, a:active {
   justify-content: center;
 }
 .answers__button {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: 10px;
+  align-items: center;
+  text-align: left;
   width: 100%;
+  max-width: 400px;
   aspect-ratio: 4;
-  border: none;
+  border: 4px solid black;
+  border-radius: 500px;
   transition: 0.3s;
-  background-color: rgb(79, 135, 190);
+  cursor: pointer;
 }
 .answers__button:hover {
-  transform: scale(0.95);
+  transform: scale(0.97);
+  opacity: 0.8;
 }
 .answers__button:active {
-  transform: scale(0.9);
+  transform: scale(0.95);
 }
 .answers__button.blue {
-  background-color: lightblue;
+  background-color: var(--buttonblue);
 }
 .answers__button.yellow {
-  background-color: yellow;
+  background-color: var(--buttonyellow);
 }
 .answers__button.pink {
-  background-color: pink;
+  background-color: var(--buttonpink);
 }
 .answers__button.teal {
-  background-color: teal;
+  background-color: var(--buttonteal);
+}
+.answers__button__alpha {
+  background-color: black;
+  color: white;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
 }
 .answers__correct {
   transition: 0.2s;

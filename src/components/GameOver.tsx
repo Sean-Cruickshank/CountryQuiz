@@ -28,6 +28,9 @@ interface GameOverProps {
 
 export default function GameOver({ answersLog, answerStats, score, resetGame}: GameOverProps) {
   
+  // Grabs the current page theme so it can be applied to the answer buttons
+  const currentTheme = localStorage.getItem('theme') || 'blue'
+  
   function titleCase(string: string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase()
   }
@@ -88,22 +91,36 @@ export default function GameOver({ answersLog, answerStats, score, resetGame}: G
       <div>
         <div className="gameover__category">
          <p>High Population: {formatStats(highPopulation)}% ({answerStats.highpopulation.A}/{answerStats.highpopulation.Q})</p>
-          <meter value={formatStats(highPopulation)} max='100'></meter>
+          <meter
+            className={`gameover__meter ${currentTheme}`}
+            value={formatStats(highPopulation)} max='100'
+          ></meter>
         </div>
 
         <div className="gameover__category">
           <p>Low Population: {formatStats(lowPopulation)}% ({answerStats.lowpopulation.A}/{answerStats.lowpopulation.Q})</p>
-          <meter value={formatStats(lowPopulation)} max='100'></meter>
+          <meter
+            className={`gameover__meter ${currentTheme}`}
+            value={formatStats(lowPopulation)} max='100'
+          ></meter>
         </div>
 
         <div className="gameover__category">
           <p>High Area: {formatStats(highArea)}% ({answerStats.higharea.A}/{answerStats.higharea.Q})</p>  
-          <meter value={formatStats(highArea)} max='100'></meter>
+          <meter
+            className={`gameover__meter ${currentTheme}`}
+            value={formatStats(highArea)} 
+            max='100'
+          ></meter>
         </div>
 
         <div className="gameover__category">
           <p>Low Area: {formatStats(lowArea)}% ({answerStats.lowarea.A}/{answerStats.lowarea.Q})</p>
-          <meter value={formatStats(lowArea)} max='100'></meter>
+          <meter
+          className={`gameover__meter ${currentTheme}`}
+          value={formatStats(lowArea)}
+          max='100'
+        ></meter>
         </div>
       </div>
     )

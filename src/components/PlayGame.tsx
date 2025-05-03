@@ -133,14 +133,20 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       const answer = generateAnswer(category[category.length - 1], countryAnswers)
     
       // Generates the HTML for the four answers
+      const alpha = ['A','B','C','D']
+      let index = 0
       const countryAnswersHTML = countryAnswers.map((country) => {
+        index++
         return (
           <div className="answers__option" key={nanoid()}>
             <button
               disabled = {!gameOver ? false : true}
               className={`answers__button ${currentTheme}`}
               onClick={() => answerCheck(category[category.length - 1], answer, country, countryAnswers)}
-            >{country.name}</button>
+            >
+              <div className="answers__button__alpha">{alpha[index - 1]}</div>
+              <div className="answers__button__text">{country.name}</div>
+            </button>
           </div>
         )
       })

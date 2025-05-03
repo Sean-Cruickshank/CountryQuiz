@@ -18,10 +18,14 @@ export default function Layout() {
   },[theme])
 
   function updateTheme(newTheme: string) {
-    document.body.style.backgroundColor = `var(--${newTheme})`
+    document.body.style.backgroundColor = `var(--bg${newTheme})`
 
     console.log(newTheme)
     document.querySelectorAll('.answers__button').forEach(button => {
+      button.classList.remove(theme)
+      button.classList.add(newTheme)
+    })
+    document.querySelectorAll('.gameover__meter').forEach(button => {
       button.classList.remove(theme)
       button.classList.add(newTheme)
     })
