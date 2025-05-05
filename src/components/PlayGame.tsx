@@ -362,7 +362,11 @@ export default function PlayGame({ countryData }: PlayGameProps) {
           <p>Highscore: {highscore}</p>
         </div>
 
-        <button disabled = {!gameOver ? false : true} className="resign-button" onClick={resign}>Resign</button>
+        <button
+          disabled = {!gameOver ? false : true}
+          className={`resign-button ${currentTheme}`}
+          onClick={resign}
+        >Resign</button>
 
         <div className="nodes">
           {generateAnswerNodes()}

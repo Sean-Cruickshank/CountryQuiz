@@ -133,3 +133,36 @@
     background-color: var(--red);
   }
 }
+
+.resign-button {
+  width: 80px;
+  aspect-ratio: 2;
+  border: solid 2px black;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    transform: scale(0.95);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  &.blue {
+    background-color: var(--buttonblue);
+  }
+
+  &.yellow {
+    background-color: var(--buttonyellow);
+  }
+
+  &.pink {
+    background-color: var(--buttonpink);
+  }
+
+  &.teal {
+    background-color: var(--buttonteal);
+  }
+}

@@ -91,7 +91,11 @@ export default function Stats() {
 
   function formatDate(date: string): string {
     const split = date.split(' ')
-    return `${split[0]}th ${split[1]} ${split[2]} (${split[3]})`
+    let suffix = 'th'
+    if (split[0] === '1' || split[0] === '21' || split[0] === '31') {suffix = 'st'}
+    if (split[0] === '2' || split[0] === '22') {suffix = 'nd'}
+    if (split[0] === '3' || split[0] === '23') {suffix = 'rd'}
+    return `${split[0]}${suffix} ${split[1]} ${split[2]} (${split[3]})`
   }
 
   let averageScore

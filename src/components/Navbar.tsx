@@ -1,4 +1,7 @@
 import React from "react"
+import { Link } from "react-router-dom";
+
+import { FaHome } from "react-icons/fa";
 
 interface NavbarProps {
   selectTheme: (data: string) => void
@@ -30,12 +33,9 @@ export default function Navbar({ selectTheme }: NavbarProps) {
   
   return (
     <nav>
-      {/* <select defaultValue={currentTheme} onChange={selectTheme}>
-        <option value='blue'>Blue</option>
-        <option value='yellow'>Yellow</option>
-        <option value='pink'>Pink</option>
-        <option value='teal'>Teal</option>
-      </select> */}
+      <div className="nav__home">
+        <Link to='/'><FaHome /></Link>
+      </div>
       <img
         width='40px'
         src="/images/themepicker.png"
@@ -43,10 +43,23 @@ export default function Navbar({ selectTheme }: NavbarProps) {
         onClick={() => setToggle(prev => !prev)}
       />
       <div className="theme__dropdown">
-        <a onClick={() => dropdownSelect('blue')}>Blue</a>
-        <a onClick={() => dropdownSelect('yellow')}>Yellow</a>
-        <a onClick={() => dropdownSelect('pink')}>Pink</a>
-        <a onClick={() => dropdownSelect('teal')}>Teal</a>
+        <p>Theme Selector</p>
+        <a
+          className="theme__select blue"
+          onClick={() => dropdownSelect('blue')}
+        >Blue<div></div></a>
+        <a
+          className="theme__select yellow"
+          onClick={() => dropdownSelect('yellow')}
+        >Yellow<div></div></a>
+        <a
+          className="theme__select pink"
+          onClick={() => dropdownSelect('pink')}
+        >Pink<div></div></a>
+        <a
+          className="theme__select teal"
+          onClick={() => dropdownSelect('teal')}
+        >Teal<div></div></a>
       </div>
       <div onClick={() => setToggle(prev => !prev)} className="theme__background"></div>
     </nav>

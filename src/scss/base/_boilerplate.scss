@@ -1,12 +1,16 @@
 html {
   box-sizing: border-box;
   font-size: 100%;
+  overflow-x: hidden;
 }
 
 body {
+  position: relative;
   margin: 0;
   padding: 0;
   background-color: rgb(173, 230, 230);
+  min-height: 100vh;
+  padding-bottom: 300px;
 }
 
 *, *::before, *::after {

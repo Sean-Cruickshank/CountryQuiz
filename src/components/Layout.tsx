@@ -29,17 +29,20 @@ export default function Layout() {
       button.classList.remove(theme)
       button.classList.add(newTheme)
     })
+
+    document.querySelector('.resign-button')?.classList.remove(theme)
+    document.querySelector('.resign-button')?.classList.add(newTheme)
   }
 
   updateTheme(theme)
   
   return (
-    <div className='layout'>
+    <>
       <Navbar selectTheme={selectTheme} />
       <div className='layout-outlet'>
         <Outlet />
       </div>
       <Footer />
-    </div>
+    </>
   )
 }

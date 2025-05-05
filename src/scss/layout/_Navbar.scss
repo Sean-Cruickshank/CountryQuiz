@@ -2,11 +2,37 @@ nav {
   position: relative;
   height: 50px;
   background-color: black;
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+
+  &__home {
+    width: 40px;
+    aspect-ratio: 1;
+    border-radius: 100%;
+    margin-left: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    transition: 0.3s;
+
+    &:hover {
+      transform: scale(0.95);
+    }
+
+    & svg {
+      color: black;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+  }
 }
 
 .theme {
   
-
   &__icon {
     position: absolute;
     right: 0;
@@ -18,20 +44,70 @@ nav {
 
   &__dropdown {
     position: absolute;
-    right: 0;
+    right: 5px;
     top: 50px;
     display: none;
+    border-radius: 10px;
     background-color: grey;
-    width: 100px;
+    width: 200px;
+    padding-bottom: 15px;
     text-align: center;
+    z-index: 101;
+    color: white;
 
     & a {
       cursor: pointer;
-      margin: 4px 0;
-      padding: 0;
+      margin-inline: auto;
+      margin-bottom: 4px;
+      padding: 4px 12px;
+      width: 80%;
+      border-radius: 5px;
+      color: black;
+      display: flex;
+      justify-content: space-between;
+
+      & div {
+        width: 20px;
+        aspect-ratio: 1;
+        border: 1px solid black;
+        border-radius: 100%;
+      }
+
+      &.blue {
+        background-color: var(--bgblue);
+
+        & div {
+          background-color: var(--buttonblue);
+        }
+      }
+
+      &.yellow {
+        background-color: var(--bgyellow);
+
+        & div {
+          background-color: var(--buttonyellow);
+        }
+      }
+
+      &.pink {
+        background-color: var(--bgpink);
+
+        & div {
+          background-color: var(--buttonpink);
+        }
+      }
+
+      &.teal {
+        background-color: var(--bgteal);
+
+        & div {
+          background-color: var(--buttonteal);
+        }
+      }
     }
 
     & a:hover {
+      color: black;
       background-color: white;
     }
 
@@ -42,6 +118,9 @@ nav {
   }
 
   &__background {
+    position: absolute;
+    top: 0;
+    left: 0;
     display: none;
     background-color: transparent;
     height: 100vh;
