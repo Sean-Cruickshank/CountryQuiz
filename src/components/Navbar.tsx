@@ -30,12 +30,27 @@ export default function Navbar({ selectTheme }: NavbarProps) {
     selectTheme(colour)
     setToggle(prev => !prev)
   }
+
+  const themeColours = ['Blue', 'Yellow', 'Pink', 'Teal']
+
+  function generateDropdown() {
+    return themeColours.map(colour => {
+      const l = colour.toLowerCase()
+      return (
+        <a
+          className={`theme__select ${l}`}
+          onClick={() => dropdownSelect(l)}
+        >{colour}<div></div></a>
+      )
+    })
+  }
   
   return (
     <nav>
       <div className="nav__home">
         <Link to='/'><FaHome /></Link>
       </div>
+      <h1>Sean's Country Quiz</h1>
       <img
         width='40px'
         src="/images/themepicker.png"
@@ -43,23 +58,8 @@ export default function Navbar({ selectTheme }: NavbarProps) {
         onClick={() => setToggle(prev => !prev)}
       />
       <div className="theme__dropdown">
-        <p>Theme Selector</p>
-        <a
-          className="theme__select blue"
-          onClick={() => dropdownSelect('blue')}
-        >Blue<div></div></a>
-        <a
-          className="theme__select yellow"
-          onClick={() => dropdownSelect('yellow')}
-        >Yellow<div></div></a>
-        <a
-          className="theme__select pink"
-          onClick={() => dropdownSelect('pink')}
-        >Pink<div></div></a>
-        <a
-          className="theme__select teal"
-          onClick={() => dropdownSelect('teal')}
-        >Teal<div></div></a>
+        <h4>Theme Selector</h4>
+        {generateDropdown()}
       </div>
       <div onClick={() => setToggle(prev => !prev)} className="theme__background"></div>
     </nav>

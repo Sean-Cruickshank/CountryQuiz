@@ -4,6 +4,13 @@ nav {
   background-color: black;
   display: flex;
   align-items: center;
+
+  & h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+  }
 }
 
 .nav {
@@ -45,15 +52,15 @@ nav {
   &__dropdown {
     position: absolute;
     right: 5px;
-    top: 50px;
+    top: 25px;
     display: none;
     border-radius: 10px;
-    background-color: grey;
+    background-color: #bbb;
     width: 200px;
     padding-bottom: 15px;
     text-align: center;
     z-index: 101;
-    color: white;
+    box-shadow: 5px 5px 20px rgba($color: #000000, $alpha: 0.5);
 
     & a {
       cursor: pointer;
@@ -108,12 +115,16 @@ nav {
 
     & a:hover {
       color: black;
-      background-color: white;
+      opacity: 0.8;
     }
 
     &.active {
       display: grid;
       grid-template-columns: 1fr;
+    }
+
+    & h4 {
+      margin: 10px;
     }
   }
 

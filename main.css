@@ -257,6 +257,12 @@ nav {
   display: flex;
   align-items: center;
 }
+nav h1 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+}
 
 .nav__home {
   width: 40px;
@@ -289,15 +295,15 @@ nav {
 .theme__dropdown {
   position: absolute;
   right: 5px;
-  top: 50px;
+  top: 25px;
   display: none;
   border-radius: 10px;
-  background-color: grey;
+  background-color: #bbb;
   width: 200px;
   padding-bottom: 15px;
   text-align: center;
   z-index: 101;
-  color: white;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
 }
 .theme__dropdown a {
   cursor: pointer;
@@ -342,11 +348,14 @@ nav {
 }
 .theme__dropdown a:hover {
   color: black;
-  background-color: white;
+  opacity: 0.8;
 }
 .theme__dropdown.active {
   display: grid;
   grid-template-columns: 1fr;
+}
+.theme__dropdown h4 {
+  margin: 10px;
 }
 .theme__background {
   position: absolute;
@@ -367,14 +376,45 @@ nav {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 200px;
+  padding-bottom: 20px;
   background-color: black;
   color: white;
   text-align: center;
 }
-.footer__links {
+.footer__nav {
   width: 50%;
   margin: 50px auto;
   display: flex;
   justify-content: space-around;
+}
+.footer__nav a {
+  color: white;
+}
+.footer__nav a:hover {
+  opacity: 0.8;
+}
+.footer__nav a.blue {
+  color: var(--buttonblue);
+}
+.footer__nav a.yellow {
+  color: var(--buttonyellow);
+}
+.footer__nav a.pink {
+  color: var(--buttonpink);
+}
+.footer__nav a.teal {
+  color: var(--buttonteal);
+}
+.footer__links {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.footer__links a {
+  margin-inline: auto;
+  cursor: pointer;
+  color: white;
+}
+.footer__links img {
+  width: 75px;
+  margin-top: 20px;
 }/*# sourceMappingURL=main.css.map */

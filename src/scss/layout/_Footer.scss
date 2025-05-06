@@ -2,15 +2,55 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 200px;
+  padding-bottom: 20px;
   background-color: black;
   color: white;
   text-align: center;
 
-  &__links {
+  &__nav {
     width: 50%;
     margin: 50px auto;
     display: flex;
     justify-content: space-around;
+
+    & a {
+      color: white;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &.blue {
+        color: var(--buttonblue);
+      }
+
+      &.yellow {
+        color: var(--buttonyellow);
+      }
+
+      &.pink {
+        color: var(--buttonpink);
+      }
+
+      &.teal {
+        color: var(--buttonteal);
+      }
+    }
+  }
+
+  &__links {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    & a {
+      margin-inline: auto;
+      cursor: pointer;
+      color: white;
+    }
+
+    & img {
+      width: 75px;
+      margin-top: 20px;
+    }
   }
 }

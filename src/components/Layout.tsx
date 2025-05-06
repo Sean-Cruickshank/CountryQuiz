@@ -29,6 +29,10 @@ export default function Layout() {
       button.classList.remove(theme)
       button.classList.add(newTheme)
     })
+    document.querySelectorAll('.footer__navlink').forEach(button => {
+      button.classList.remove(theme)
+      button.classList.add(newTheme)
+    })
 
     document.querySelector('.resign-button')?.classList.remove(theme)
     document.querySelector('.resign-button')?.classList.add(newTheme)
