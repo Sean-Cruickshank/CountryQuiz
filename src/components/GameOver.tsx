@@ -22,11 +22,10 @@ interface AnswerStats {
 interface GameOverProps {
   answersLog: AnswersLog[],
   answerStats: AnswerStats,
-  score: number,
-  resetGame: () => void
+  score: number
 }
 
-export default function GameOver({ answersLog, answerStats, score, resetGame}: GameOverProps) {
+export default function GameOver({ answersLog, answerStats, score}: GameOverProps) {
   
   // Grabs the current page theme so it can be applied to the answer buttons
   const currentTheme = localStorage.getItem('theme') || 'blue'
@@ -131,8 +130,10 @@ export default function GameOver({ answersLog, answerStats, score, resetGame}: G
       <h2 className="gameover__title" id="gameover__title">Game Over!</h2>
       <p>You got {score} out of {answersLog.length} questions correct!</p>
       {generateStats()}
-      <button onClick={resetGame}>Play Again</button>
-      <Link to='/stats'>View Stats</Link>
+      <Link
+        className={`button button__stats ${currentTheme}`}
+        to='/stats'>View Stats
+      </Link>
       <div className="answers-log">
         {answersLog.length > 0 && <div className="gameover__subheaders">
           <h3>Category:</h3>

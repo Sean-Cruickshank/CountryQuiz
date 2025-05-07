@@ -81,34 +81,34 @@ nav {
       }
 
       &.blue {
-        background-color: var(--bgblue);
+        background-color: var(--blueA);
 
         & div {
-          background-color: var(--buttonblue);
+          background-color: var(--blueB);
         }
       }
 
       &.yellow {
-        background-color: var(--bgyellow);
+        background-color: var(--yellowA);
 
         & div {
-          background-color: var(--buttonyellow);
+          background-color: var(--yellowB);
         }
       }
 
       &.pink {
-        background-color: var(--bgpink);
+        background-color: var(--pinkA);
 
         & div {
-          background-color: var(--buttonpink);
+          background-color: var(--pinkB);
         }
       }
 
       &.teal {
-        background-color: var(--bgteal);
+        background-color: var(--tealA);
 
         & div {
-          background-color: var(--buttonteal);
+          background-color: var(--tealB);
         }
       }
     }

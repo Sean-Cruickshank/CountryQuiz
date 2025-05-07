@@ -30,36 +30,81 @@ a, a:visited, a:active {
 }
 
 meter {
+  border: solid 1px black;
+  border-radius: 10px;
+  height: 15px;
   &.blue {
+    background: var(--blueB);
     &::-moz-meter-bar {
-      background: var(--buttonblue);
+      background: var(--blueC);
     }
     &::-webkit-meter-optimum-value {
-      background: var(--buttonblue);
+      background: var(--blueC);
     }
   }
   &.yellow {
+    background: var(--yellowB);
     &::-moz-meter-bar {
-      background: var(--buttonyellow);
+      background: var(--yellowC);
     }
     &::-webkit-meter-optimum-value {
-      background: var(--buttonyellow);
+      background: var(--yellowC);
     }
   }
   &.pink {
+    background: var(--pinkB);
     &::-moz-meter-bar {
-      background: var(--buttonpink);
+      background: var(--pinkC);
     }
     &::-webkit-meter-optimum-value {
-      background: var(--buttonpink);
+      background: var(--pinkC);
     }
   }
   &.teal {
+    background: var(--tealB);
     &::-moz-meter-bar {
-      background: var(--buttonteal);
+      background: var(--tealC);
     }
     &::-webkit-meter-optimum-value {
-      background: var(--buttonteal);
+      background: var(--tealC);
     }
+  }
+}
+
+.button {
+  width: 80px;
+  aspect-ratio: 2;
+  background-color: red;
+  border: solid 2px black;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    transform: scale(0.95);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  &.blue {
+    background-color: var(--blueB);
+    border: solid 2px var(--blueC);
+  }
+
+  &.yellow {
+    background-color: var(--yellowB);
+    border: solid 2px var(--yellowC);
+  }
+
+  &.pink {
+    background-color: var(--pinkB);
+    border: solid 2px var(--pinkC);
+  }
+
+  &.teal {
+    background-color: var(--tealB);
+    border: solid 2px var(--tealC);
   }
 }

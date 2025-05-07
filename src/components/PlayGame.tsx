@@ -309,7 +309,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       setHighscore(score)
     }
     document.querySelector('.gameover')?.classList.remove('hidden')
-    document.getElementById('gameover__title')?.scrollIntoView({behavior: "smooth"})
+    // document.getElementById('gameover__title')?.scrollIntoView({behavior: "smooth"})
   }
 
   // Resets all stats when a new game is started
@@ -362,11 +362,15 @@ export default function PlayGame({ countryData }: PlayGameProps) {
           <p>Highscore: {highscore}</p>
         </div>
 
-        <button
-          disabled = {!gameOver ? false : true}
-          className={`resign-button ${currentTheme}`}
+        {!gameOver && <button
+          className={`button ${currentTheme}`}
           onClick={resign}
-        >Resign</button>
+        >Resign</button>}
+
+        {gameOver && <button
+          className={`button ${currentTheme}`}
+          onClick={resetGame}
+        >Play Again</button>}
 
         <div className="nodes">
           {generateAnswerNodes()}
@@ -378,7 +382,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
           answersLog={answersLog}
           answerStats={answerStats}
           score={score}
-          resetGame={resetGame}
         />
       </div>
     )

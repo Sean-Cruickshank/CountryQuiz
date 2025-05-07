@@ -47,19 +47,39 @@
     }
 
     &.blue {
-      background-color: var(--buttonblue);
+      background-color: var(--blueB);
+      border: 4px solid var(--blueC);
+
+      & .answers__button__alpha {
+        background-color: var(--blueC);
+      }
     }
 
     &.yellow {
-      background-color: var(--buttonyellow);
+      background-color: var(--yellowB);
+      border: 4px solid var(--yellowC);
+
+      & .answers__button__alpha {
+        background-color: var(--yellowC);
+      }
     }
 
     &.pink {
-      background-color: var(--buttonpink);
+      background-color: var(--pinkB);
+      border: 4px solid var(--pinkC);
+
+      & .answers__button__alpha {
+        background-color: var(--pinkC);
+      }
     }
 
     &.teal {
-      background-color: var(--buttonteal);
+      background-color: var(--tealB);
+      border: 4px solid var(--tealC);
+
+      & .answers__button__alpha {
+        background-color: var(--tealC);
+      }
     }
     
     &__alpha {
@@ -131,38 +151,5 @@
   &--incorrect {
     @extend .recap;
     background-color: var(--red);
-  }
-}
-
-.resign-button {
-  width: 80px;
-  aspect-ratio: 2;
-  border: solid 2px black;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-
-  &:hover {
-    transform: scale(0.95);
-  }
-
-  &:active {
-    transform: scale(0.9);
-  }
-
-  &.blue {
-    background-color: var(--buttonblue);
-  }
-
-  &.yellow {
-    background-color: var(--buttonyellow);
-  }
-
-  &.pink {
-    background-color: var(--buttonpink);
-  }
-
-  &.teal {
-    background-color: var(--buttonteal);
   }
 }

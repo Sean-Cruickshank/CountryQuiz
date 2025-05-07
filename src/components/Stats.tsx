@@ -22,6 +22,9 @@ export default function Stats() {
   const lsHistory = localStorage.getItem('history')
   const [playerHistory, setPlayerHistory] = React.useState<PlayerHistory[]>(lsHistory !== null ? JSON.parse(lsHistory) : [])
 
+  // Grabs the current page theme so it can be applied to the answer buttons
+  const currentTheme = localStorage.getItem('theme') || 'blue'
+
   function resetHistory() {
     setPlayerHistory([])
   }
@@ -116,22 +119,38 @@ export default function Stats() {
         <div className="stats__averages">
           <div className="stats__category">
             <p>High Population: {formatStats(statsSum.hpa, statsSum.hpq)} ({statsSum.hpa}/{statsSum.hpq})</p>
-            <meter value={statsSum.hpa} max={statsSum.hpq}></meter>
+            <meter
+              className={`stats__meter ${currentTheme}`}
+              value={statsSum.hpa}
+              max={statsSum.hpq}
+            ></meter>
           </div>
 
           <div className="stats__category">
             <p>Low Population: {formatStats(statsSum.lpa, statsSum.lpq)} ({statsSum.lpa}/{statsSum.lpq})</p>
-            <meter value={statsSum.lpa} max={statsSum.lpq}></meter>
+            <meter
+              className={`stats__meter ${currentTheme}`}
+              value={statsSum.lpa}
+              max={statsSum.lpq}
+            ></meter>
           </div>
 
           <div className="stats__category">
             <p>High Area: {formatStats(statsSum.haa, statsSum.haq)} ({statsSum.haa}/{statsSum.haq})</p>
-            <meter value={statsSum.haa} max={statsSum.haq}></meter>
+            <meter
+              className={`stats__meter ${currentTheme}`}
+              value={statsSum.haa}
+              max={statsSum.haq}
+            ></meter>
           </div>
 
           <div className="stats__category">
             <p>Low Area: {formatStats(statsSum.laa, statsSum.laq)} ({statsSum.laa}/{statsSum.laq})</p>
-            <meter value={statsSum.laa} max={statsSum.laq}></meter>
+            <meter
+              className={`stats__meter ${currentTheme}`}
+              value={statsSum.laa}
+              max={statsSum.laq}
+            ></meter>
           </div>
 
         </div>: ""}
