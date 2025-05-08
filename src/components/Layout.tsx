@@ -21,7 +21,7 @@ export default function Layout() {
     document.body.style.backgroundColor = `var(--${newTheme}A)`
 
     console.log(newTheme)
-    document.querySelectorAll('.answers__button').forEach(button => {
+    document.querySelectorAll('.answers__option').forEach(button => {
       button.classList.remove(theme)
       button.classList.add(newTheme)
     })
@@ -38,11 +38,10 @@ export default function Layout() {
       button.classList.add(newTheme)
     })
 
-    document.querySelector('.resign-button')?.classList.remove(theme)
-    document.querySelector('.resign-button')?.classList.add(newTheme)
-
-    document.querySelector('.newgame-button')?.classList.remove(theme)
-    document.querySelector('.newgame-button')?.classList.add(newTheme)
+    document.querySelectorAll('.button').forEach(button => {
+      button.classList.remove(theme)
+      button.classList.add(newTheme)
+    })
   }
 
   updateTheme(theme)

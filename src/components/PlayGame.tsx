@@ -138,10 +138,10 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       const countryAnswersHTML = countryAnswers.map((country) => {
         index++
         return (
-          <div className="answers__option" key={nanoid()}>
+          <div className={`answers__option ${currentTheme}`} key={nanoid()}>
             <button
               disabled = {!gameOver ? false : true}
-              className={`answers__button ${currentTheme}`}
+              className='answers__button'
               onClick={() => answerCheck(category[category.length - 1], answer, country, countryAnswers)}
             >
               <div className="answers__button__alpha">{alpha[index - 1]}</div>

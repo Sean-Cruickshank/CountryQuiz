@@ -85,6 +85,7 @@ nav {
 
         & div {
           background-color: var(--blueB);
+          border: 1px solid var(--blueC);
         }
       }
 
@@ -93,6 +94,7 @@ nav {
 
         & div {
           background-color: var(--yellowB);
+          border: 1px solid var(--yellowC);
         }
       }
 
@@ -101,6 +103,7 @@ nav {
 
         & div {
           background-color: var(--pinkB);
+          border: 1px solid var(--pinkC);
         }
       }
 
@@ -109,6 +112,7 @@ nav {
 
         & div {
           background-color: var(--tealB);
+          border: 1px solid var(--tealC);
         }
       }
     }

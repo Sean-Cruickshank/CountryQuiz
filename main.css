@@ -75,7 +75,7 @@ meter.teal::-webkit-meter-optimum-value {
   width: 80px;
   aspect-ratio: 2;
   background-color: red;
-  border: solid 2px black;
+  border: solid 3px black;
   border-radius: 10px;
   cursor: pointer;
   transition: 0.3s;
@@ -88,36 +88,36 @@ meter.teal::-webkit-meter-optimum-value {
 }
 .button.blue {
   background-color: var(--blueB);
-  border: solid 2px var(--blueC);
+  border: solid 3px var(--blueC);
 }
 .button.yellow {
   background-color: var(--yellowB);
-  border: solid 2px var(--yellowC);
+  border: solid 3px var(--yellowC);
 }
 .button.pink {
   background-color: var(--pinkB);
-  border: solid 2px var(--pinkC);
+  border: solid 3px var(--pinkC);
 }
 .button.teal {
   background-color: var(--tealB);
-  border: solid 2px var(--tealC);
+  border: solid 3px var(--tealC);
 }
 
 :root {
-  --green: #73d673;
-  --red: #f48484;
-  --blueA: #eeeeff;
-  --yellowA: #ffffee;
-  --pinkA: #ffeeee;
-  --tealA: #eeffee;
-  --blueB: #c8c8ff;
-  --yellowB: #ffffc8;
-  --pinkB: #ffc8c8;
-  --tealB: #c8ffdf;
-  --blueC: #7c7cc8;
-  --yellowC: #c8c87c;
-  --pinkC: #c87c7c;
-  --tealC: #7cc8a2;
+  --green: rgb(115, 214, 115);
+  --red: rgb(244 ,132 ,132);
+  --blueA: rgb(238, 238, 255);
+  --yellowA: rgb(255, 255, 238);
+  --pinkA: rgb(255, 238, 238);
+  --tealA: rgb(238, 255, 255);
+  --blueB: rgb(200, 200, 255);
+  --yellowB: rgb(255, 255, 200);
+  --pinkB: rgb(255, 200, 200);
+  --tealB: rgb(200, 255, 223);
+  --blueC: rgb(100, 100, 200);
+  --yellowC: rgb(200, 200, 100);
+  --pinkC: rgb(200, 100, 100);
+  --tealC: rgb(100, 200, 162);
 }
 
 .play-game {
@@ -126,6 +126,7 @@ meter.teal::-webkit-meter-optimum-value {
 .play-game__question {
   font-size: clamp(1.5rem, -0.0882rem + 4.4118vw, 3rem);
 }
+
 .answers {
   width: 80%;
   display: grid;
@@ -137,6 +138,51 @@ meter.teal::-webkit-meter-optimum-value {
 .answers__option {
   display: flex;
   justify-content: center;
+  background: black;
+  border-radius: 500px;
+  padding: 4px;
+}
+.answers__option:hover {
+  transform: scale(0.97);
+}
+.answers__option:active {
+  transform: scale(0.95);
+}
+.answers__option.blue {
+  background: linear-gradient(135deg, var(--blueC), rgb(100, 200, 200));
+}
+.answers__option.blue button {
+  background-color: var(--blueB);
+}
+.answers__option.blue button .answers__button__alpha {
+  background-color: var(--blueC);
+}
+.answers__option.yellow {
+  background: linear-gradient(135deg, var(--yellowC), rgb(200, 100, 100));
+}
+.answers__option.yellow button {
+  background-color: var(--yellowB);
+}
+.answers__option.yellow button .answers__button__alpha {
+  background-color: var(--yellowC);
+}
+.answers__option.pink {
+  background: linear-gradient(135deg, var(--pinkC), rgb(200, 100, 200));
+}
+.answers__option.pink button {
+  background-color: var(--pinkB);
+}
+.answers__option.pink button .answers__button__alpha {
+  background-color: var(--pinkC);
+}
+.answers__option.teal {
+  background: linear-gradient(135deg, var(--tealC), rgb(25, 232, 218));
+}
+.answers__option.teal button {
+  background-color: var(--tealB);
+}
+.answers__option.teal button .answers__button__alpha {
+  background-color: var(--tealC);
 }
 .answers__button {
   display: grid;
@@ -147,54 +193,25 @@ meter.teal::-webkit-meter-optimum-value {
   width: 100%;
   max-width: 400px;
   aspect-ratio: 4;
-  border: 4px solid black;
+  border: none;
   border-radius: 500px;
   transition: 0.3s;
   cursor: pointer;
 }
-.answers__button:hover {
-  transform: scale(0.97);
-  opacity: 0.8;
-}
-.answers__button:active {
-  transform: scale(0.95);
-}
-.answers__button.blue {
-  background-color: var(--blueB);
-  border: 4px solid var(--blueC);
-}
-.answers__button.blue .answers__button__alpha {
-  background-color: var(--blueC);
-}
-.answers__button.yellow {
-  background-color: var(--yellowB);
-  border: 4px solid var(--yellowC);
-}
-.answers__button.yellow .answers__button__alpha {
-  background-color: var(--yellowC);
-}
-.answers__button.pink {
-  background-color: var(--pinkB);
-  border: 4px solid var(--pinkC);
-}
-.answers__button.pink .answers__button__alpha {
-  background-color: var(--pinkC);
-}
-.answers__button.teal {
-  background-color: var(--tealB);
-  border: 4px solid var(--tealC);
-}
-.answers__button.teal .answers__button__alpha {
-  background-color: var(--tealC);
-}
 .answers__button__alpha {
   background-color: black;
-  color: white;
+  color: black;
+  font-size: 1.4rem;
+  font-weight: bold;
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 100%;
+}
+.answers__button__text {
+  font-size: 1.2rem;
+  font-weight: 100;
 }
 .answers__correct {
   transition: 0.2s;
@@ -369,24 +386,28 @@ nav h1 {
 }
 .theme__dropdown a.blue div {
   background-color: var(--blueB);
+  border: 1px solid var(--blueC);
 }
 .theme__dropdown a.yellow {
   background-color: var(--yellowA);
 }
 .theme__dropdown a.yellow div {
   background-color: var(--yellowB);
+  border: 1px solid var(--yellowC);
 }
 .theme__dropdown a.pink {
   background-color: var(--pinkA);
 }
 .theme__dropdown a.pink div {
   background-color: var(--pinkB);
+  border: 1px solid var(--pinkC);
 }
 .theme__dropdown a.teal {
   background-color: var(--tealA);
 }
 .theme__dropdown a.teal div {
   background-color: var(--tealB);
+  border: 1px solid var(--tealC);
 }
 .theme__dropdown a:hover {
   color: black;
@@ -436,16 +457,16 @@ nav h1 {
   opacity: 0.8;
 }
 .footer__nav a.blue {
-  color: var(--blueB);
+  color: var(--blueC);
 }
 .footer__nav a.yellow {
-  color: var(--yellowB);
+  color: var(--yellowC);
 }
 .footer__nav a.pink {
-  color: var(--pinkB);
+  color: var(--pinkC);
 }
 .footer__nav a.teal {
-  color: var(--tealB);
+  color: var(--tealC);
 }
 .footer__links {
   display: grid;

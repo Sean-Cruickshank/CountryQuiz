@@ -75,7 +75,7 @@ meter {
   width: 80px;
   aspect-ratio: 2;
   background-color: red;
-  border: solid 2px black;
+  border: solid 3px black;
   border-radius: 10px;
   cursor: pointer;
   transition: 0.3s;
@@ -90,21 +90,21 @@ meter {
 
   &.blue {
     background-color: var(--blueB);
-    border: solid 2px var(--blueC);
+    border: solid 3px var(--blueC);
   }
 
   &.yellow {
     background-color: var(--yellowB);
-    border: solid 2px var(--yellowC);
+    border: solid 3px var(--yellowC);
   }
 
   &.pink {
     background-color: var(--pinkB);
-    border: solid 2px var(--pinkC);
+    border: solid 3px var(--pinkC);
   }
 
   &.teal {
     background-color: var(--tealB);
-    border: solid 2px var(--tealC);
+    border: solid 3px var(--tealC);
   }
 }
