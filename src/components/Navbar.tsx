@@ -2,6 +2,7 @@ import React from "react"
 import { Link } from "react-router-dom";
 
 import { FaHome } from "react-icons/fa";
+import { nanoid } from "nanoid";
 
 interface NavbarProps {
   selectTheme: (data: string) => void
@@ -38,6 +39,7 @@ export default function Navbar({ selectTheme }: NavbarProps) {
       const l = colour.toLowerCase()
       return (
         <a
+          key={nanoid()}
           className={`theme__select ${l}`}
           onClick={() => dropdownSelect(l)}
         >{colour}<div></div></a>

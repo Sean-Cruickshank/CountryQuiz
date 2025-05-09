@@ -138,10 +138,13 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       const countryAnswersHTML = countryAnswers.map((country) => {
         index++
         return (
-          <div className={`answers__option ${currentTheme}`} key={nanoid()}>
+          <div
+            className={`answers__option ${currentTheme} ${gameOver && 'disabled'}`}
+            key={nanoid()}
+          >
             <button
               disabled = {!gameOver ? false : true}
-              className='answers__button'
+              className={`answers__button answer__button-${alpha[index - 1]}`}
               onClick={() => answerCheck(category[category.length - 1], answer, country, countryAnswers)}
             >
               <div className="answers__button__alpha">{alpha[index - 1]}</div>
@@ -153,6 +156,38 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       setDisplayData(countryAnswersHTML)
     }
   }
+
+  // Enables keyboard functionality for the answer buttons, the resign button, and the play again button
+  React.useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'a' || event.key === 'A' || event.key === '1') {
+        let element: HTMLElement | null = document.querySelector('.answer__button-A')
+        element?.click()
+      }
+      if (event.key === 'b' || event.key === 'B' || event.key === '2') {
+        let element: HTMLElement | null = document.querySelector('.answer__button-B')
+        element?.click()
+      }
+      if (event.key === 'c' || event.key === 'C' || event.key === '3') {
+        let element: HTMLElement | null = document.querySelector('.answer__button-C')
+        element?.click()
+      }
+      if (event.key === 'd' || event.key === 'D' || event.key === '4') {
+        let element: HTMLElement | null = document.querySelector('.answer__button-D')
+        element?.click()
+      }
+      if (event.key === 'Enter') {
+        let element: HTMLElement | null = document.querySelector('.play-again-button')
+        element?.click()
+      }
+      if (event.key === 'Escape') {
+        let element: HTMLElement | null = document.querySelector('.resign-button')
+        element?.click()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  },[])
 
   // Determines the answer based on the category
   function generateAnswer(category: string, countryAnswers: Country[]) {
@@ -363,12 +398,12 @@ export default function PlayGame({ countryData }: PlayGameProps) {
         </div>
 
         {!gameOver && <button
-          className={`button ${currentTheme}`}
+          className={`resign-button button ${currentTheme}`}
           onClick={resign}
         >Resign</button>}
 
         {gameOver && <button
-          className={`button ${currentTheme}`}
+          className={`play-again-button button ${currentTheme}`}
           onClick={resetGame}
         >Play Again</button>}
 

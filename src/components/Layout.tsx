@@ -20,7 +20,6 @@ export default function Layout() {
   function updateTheme(newTheme: string) {
     document.body.style.backgroundColor = `var(--${newTheme}A)`
 
-    console.log(newTheme)
     document.querySelectorAll('.answers__option').forEach(button => {
       button.classList.remove(theme)
       button.classList.add(newTheme)

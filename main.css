@@ -115,7 +115,7 @@ meter.teal::-webkit-meter-optimum-value {
   --pinkB: rgb(255, 200, 200);
   --tealB: rgb(200, 255, 223);
   --blueC: rgb(100, 100, 200);
-  --yellowC: rgb(200, 200, 100);
+  --yellowC: rgb(232, 232, 99);
   --pinkC: rgb(200, 100, 100);
   --tealC: rgb(100, 200, 162);
 }
@@ -131,7 +131,7 @@ meter.teal::-webkit-meter-optimum-value {
   width: 80%;
   display: grid;
   margin-inline: auto;
-  grid-template-columns: repeat(2, minmax(100px, 400px));
+  grid-template-columns: repeat(2, minmax(100px, 300px));
   justify-content: center;
   gap: 20px;
 }
@@ -148,8 +148,11 @@ meter.teal::-webkit-meter-optimum-value {
 .answers__option:active {
   transform: scale(0.95);
 }
+.answers__option.disabled {
+  transform: scale(1);
+}
 .answers__option.blue {
-  background: linear-gradient(135deg, var(--blueC), rgb(100, 200, 200));
+  background: linear-gradient(135deg, var(--blueC), rgb(115, 229, 229) 60%, var(--blueC) 100%);
 }
 .answers__option.blue button {
   background-color: var(--blueB);
@@ -158,7 +161,7 @@ meter.teal::-webkit-meter-optimum-value {
   background-color: var(--blueC);
 }
 .answers__option.yellow {
-  background: linear-gradient(135deg, var(--yellowC), rgb(200, 100, 100));
+  background: linear-gradient(135deg, var(--yellowC), rgb(255, 255, 116) 60%, var(--yellowC) 100%);
 }
 .answers__option.yellow button {
   background-color: var(--yellowB);
@@ -167,7 +170,7 @@ meter.teal::-webkit-meter-optimum-value {
   background-color: var(--yellowC);
 }
 .answers__option.pink {
-  background: linear-gradient(135deg, var(--pinkC), rgb(200, 100, 200));
+  background: linear-gradient(135deg, var(--pinkC), rgb(255, 128, 202) 60%, var(--pinkC) 100%);
 }
 .answers__option.pink button {
   background-color: var(--pinkB);
@@ -176,7 +179,7 @@ meter.teal::-webkit-meter-optimum-value {
   background-color: var(--pinkC);
 }
 .answers__option.teal {
-  background: linear-gradient(135deg, var(--tealC), rgb(25, 232, 218));
+  background: linear-gradient(135deg, var(--tealC), rgb(28, 255, 240) 75%, var(--tealC) 100%);
 }
 .answers__option.teal button {
   background-color: var(--tealB);
@@ -195,8 +198,16 @@ meter.teal::-webkit-meter-optimum-value {
   aspect-ratio: 4;
   border: none;
   border-radius: 500px;
+  padding-left: 10px;
   transition: 0.3s;
   cursor: pointer;
+  opacity: 0.7;
+}
+.answers__button:disabled {
+  color: transparent;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 .answers__button__alpha {
   background-color: black;
@@ -317,6 +328,8 @@ nav {
   align-items: center;
 }
 nav h1 {
+  font-size: 2rem;
+  margin: auto;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);

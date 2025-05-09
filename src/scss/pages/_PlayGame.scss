@@ -10,7 +10,7 @@
   width: 80%;
   display: grid;
   margin-inline: auto;
-  grid-template-columns: repeat(2, minmax(100px, 400px));
+  grid-template-columns: repeat(2, minmax(100px, 300px));
   justify-content: center;
   gap: 20px;
 
@@ -29,8 +29,12 @@
       transform: scale(0.95);
     }
 
+    &.disabled {
+      transform: scale(1);
+    }
+
     &.blue {
-      background: linear-gradient(135deg, var(--blueC), rgb(100, 200, 200));
+      background: linear-gradient(135deg, var(--blueC), rgb(115, 229, 229) 60%, var(--blueC) 100%);
       & button {
         background-color: var(--blueB);
 
@@ -41,7 +45,7 @@
     }
 
     &.yellow {
-      background: linear-gradient(135deg, var(--yellowC), rgb(200, 100, 100));
+      background: linear-gradient(135deg, var(--yellowC), rgb(255, 255, 116) 60%, var(--yellowC) 100%);
       & button {
         background-color: var(--yellowB);
         
@@ -52,7 +56,7 @@
     }
 
     &.pink {
-      background: linear-gradient(135deg, var(--pinkC), rgb(200, 100, 200));
+      background: linear-gradient(135deg, var(--pinkC), rgb(255, 128, 202) 60%, var(--pinkC) 100%);
       & button {
         background-color: var(--pinkB);
         
@@ -63,7 +67,7 @@
     }
 
     &.teal {
-      background: linear-gradient(135deg, var(--tealC), rgb(25, 232, 218));
+      background: linear-gradient(135deg, var(--tealC), rgb(28, 255, 240) 75%, var(--tealC) 100%);
       & button {
         background-color: var(--tealB);
         
@@ -85,8 +89,16 @@
     aspect-ratio: 4;
     border: none;
     border-radius: 500px;
+    padding-left: 10px;
     transition: 0.3s;
     cursor: pointer;
+    opacity: 0.7;
+
+    &:disabled {
+      color: transparent;
+      user-select: none;
+      
+    }
     
     &__alpha {
       background-color: black;
