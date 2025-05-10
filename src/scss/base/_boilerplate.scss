@@ -33,39 +33,24 @@ meter {
   border: solid 1px black;
   border-radius: 10px;
   height: 15px;
+  background: rgb(226, 226, 226);
   &.blue {
-    background: var(--blueB);
-    &::-moz-meter-bar {
-      background: var(--blueC);
-    }
-    &::-webkit-meter-optimum-value {
-      background: var(--blueC);
+    &::-moz-meter-bar, &::-webkit-meter-optimum-value {
+      background: linear-gradient(90deg, var(--blueC), rgb(115, 229, 229) 100%);
     }
   }
   &.yellow {
-    background: var(--yellowB);
-    &::-moz-meter-bar {
-      background: var(--yellowC);
-    }
-    &::-webkit-meter-optimum-value {
-      background: var(--yellowC);
+    &::-moz-meter-bar, &::-webkit-meter-optimum-value {
+      background: linear-gradient(90deg, var(--yellowC), rgb(255, 255, 116) 100%);
     }
   }
   &.pink {
-    background: var(--pinkB);
-    &::-moz-meter-bar {
-      background: var(--pinkC);
-    }
-    &::-webkit-meter-optimum-value {
-      background: var(--pinkC);
+    &::-webkit-meter-optimum-value, &::-moz-meter-bar {
+      background: linear-gradient(90deg, var(--pinkC), rgb(255, 139, 207) 100%);
     }
   }
   &.teal {
-    background: var(--tealB);
-    &::-moz-meter-bar {
-      background: var(--tealC);
-    }
-    &::-webkit-meter-optimum-value {
+    &::-moz-meter-bar, &::-webkit-meter-optimum-value {
       background: var(--tealC);
     }
   }

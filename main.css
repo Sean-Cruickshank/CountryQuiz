@@ -33,41 +33,18 @@ meter {
   border: solid 1px black;
   border-radius: 10px;
   height: 15px;
+  background: rgb(226, 226, 226);
 }
-meter.blue {
-  background: var(--blueB);
+meter.blue::-moz-meter-bar, meter.blue::-webkit-meter-optimum-value {
+  background: linear-gradient(90deg, var(--blueC), rgb(115, 229, 229) 100%);
 }
-meter.blue::-moz-meter-bar {
-  background: var(--blueC);
+meter.yellow::-moz-meter-bar, meter.yellow::-webkit-meter-optimum-value {
+  background: linear-gradient(90deg, var(--yellowC), rgb(255, 255, 116) 100%);
 }
-meter.blue::-webkit-meter-optimum-value {
-  background: var(--blueC);
+meter.pink::-webkit-meter-optimum-value, meter.pink::-moz-meter-bar {
+  background: linear-gradient(90deg, var(--pinkC), rgb(255, 139, 207) 100%);
 }
-meter.yellow {
-  background: var(--yellowB);
-}
-meter.yellow::-moz-meter-bar {
-  background: var(--yellowC);
-}
-meter.yellow::-webkit-meter-optimum-value {
-  background: var(--yellowC);
-}
-meter.pink {
-  background: var(--pinkB);
-}
-meter.pink::-moz-meter-bar {
-  background: var(--pinkC);
-}
-meter.pink::-webkit-meter-optimum-value {
-  background: var(--pinkC);
-}
-meter.teal {
-  background: var(--tealB);
-}
-meter.teal::-moz-meter-bar {
-  background: var(--tealC);
-}
-meter.teal::-webkit-meter-optimum-value {
+meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
   background: var(--tealC);
 }
 
@@ -115,7 +92,7 @@ meter.teal::-webkit-meter-optimum-value {
   --pinkB: rgb(255, 200, 200);
   --tealB: rgb(200, 255, 223);
   --blueC: rgb(100, 100, 200);
-  --yellowC: rgb(232, 232, 99);
+  --yellowC: rgb(212, 212, 89);
   --pinkC: rgb(200, 100, 100);
   --tealC: rgb(100, 200, 162);
 }
@@ -150,6 +127,7 @@ meter.teal::-webkit-meter-optimum-value {
 }
 .answers__option.disabled {
   transform: scale(1);
+  opacity: 0.7;
 }
 .answers__option.blue {
   background: linear-gradient(135deg, var(--blueC), rgb(115, 229, 229) 60%, var(--blueC) 100%);
@@ -170,7 +148,7 @@ meter.teal::-webkit-meter-optimum-value {
   background-color: var(--yellowC);
 }
 .answers__option.pink {
-  background: linear-gradient(135deg, var(--pinkC), rgb(255, 128, 202) 60%, var(--pinkC) 100%);
+  background: linear-gradient(135deg, var(--pinkC), rgb(255, 139, 207) 60%, var(--pinkC) 100%);
 }
 .answers__option.pink button {
   background-color: var(--pinkB);
@@ -208,6 +186,7 @@ meter.teal::-webkit-meter-optimum-value {
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
+  cursor: default;
 }
 .answers__button__alpha {
   background-color: black;
