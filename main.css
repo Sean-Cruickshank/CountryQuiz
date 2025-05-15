@@ -203,19 +203,6 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
   font-size: 1.2rem;
   font-weight: 100;
 }
-.answers__correct {
-  transition: 0.2s;
-  color: darkgreen;
-  font-weight: bold;
-  margin: 0;
-  opacity: 0;
-}
-.answers__correct-div {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 .nodes {
   margin-inline: auto;
@@ -238,14 +225,61 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
 }
 
 .recap, .recap--incorrect, .recap--correct {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   justify-content: space-around;
 }
 .recap--correct {
   background-color: var(--green);
 }
+.recap--correct .recap__result {
+  color: darkgreen;
+}
 .recap--incorrect {
   background-color: var(--red);
+}
+.recap--incorrect .recap__result {
+  color: darkred;
+}
+.recap__result {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.recap__result__text {
+  transition: 0.2s;
+  font-weight: bold;
+  margin: 0;
+}
+.recap__title p {
+  margin: 0;
+}
+.recap__answers {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+}
+.recap__answers__item {
+  margin: 0 auto;
+  padding: 2px 4px;
+  width: -moz-max-content;
+  width: max-content;
+}
+.recap__answers__guess {
+  background-color: blue;
+}
+.recap__answers__guess.blue {
+  background-color: var(--blueC);
+}
+.recap__answers__guess.yellow {
+  background-color: var(--yellowC);
+}
+.recap__answers__guess.pink {
+  background-color: var(--pinkC);
+}
+.recap__answers__guess.teal {
+  background-color: var(--tealC);
 }
 
 .gameover__title {

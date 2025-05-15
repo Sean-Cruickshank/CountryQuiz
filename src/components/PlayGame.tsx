@@ -49,6 +49,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
 
   // Contains the country object for the previous questions answer
   const [prevAnswer, setPrevAnswer] = React.useState<Country>()
+  const [prevAnswers, setPrevAnswers] = React.useState<Country[]>()
 
   const [answerNodes, setAnswerNodes] = React.useState<string[]>([])
 
@@ -110,15 +111,43 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     } else {
       generateQuestion()
       setRecap(generateRecap())
+      updateAnswerNodes()
     }
 
   },[category])
+
+  function generateAnswerNodes() {
+    return answerNodes.map(node => {
+      return (
+        <span key={nanoid()} className={`node--${node}`}></span>
+      )
+    })
+  }
+
+  function updateAnswerNodes() {
+    // Sets the answer node for the previous question (the little red or green ball)
+    const prevGuessName: string = prevGuess
+      ? prevGuess.name
+      : ''
+
+    const prevAnswerName = prevAnswer
+    ? prevAnswer.name
+    : ''
+    if (round !== 1) {
+      if (prevGuessName === prevAnswerName) {
+        setAnswerNodes(prev => [...prev, 'green'])
+      } else {
+        setAnswerNodes(prev => [...prev, 'red'])
+      }
+    }
+  }
 
   function generateQuestion() {
     let countryAnswers: Country[] = []
     if (countryData.length > 0) {
       // Selects four countries at random from the array
       while (countryAnswers.length < 4) {
+        console.log('test')
         const num = Math.floor(Math.random() * countryData.length)
         const country = countryData[num]
         // Filters out any duplicate answers
@@ -224,6 +253,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     // Otherwise just add a point to the Q tally (incorrect answer)
     const answerCorrect = document.querySelector('.answers__correct')
     if (answer && answer === country[type]) {
+      console.log(answerCorrect)
       answerCorrect?.classList.add('opacity')
       setTimeout(() => {
         answerCorrect?.classList.remove('opacity')
@@ -246,18 +276,11 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       return country[type] === answer
     })
     setPrevAnswer(answerCountry)
+    setPrevAnswers(countryAnswers)
     setPrevGuess(country)
     // Generates the category for the next round (useEffect triggers the next question to also generate)
     generateCategory()
     setRound(prev => prev + 1)
-  }
-
-  function generateAnswerNodes() {
-    return answerNodes.map(node => {
-      return (
-        <span key={nanoid()} className={`node--${node}`}></span>
-      )
-    })
   }
 
   // Generates the recap for the previous question, shows the correct answer and the guessed answer
@@ -276,15 +299,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       : ''
       let prevAnswerValue: number
 
-      // Sets the answer node for the previous question (the little red or green ball)
-      if (round !== 1) {
-        if (prevGuessName === prevAnswerName) {
-          setAnswerNodes(prev => [...prev, 'green'])
-        } else {
-          setAnswerNodes(prev => [...prev, 'red'])
-        }
-      }
-
       // Grab the category values from the previous guess/answer, save all values in the answers log, generate and return the HTML for the previous question recap
       prevGuess
       ? prevGuessValue = prevGuess[type]
@@ -298,31 +312,90 @@ export default function PlayGame({ countryData }: PlayGameProps) {
         prevAnswerName, prevAnswerValue
       }])
 
+      function allAnswers(type: string, size: string) {
+        let index = 0
+        if (type === 'population' || type === 'area') {
+          if (size === 'low') {
+            prevAnswers?.sort((a,b) => a[type] - b[type])
+          }
+          if (size === 'high') {
+            prevAnswers?.sort((a,b) => b[type] - a[type])
+          }
+        }
+        
+        if (type === 'area') {
+          return prevAnswers?.map(country => {
+            index++
+            return <p
+              key={nanoid()}
+              className={`
+                recap__answers__item
+                ${prevGuessName === country.name
+                ? `recap__answers__guess ${currentTheme}` : ''}
+              `}>
+                <b>#{index}</b>
+                <i> {country.name} - {country.area.toLocaleString()}km² ({convertToMiles(country.area)}mi²)</i>
+            </p>
+          })
+        } else {
+          return prevAnswers?.map(country => {
+            index++
+            return <p
+              key={nanoid()}
+              className={`
+                recap__answers__item
+                ${prevGuessName === country.name
+                ? `recap__answers__guess ${currentTheme}` : ''}
+              `}>
+              <b>#{index}</b>
+              <i> {country.name} (Population: {country.population.toLocaleString()})</i>
+            </p>
+          })
+        }
+      }
+
+      let guessText: JSX.Element
+
       if (type === 'area' && prevGuess && prevAnswer) {
-        return (
-          <div className={prevGuessName === prevAnswerName ? 'recap--correct' : 'recap--incorrect'}>
-            <p>You picked: {prevGuessName} - {prevGuessValue.toLocaleString()}km² ({convertToMiles(prevGuess.area)}mi²)</p>
-            <p>Correct answer: {prevAnswerName} - {prevAnswerValue.toLocaleString()}km² ({convertToMiles(prevAnswer.area)}mi²)</p>
+        guessText = <p className="recap__guess">You picked: {prevGuessName} - {prevGuessValue.toLocaleString()}km² ({convertToMiles(prevGuess.area)}mi²)</p>
+      } else {
+        guessText = <p className="recap__guess">{prevGuessName} (Population: {prevGuessValue.toLocaleString()})</p>
+      } 
+
+      return (
+        <div className={prevGuessName === prevAnswerName ? 'recap--correct' : 'recap--incorrect'}>
+          <div className="recap__content__left">
+            <div className="recap__result">
+              {prevGuessName === prevAnswerName
+                ? <p className="recap__result__text">CORRECT!</p>
+                : <p className="recap__result__text">INCORRECT!</p>
+              }
+            </div>
+            <div className="recap__title">
+              {generateTitle(2)}
+            </div>
+            <p>You picked:</p>
+            {guessText}
           </div>
-        )
-      } else if (type === 'population' && prevGuess && prevAnswer) {
-        return (
-          <div className={prevGuessName === prevAnswerName ? 'recap--correct' : 'recap--incorrect'}>
-            <p>You picked: {prevGuessName} (Population: {prevGuessValue.toLocaleString()})</p>
-            <p>Correct answer: {prevAnswerName} (Population: {prevAnswerValue.toLocaleString()})</p>
+
+          <div className="recap__content__right">
+            <p>The answers were:</p>
+            <div className="recap__answers">
+              {allAnswers(type, size)}
+            </div>
           </div>
-        )
-      } else console.error('prevGuess or prevAnswer undefined!')
+        </div>
+      )
     }
   }
 
   // Generates the question title based on the category selected
-  function generateTitle() {
+  function generateTitle(num: number) {
     if (category.length > 0) {
-      const [type, size] = breakCategory(category[category.length - 1])
+      const [type, size] = breakCategory(category[category.length - num])
       const typeText = type === 'population' ? 'population' : 'land area'
       const sizeText = size === 'high' ? 'largest' : 'smallest'
-      return <h2 className="play-game__question">Guess the country with the <i>{sizeText} {typeText}</i>!</h2>
+      return <p>Guess the country with the <i>{sizeText} {typeText}</i>!</p>
     }
   }
 
@@ -383,14 +456,12 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   if (countryData.length > 0) {
     return (
       <div className="play-game">
-        {generateTitle()}
+        <h2 className="play-game__question">{generateTitle(1)}</h2>
         <p className="play-game__progress">Question {round}/{gameLength}</p>
         <div className="answers">
           {displayData}
         </div>
-        <div className="answers__correct-div">
-          <p className="answers__correct">CORRECT!</p>
-        </div>
+        
 
         <div className="scoreboard">
           <p>Score: {score}</p>

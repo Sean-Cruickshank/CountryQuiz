@@ -118,22 +118,6 @@
       font-weight: 100;
     }
   }
-
-
-  &__correct {
-    transition: 0.2s;
-    color: darkgreen;
-    font-weight: bold;
-    margin: 0;
-    opacity: 0;
-  }
-
-  &__correct-div {
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 }
 
 .nodes {
@@ -162,16 +146,74 @@
 }
 
 .recap {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   justify-content: space-around;
 
   &--correct {
     @extend .recap;
     background-color: var(--green);
+
+    & .recap__result {
+      color: darkgreen;
+    }
   }
 
   &--incorrect {
     @extend .recap;
     background-color: var(--red);
+
+    & .recap__result {
+      color: darkred;
+    }
+  }
+
+  &__result {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__text {
+      transition: 0.2s;
+      font-weight: bold;
+      margin: 0;
+    }
+  }
+
+  &__title p {
+    margin: 0;
+  }
+
+  &__guess {
+
+  }
+
+  &__answers {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+
+    &__item {
+      margin: 0 auto;
+      padding: 2px 4px;
+      width: max-content;
+    }
+
+    &__guess {
+      background-color: blue;
+      &.blue {
+        background-color: var(--blueC);
+      }
+      &.yellow {
+        background-color: var(--yellowC);
+      }
+      &.pink {
+        background-color: var(--pinkC);
+      }
+      &.teal {
+        background-color: var(--tealC);
+      }
+    }
   }
 }
