@@ -11,13 +11,9 @@ import generateTitle from "../util/generateTitle.tsx"
 import generateCategory from "../util/generateCategory.tsx"
 import generateAnswer from "../util/generateAnswer.tsx"
 import generateRecap from "../util/generateRecap.tsx"
+import { generateAnswerNodes, updateAnswerNodes } from "../util/AnswerNodes.tsx"
 
-interface Country {
-  id: number,
-  name: string,
-  population: number,
-  area: number
-}
+import { Country, AnswersLog, AnswerStats, RecapParameters } from "../util/interfaces.ts"
 
 interface PlayGameProps {
   countryData: Country[]
@@ -31,7 +27,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
 
   const lsHighscore = localStorage.getItem('highscore')
   const [highscore, setHighscore] = React.useState(lsHighscore !== null ? JSON.parse(lsHighscore) : 0)
-
   React.useEffect(() => {
     localStorage.setItem('highscore', JSON.stringify(highscore))
   },[highscore])
@@ -58,22 +53,8 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   const [answerNodes, setAnswerNodes] = React.useState<string[]>([])
 
   // Contains an object array with the names and values of all previous guesses and answers
-  interface AnswersLog {
-    type: string,
-    size: string,
-    prevGuessName: string,
-    prevGuessValue: number,
-    prevAnswerName: string,
-    prevAnswerValue: number
-  }
   const [answersLog, setAnswersLog] = React.useState<AnswersLog[]>([])
 
-  interface AnswerStats {
-    highpopulation: {Q: number, A: number},
-    lowpopulation:  {Q: number, A: number},
-    higharea:  {Q: number, A: number},
-    lowarea:  {Q: number, A: number},
-  }
   const [answerStats, setAnswerStats] = React.useState<AnswerStats>({
     highpopulation: { Q: 0, A: 0 },
     lowpopulation: { Q: 0, A: 0 },
@@ -93,16 +74,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   // Generates a new question when the category is selected
   const firstRender = React.useRef(true)
 
-  interface RecapParameters {
-    category: string[],
-    currentTheme: string,
-    prevGuess?: Country,
-    prevAnswer?: Country,
-    prevAnswers?: Country[],
-    answersLog: AnswersLog[],
-    setAnswersLog: React.Dispatch<React.SetStateAction<AnswersLog[]>>
-  }
-
   const recapParams: RecapParameters = {
     category, currentTheme, prevGuess, prevAnswer, prevAnswers, answersLog, setAnswersLog
   }
@@ -114,12 +85,11 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     } else {
       generateQuestion()
       setRecap(generateRecap(recapParams))
-      updateAnswerNodes()
+      updateAnswerNodes(round, setAnswerNodes, prevGuess, prevAnswer)
     }
-
   },[category])
 
-    // Enables keyboard functionality for the answer buttons, the resign button, and the play again button
+  // Enables keyboard functionality for the answer buttons, the resign button, and the play again button
   React.useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'a' || event.key === 'A' || event.key === '1') {
@@ -150,32 +120,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   },[])
-
-  function generateAnswerNodes() {
-    return answerNodes.map(node => {
-      return (
-        <span key={nanoid()} className={`node--${node}`}></span>
-      )
-    })
-  }
-
-  function updateAnswerNodes() {
-    // Sets the answer node for the previous question (the little red or green ball)
-    const prevGuessName: string = prevGuess
-      ? prevGuess.name
-      : ''
-
-    const prevAnswerName = prevAnswer
-    ? prevAnswer.name
-    : ''
-    if (round !== 1) {
-      if (prevGuessName === prevAnswerName) {
-        setAnswerNodes(prev => [...prev, 'green'])
-      } else {
-        setAnswerNodes(prev => [...prev, 'red'])
-      }
-    }
-  }
 
   function generateQuestion() {
     let countryAnswers: Country[] = []
@@ -300,12 +244,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     document.querySelector('.gameover')?.classList.add('hidden')
   }
 
-  // Functionality for the resign button
-  function resign() {
-    setGameActive(false)
-    endMatch()
-  }
-
   // When true (game has ended) regenerates the question buttons so that disabled = true
   // When false (new game started) refreshes the answers log
   React.useEffect(() => {
@@ -333,7 +271,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
 
         {gameActive && <button
           className={`resign-button button ${currentTheme}`}
-          onClick={resign}
+          onClick={() => {setGameActive(false); endMatch()}}
         >Resign</button>}
 
         {!gameActive && <button
@@ -342,7 +280,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
         >Play Again</button>}
 
         <div className="nodes">
-          {generateAnswerNodes()}
+          {generateAnswerNodes(answerNodes)}
         </div>
 
         {answersLog.length > 0 && recap}

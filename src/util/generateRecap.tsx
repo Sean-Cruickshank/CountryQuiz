@@ -5,31 +5,7 @@ import generateTitle from "./generateTitle"
 import { nanoid } from "nanoid"
 import { JSX } from "react"
 
-interface Country {
-  id: number,
-  name: string,
-  population: number,
-  area: number
-}
-
-interface AnswersLog {
-  type: string,
-  size: string,
-  prevGuessName: string,
-  prevGuessValue: number,
-  prevAnswerName: string,
-  prevAnswerValue: number
-}
-
-interface RecapParameters {
-  category: string[],
-  currentTheme: string,
-  prevGuess?: Country,
-  prevAnswer?: Country,
-  prevAnswers?: Country[],
-  answersLog: AnswersLog[],
-  setAnswersLog: React.Dispatch<React.SetStateAction<AnswersLog[]>>
-}
+import { RecapParameters } from "./interfaces"
 
 // Generates the recap for the previous question, shows the correct answer and the guessed answer
 export default function generateRecap(param: RecapParameters) {

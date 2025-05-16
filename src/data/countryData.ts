@@ -1,9 +1,4 @@
-interface Country {
-  id: number,
-  name: string,
-  population: number,
-  area: number
-}
+import { Country } from "../util/interfaces"
 
 export const countryData: Country[] = [
   {

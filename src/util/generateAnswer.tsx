@@ -1,11 +1,6 @@
 import breakCategory from "./breakCategory"
 
-interface Country {
-  id: number,
-  name: string,
-  population: number,
-  area: number
-}
+import { Country } from "./interfaces"
 
 // Determines the answer based on the category
 export default function generateAnswer(category: string, countryAnswers: Country[]) {

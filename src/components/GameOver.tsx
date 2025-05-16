@@ -3,21 +3,7 @@ import { nanoid } from "nanoid"
 import convertToMiles from '../util/convertToMiles.ts'
 import { Link } from "react-router-dom"
 
-interface AnswersLog {
-  type: string,
-  size: string,
-  prevGuessName: string,
-  prevGuessValue: number,
-  prevAnswerName: string,
-  prevAnswerValue: number
-}
-
-interface AnswerStats {
-  highpopulation: {Q: number, A: number},
-  lowpopulation:  {Q: number, A: number},
-  higharea:  {Q: number, A: number},
-  lowarea:  {Q: number, A: number},
-}
+import { AnswersLog, AnswerStats } from "../util/interfaces.ts"
 
 interface GameOverProps {
   answersLog: AnswersLog[],

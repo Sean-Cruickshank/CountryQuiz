@@ -8,15 +8,10 @@ import Layout from './components/Layout';
 
 import { countryData as cd } from './data/countryData';
 
+import { Country } from './util/interfaces';
+
 import '../main.css'
 export default function App() {
-  
-  interface Country {
-    id: number,
-    name: string,
-    population: number,
-    area: number
-  }
 
   const [countryData, setCountryData] = React.useState<Country[]>([])
   React.useEffect(() => {
