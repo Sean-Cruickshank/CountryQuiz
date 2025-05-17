@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import React from "react"
+import useEffectOnUpdate from "../util/useEffectOnUpdate"
 
 export default function Stats() {
 
@@ -46,14 +47,12 @@ export default function Stats() {
   function resetHighscore() {
     setHighscore(0)
   }
-  const highscoreFirstRender = React.useRef(true)
-  React.useEffect(() => {
-    if (highscoreFirstRender.current) {
-      highscoreFirstRender.current = false
-    } else {
-      localStorage.setItem('highscore', JSON.stringify(highscore))
-    }
-  },[highscore])
+
+  function highscoreOnUpdate() {
+    localStorage.setItem('highscore', JSON.stringify(highscore))
+  }
+  // Custom useEffect for skipping the first render
+  useEffectOnUpdate(highscoreOnUpdate, [highscore])
 
   let scoreSum = 0, gameLengthSum = 0
   let statsSum = {

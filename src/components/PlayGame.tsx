@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom"
 import GameOver from "./GameOver"
 
 import breakCategory from '../util/breakCategory.ts'
+import useEffectOnUpdate from "../util/useEffectOnUpdate.ts"
 
 import generateTitle from "../util/generateTitle.tsx"
 import generateCategory from "../util/generateCategory.tsx"
@@ -71,26 +72,22 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   // Grabs the current page theme so it can be applied to the answer buttons
   const currentTheme = localStorage.getItem('theme') || 'blue'
 
-  // Generates a new question when the category is selected
-  const firstRender = React.useRef(true)
-
   const recapParams: RecapParameters = {
     category, currentTheme, prevGuess, prevAnswer, prevAnswers, answersLog, setAnswersLog
   }
 
-  React.useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false
-      setCategory(generateCategory(category))
-    } else {
-      generateQuestion()
-      setRecap(generateRecap(recapParams))
-      updateAnswerNodes(round, setAnswerNodes, prevGuess, prevAnswer)
-    }
-  },[category])
+  // Generates a new question when the category is selected
+  function categoryOnUpdate() {
+    generateQuestion()
+    setRecap(generateRecap(recapParams))
+    updateAnswerNodes(round, setAnswerNodes, prevGuess, prevAnswer)
+  }
+  // Custom useEffect for skipping the first render
+  useEffectOnUpdate(categoryOnUpdate, [category])
 
   // Enables keyboard functionality for the answer buttons, the resign button, and the play again button
   React.useEffect(() => {
+    setCategory(generateCategory(category))
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'a' || event.key === 'A' || event.key === '1') {
         let element: HTMLElement | null = document.querySelector('.answer__button-A')
