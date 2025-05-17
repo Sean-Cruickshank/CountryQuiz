@@ -82,7 +82,7 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
 
 :root {
   --green: rgb(115, 214, 115);
-  --red: rgb(244 ,132 ,132);
+  --red: rgb(244, 132, 132);
   --blueA: rgb(238, 238, 255);
   --yellowA: rgb(255, 255, 238);
   --pinkA: rgb(255, 238, 238);
@@ -261,25 +261,26 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
   justify-content: center;
 }
 .recap__answers__item {
-  margin: 0 auto;
+  margin: 2px auto;
   padding: 2px 4px;
   width: -moz-max-content;
   width: max-content;
 }
 .recap__answers__guess {
-  background-color: blue;
+  background-color: white;
+  border-radius: 5px;
 }
 .recap__answers__guess.blue {
-  background-color: var(--blueC);
+  background-color: var(--blueB);
 }
 .recap__answers__guess.yellow {
-  background-color: var(--yellowC);
+  background-color: var(--yellowB);
 }
 .recap__answers__guess.pink {
-  background-color: var(--pinkC);
+  background-color: var(--pinkB);
 }
 .recap__answers__guess.teal {
-  background-color: var(--tealC);
+  background-color: var(--tealB);
 }
 
 .gameover__title {

@@ -195,24 +195,25 @@
     justify-content: center;
 
     &__item {
-      margin: 0 auto;
+      margin: 2px auto;
       padding: 2px 4px;
       width: max-content;
     }
 
     &__guess {
-      background-color: blue;
+      background-color: white;
+      border-radius: 5px;
       &.blue {
-        background-color: var(--blueC);
+        background-color: var(--blueB);
       }
       &.yellow {
-        background-color: var(--yellowC);
+        background-color: var(--yellowB);
       }
       &.pink {
-        background-color: var(--pinkC);
+        background-color: var(--pinkB);
       }
       &.teal {
-        background-color: var(--tealC);
+        background-color: var(--tealB);
       }
     }
   }

@@ -4,6 +4,7 @@ import React, { JSX } from "react"
 import { Navigate } from "react-router-dom"
 
 import GameOver from "./GameOver"
+import Recap from "./Recap.tsx"
 
 import breakCategory from '../util/breakCategory.ts'
 import useEffectOnUpdate from "../util/useEffectOnUpdate.ts"
@@ -11,10 +12,9 @@ import useEffectOnUpdate from "../util/useEffectOnUpdate.ts"
 import generateTitle from "../util/generateTitle.tsx"
 import generateCategory from "../util/generateCategory.tsx"
 import generateAnswer from "../util/generateAnswer.tsx"
-import generateRecap from "../util/generateRecap.tsx"
-import { generateAnswerNodes, updateAnswerNodes } from "../util/AnswerNodes.tsx"
+import { generateAnswerNodes, updateAnswerNodes } from "../util/answerNodes.tsx"
 
-import { Country, AnswersLog, AnswerStats, RecapParameters } from "../util/interfaces.ts"
+import { Country, AnswersLog, AnswerStats } from "../util/interfaces.ts"
 
 interface PlayGameProps {
   countryData: Country[]
@@ -63,23 +63,15 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     lowarea: { Q: 0, A: 0 }
   })
 
-  // Contains the HTML for the previous questions guess and answer
-  const [recap, setRecap] = React.useState<JSX.Element>()
-
   // Handles the game active status, used for triggering things when the game starts/ends
   const [gameActive, setGameActive] = React.useState(true)
 
   // Grabs the current page theme so it can be applied to the answer buttons
   const currentTheme = localStorage.getItem('theme') || 'blue'
 
-  const recapParams: RecapParameters = {
-    category, currentTheme, prevGuess, prevAnswer, prevAnswers, answersLog, setAnswersLog
-  }
-
   // Generates a new question when the category is selected
   function categoryOnUpdate() {
     generateQuestion()
-    setRecap(generateRecap(recapParams))
     updateAnswerNodes(round, setAnswerNodes, prevGuess, prevAnswer)
   }
   // Custom useEffect for skipping the first render
@@ -280,7 +272,15 @@ export default function PlayGame({ countryData }: PlayGameProps) {
           {generateAnswerNodes(answerNodes)}
         </div>
 
-        {answersLog.length > 0 && recap}
+        <Recap
+          category={category}
+          currentTheme={currentTheme}
+          prevGuess={prevGuess}
+          prevAnswer={prevAnswer}
+          prevAnswers={prevAnswers}
+          answersLog={answersLog}
+          setAnswersLog={setAnswersLog}
+        />
 
         <GameOver
           answersLog={answersLog}
