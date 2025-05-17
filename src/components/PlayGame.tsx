@@ -252,7 +252,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
           {displayData}
         </div>
         
-
         <div className="scoreboard">
           <p>Score: {score}</p>
           <p>Highscore: {highscore}</p>
@@ -289,9 +288,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
         />
       </div>
     )
-    // Returns user to the Home page if the page loads before the API has finished loading (happens if you refresh on /play)
   } else {
     return <Navigate to='/' />
   }
-
 }

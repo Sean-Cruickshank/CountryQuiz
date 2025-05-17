@@ -20,7 +20,6 @@ interface RecapProps {
 }
 
 export default function Recap({ category, currentTheme, prevGuess, prevAnswer, prevAnswers, answersLog, setAnswersLog }: RecapProps) {
-  // console.log('test')
   // Generates the recap for the previous question, shows the correct answer and the guessed answer
   function generateRecap() {
     if (category.length > 1) {
@@ -61,44 +60,33 @@ export default function Recap({ category, currentTheme, prevGuess, prevAnswer, p
           }
         }
         
-        if (type === 'area') {
-          return prevAnswers?.map(country => {
-            index++
-            return <p
-              key={nanoid()}
-              className={`
-                recap__answers__item
-                ${prevGuessName === country.name
-                ? `recap__answers__guess ${currentTheme}` : ''}
-              `}>
-                <b>#{index}</b>
-                <i> {country.name} - {country.area.toLocaleString()}km² ({convertToMiles(country.area)}mi²)</i>
-            </p>
-          })
-        } else {
-          return prevAnswers?.map(country => {
-            index++
-            return <p
-              key={nanoid()}
-              className={`
-                recap__answers__item
-                ${prevGuessName === country.name
-                ? `recap__answers__guess ${currentTheme}` : ''}
-              `}>
-              <b>#{index}</b>
-              <i> {country.name} (Population: {country.population.toLocaleString()})</i>
-            </p>
-          })
+        return prevAnswers?.map(country => {
+          index++
+          return <p
+            key={nanoid()}
+            className={`
+              recap__answers__item
+              ${prevGuessName === country.name
+              ? `recap__answers__guess ${currentTheme}` : ''}
+            `}>
+            <b>#{index}</b>
+            {generateAnswerText(country)}
+          </p>
+        })
+      }
+
+      // For generating the correct text based on the question type
+      function generateAnswerText(country: Country | undefined) {
+        if (country && type === 'area') {
+          return (
+            <i> {country.name} - {country.area.toLocaleString()}km² ({convertToMiles(country.area)}mi²)</i>
+          )
+        } else if (country && type === 'population') {
+          return (
+            <i> {country.name} (Population: {country.population.toLocaleString()})</i>
+          )
         }
       }
-  
-      let guessText: JSX.Element
-  
-      if (type === 'area' && prevGuess && prevAnswer) {
-        guessText = <p className="recap__guess">You picked: {prevGuessName} - {prevGuessValue.toLocaleString()}km² ({convertToMiles(prevGuess.area)}mi²)</p>
-      } else {
-        guessText = <p className="recap__guess">{prevGuessName} (Population: {prevGuessValue.toLocaleString()})</p>
-      } 
   
       return (
         <div className={prevGuessName === prevAnswerName ? 'recap--correct' : 'recap--incorrect'}>
@@ -113,7 +101,7 @@ export default function Recap({ category, currentTheme, prevGuess, prevAnswer, p
               {generateTitle(2, category)}
             </div>
             <p>You picked:</p>
-            {guessText}
+            {generateAnswerText(prevGuess)}
           </div>
   
           <div className="recap__content__right">
