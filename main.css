@@ -36,22 +36,22 @@ meter {
   background: rgb(226, 226, 226);
 }
 meter.blue::-moz-meter-bar, meter.blue::-webkit-meter-optimum-value {
-  background: linear-gradient(90deg, var(--blueC), rgb(115, 229, 229) 100%);
+  background: linear-gradient(90deg, var(--blueC), var(--blueGradient) 100%);
 }
 meter.yellow::-moz-meter-bar, meter.yellow::-webkit-meter-optimum-value {
-  background: linear-gradient(90deg, var(--yellowC), rgb(255, 255, 116) 100%);
+  background: linear-gradient(90deg, var(--yellowC), var(--yellowGradient) 100%);
 }
-meter.pink::-webkit-meter-optimum-value, meter.pink::-moz-meter-bar {
-  background: linear-gradient(90deg, var(--pinkC), rgb(255, 139, 207) 100%);
+meter.pink::-moz-meter-bar, meter.pink::-webkit-meter-optimum-value {
+  background: linear-gradient(90deg, var(--pinkC), var(--pinkGradient) 100%);
 }
 meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
-  background: var(--tealC);
+  background: linear-gradient(90deg, var(--tealC), var(--tealGradient) 100%);
 }
 
 .button {
   width: 80px;
   aspect-ratio: 2;
-  background-color: red;
+  background-color: white;
   border: solid 3px black;
   border-radius: 10px;
   cursor: pointer;
@@ -81,8 +81,10 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
 }
 
 :root {
-  --green: rgb(115, 214, 115);
-  --red: rgb(244, 132, 132);
+  --indGreen: rgb(115, 214, 115);
+  --indRed: rgb(244, 132, 132);
+  --indBlue: rgb(115, 115, 214);
+  --indYellow: rgb(244, 244, 132);
   --blueA: rgb(238, 238, 255);
   --yellowA: rgb(255, 255, 238);
   --pinkA: rgb(255, 238, 238);
@@ -95,6 +97,10 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
   --yellowC: rgb(212, 212, 89);
   --pinkC: rgb(200, 100, 100);
   --tealC: rgb(100, 200, 162);
+  --blueGradient: rgb(115, 229, 229);
+  --yellowGradient: rgb(255, 255, 116);
+  --pinkGradient: rgb(255, 139, 207);
+  --tealGradient: rgb(28, 255, 240);
 }
 
 .play-game {
@@ -130,7 +136,7 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
   opacity: 0.7;
 }
 .answers__option.blue {
-  background: linear-gradient(135deg, var(--blueC), rgb(115, 229, 229) 60%, var(--blueC) 100%);
+  background: linear-gradient(135deg, var(--blueC), var(--blueGradient) 60%, var(--blueC) 100%);
 }
 .answers__option.blue button {
   background-color: var(--blueB);
@@ -139,7 +145,7 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
   background-color: var(--blueC);
 }
 .answers__option.yellow {
-  background: linear-gradient(135deg, var(--yellowC), rgb(255, 255, 116) 60%, var(--yellowC) 100%);
+  background: linear-gradient(135deg, var(--yellowC), var(--yellowGradient) 60%, var(--yellowC) 100%);
 }
 .answers__option.yellow button {
   background-color: var(--yellowB);
@@ -148,7 +154,7 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
   background-color: var(--yellowC);
 }
 .answers__option.pink {
-  background: linear-gradient(135deg, var(--pinkC), rgb(255, 139, 207) 60%, var(--pinkC) 100%);
+  background: linear-gradient(135deg, var(--pinkC), var(--pinkGradient) 60%, var(--pinkC) 100%);
 }
 .answers__option.pink button {
   background-color: var(--pinkB);
@@ -157,7 +163,7 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
   background-color: var(--pinkC);
 }
 .answers__option.teal {
-  background: linear-gradient(135deg, var(--tealC), rgb(28, 255, 240) 75%, var(--tealC) 100%);
+  background: linear-gradient(135deg, var(--tealC), var(--tealGradient) 60%, var(--tealC) 100%);
 }
 .answers__option.teal button {
   background-color: var(--tealB);
@@ -210,18 +216,105 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
   width: 80%;
 }
 
-.node, .node--green, .node--red {
+.node, .node--incorrect, .node--correct {
   width: 2.9%;
   aspect-ratio: 2;
   background-color: black;
   margin: 0.2%;
   display: inline-block;
 }
-.node--red {
-  background-color: var(--red);
+.node--correct.redgreen {
+  background-color: var(--indGreen);
 }
-.node--green {
-  background-color: var(--green);
+.node--correct.redgreen .recap__result {
+  color: darkgreen;
+}
+.node--correct.blueyellow {
+  background-color: var(--indBlue);
+}
+.node--correct.blueyellow .recap__result {
+  color: darkblue;
+}
+.node--incorrect.redgreen {
+  background-color: var(--indRed);
+}
+.node--incorrect.redgreen .recap__result {
+  color: darkred;
+}
+.node--incorrect.blueyellow {
+  background-color: var(--indYellow);
+}
+.node--incorrect.blueyellow .recap__result {
+  color: darkyellow;
+}
+
+.gameover__title {
+  padding-top: 50px;
+}
+.gameover__subheaders {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.gameover__category meter {
+  width: 80%;
+  max-width: 600px;
+  margin-bottom: 0;
+}
+.gameover__category p {
+  margin-bottom: 0;
+}
+
+.log__entry, .log__entry--incorrect, .log__entry--correct {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.log__entry--correct.redgreen {
+  background-color: var(--indGreen);
+}
+.log__entry--correct.redgreen .recap__result {
+  color: darkgreen;
+}
+.log__entry--correct.blueyellow {
+  background-color: var(--indBlue);
+}
+.log__entry--correct.blueyellow .recap__result {
+  color: darkblue;
+}
+.log__entry--incorrect.redgreen {
+  background-color: var(--indRed);
+}
+.log__entry--incorrect.redgreen .recap__result {
+  color: darkred;
+}
+.log__entry--incorrect.blueyellow {
+  background-color: var(--indYellow);
+}
+.log__entry--incorrect.blueyellow .recap__result {
+  color: darkyellow;
+}
+
+.stats {
+  text-align: center;
+}
+.stats__entries {
+  margin-inline: auto;
+}
+.stats__category meter {
+  width: 80%;
+  max-width: 600px;
+  margin-bottom: 0;
+}
+.stats__category p {
+  margin-bottom: 0;
+}
+.stats__entry, .stats__entry-titles {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
+  text-align: center;
+}
+.stats__category-averages {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .recap, .recap--incorrect, .recap--correct {
@@ -229,17 +322,29 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
   grid-template-columns: 1fr 1fr;
   justify-content: space-around;
 }
-.recap--correct {
-  background-color: var(--green);
+.recap--correct.redgreen {
+  background-color: var(--indGreen);
 }
-.recap--correct .recap__result {
+.recap--correct.redgreen .recap__result {
   color: darkgreen;
 }
-.recap--incorrect {
-  background-color: var(--red);
+.recap--correct.blueyellow {
+  background-color: var(--indBlue);
 }
-.recap--incorrect .recap__result {
+.recap--correct.blueyellow .recap__result {
+  color: darkblue;
+}
+.recap--incorrect.redgreen {
+  background-color: var(--indRed);
+}
+.recap--incorrect.redgreen .recap__result {
   color: darkred;
+}
+.recap--incorrect.blueyellow {
+  background-color: var(--indYellow);
+}
+.recap--incorrect.blueyellow .recap__result {
+  color: darkyellow;
 }
 .recap__result {
   height: 40px;
@@ -281,57 +386,6 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
 }
 .recap__answers__guess.teal {
   background-color: var(--tealB);
-}
-
-.gameover__title {
-  padding-top: 50px;
-}
-.gameover__subheaders {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-.gameover__category meter {
-  width: 80%;
-  max-width: 600px;
-  margin-bottom: 0;
-}
-.gameover__category p {
-  margin-bottom: 0;
-}
-
-.answers-log__entry, .answers-log__entry--green, .answers-log__entry--red {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-.answers-log__entry--red {
-  background-color: var(--red);
-}
-.answers-log__entry--green {
-  background-color: var(--green);
-}
-
-.stats {
-  text-align: center;
-}
-.stats__entries {
-  margin-inline: auto;
-}
-.stats__category meter {
-  width: 80%;
-  max-width: 600px;
-  margin-bottom: 0;
-}
-.stats__category p {
-  margin-bottom: 0;
-}
-.stats__entry, .stats__entry-titles {
-  display: grid;
-  grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
-  text-align: center;
-}
-.stats__category-averages {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 nav {

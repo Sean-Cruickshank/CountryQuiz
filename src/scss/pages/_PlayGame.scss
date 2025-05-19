@@ -1,3 +1,5 @@
+@use '../base/mixins' as mixins;
+
 .play-game {
   text-align: center;
 
@@ -34,49 +36,7 @@
       opacity: 0.7;
     }
 
-    &.blue {
-      background: linear-gradient(135deg, var(--blueC), rgb(115, 229, 229) 60%, var(--blueC) 100%);
-      & button {
-        background-color: var(--blueB);
-
-        & .answers__button__alpha {
-          background-color: var(--blueC);
-        }
-      }
-    }
-
-    &.yellow {
-      background: linear-gradient(135deg, var(--yellowC), rgb(255, 255, 116) 60%, var(--yellowC) 100%);
-      & button {
-        background-color: var(--yellowB);
-        
-        & .answers__button__alpha {
-          background-color: var(--yellowC);
-        }
-      }
-    }
-
-    &.pink {
-      background: linear-gradient(135deg, var(--pinkC), rgb(255, 139, 207) 60%, var(--pinkC) 100%);
-      & button {
-        background-color: var(--pinkB);
-        
-        & .answers__button__alpha {
-          background-color: var(--pinkC);
-        }
-      }
-    }
-
-    &.teal {
-      background: linear-gradient(135deg, var(--tealC), rgb(28, 255, 240) 75%, var(--tealC) 100%);
-      & button {
-        background-color: var(--tealB);
-        
-        & .answers__button__alpha {
-          background-color: var(--tealC);
-        }
-      }
-    }
+    @include mixins.answersOptionThemes();
   }
 
   &__button {
@@ -134,87 +94,13 @@
   margin: 0.2%;
   display: inline-block;
 
-  &--red {
-    @extend .node;
-    background-color: var(--red);
-  }
-
-  &--green {
-    @extend .node;
-    background-color: var(--green);
-  }
-}
-
-.recap {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-content: space-around;
-
   &--correct {
-    @extend .recap;
-    background-color: var(--green);
-
-    & .recap__result {
-      color: darkgreen;
-    }
+    @extend .node;
+    @include mixins.indicatorsCorrect()
   }
 
   &--incorrect {
-    @extend .recap;
-    background-color: var(--red);
-
-    & .recap__result {
-      color: darkred;
-    }
-  }
-
-  &__result {
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &__text {
-      transition: 0.2s;
-      font-weight: bold;
-      margin: 0;
-    }
-  }
-
-  &__title p {
-    margin: 0;
-  }
-
-  &__guess {
-
-  }
-
-  &__answers {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-content: center;
-
-    &__item {
-      margin: 2px auto;
-      padding: 2px 4px;
-      width: max-content;
-    }
-
-    &__guess {
-      background-color: white;
-      border-radius: 5px;
-      &.blue {
-        background-color: var(--blueB);
-      }
-      &.yellow {
-        background-color: var(--yellowB);
-      }
-      &.pink {
-        background-color: var(--pinkB);
-      }
-      &.teal {
-        background-color: var(--tealB);
-      }
-    }
+    @extend .node;
+    @include mixins.indicatorsIncorrect()
   }
 }

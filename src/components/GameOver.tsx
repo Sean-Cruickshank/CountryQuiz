@@ -15,6 +15,9 @@ export default function GameOver({ answersLog, answerStats, score}: GameOverProp
   
   // Grabs the current page theme so it can be applied to the answer buttons
   const currentTheme = localStorage.getItem('theme') || 'blue'
+
+  // Grabs the current indicator so it can be applied to the nodes
+  const currentIndicator = localStorage.getItem('indicator') || 'redgreen'
   
   function titleCase(string: string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase()
@@ -24,8 +27,8 @@ export default function GameOver({ answersLog, answerStats, score}: GameOverProp
   const generateLog = answersLog.map((question) => {
     let classname = ''
     question.prevGuessName === question.prevAnswerName
-      ? classname = "answers-log__entry--green"
-      : classname = "answers-log__entry--red"
+      ? classname = `${currentIndicator} log__entry log__entry--correct`
+      : classname = `${currentIndicator} log__entry log__entry--incorrect`
     if (answersLog.length > 0) {
       if (question.type === 'population') {
         return (
@@ -120,7 +123,7 @@ export default function GameOver({ answersLog, answerStats, score}: GameOverProp
         className={`button button__stats ${currentTheme}`}
         to='/stats'>View Stats
       </Link>
-      <div className="answers-log">
+      <div className="log">
         {answersLog.length > 0 && <div className="gameover__subheaders">
           <h3>Category:</h3>
           <h3>You Guessed:</h3>

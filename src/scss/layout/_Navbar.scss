@@ -1,3 +1,5 @@
+@use '../base/mixins' as mixins;
+
 nav {
   position: relative;
   height: 50px;
@@ -82,41 +84,7 @@ nav {
         border-radius: 100%;
       }
 
-      &.blue {
-        background-color: var(--blueA);
-
-        & div {
-          background-color: var(--blueB);
-          border: 1px solid var(--blueC);
-        }
-      }
-
-      &.yellow {
-        background-color: var(--yellowA);
-
-        & div {
-          background-color: var(--yellowB);
-          border: 1px solid var(--yellowC);
-        }
-      }
-
-      &.pink {
-        background-color: var(--pinkA);
-
-        & div {
-          background-color: var(--pinkB);
-          border: 1px solid var(--pinkC);
-        }
-      }
-
-      &.teal {
-        background-color: var(--tealA);
-
-        & div {
-          background-color: var(--tealB);
-          border: 1px solid var(--tealC);
-        }
-      }
+      @include mixins.themeDropdownThemes()
     }
 
     & a:hover {

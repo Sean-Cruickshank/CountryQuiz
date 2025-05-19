@@ -1,0 +1,96 @@
+@mixin indicatorsCorrect() {
+  &.redgreen {
+    background-color: var(--indGreen);
+    & .recap__result {
+      color: darkgreen;
+    }
+  }
+  &.blueyellow {
+    background-color: var(--indBlue);
+    & .recap__result {
+      color: darkblue;
+    }
+  }
+}
+
+@mixin indicatorsIncorrect() {
+  &.redgreen {
+    background-color: var(--indRed);
+    & .recap__result {
+      color: darkred;
+    }
+  }
+
+  &.blueyellow {
+    background-color: var(--indYellow);
+    & .recap__result {
+      color: darkyellow;
+    }
+  }
+}
+
+$themes: 'blue', 'yellow', 'pink', 'teal';
+
+@mixin footerTextThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      color: var(--#{$theme}C);
+    }
+  }
+}
+
+@mixin recapGuessHighlightThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      background-color: var(--#{$theme}B);
+    }
+  }
+}
+
+@mixin buttonThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      background-color: var(--#{$theme}B);
+      border: solid 3px var(--#{$theme}C);
+    }
+  }
+}
+
+@mixin meterThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      &::-moz-meter-bar, &::-webkit-meter-optimum-value {
+      background: linear-gradient(90deg, var(--#{$theme}C), var(--#{$theme}Gradient) 100%);
+    }
+    }
+  }
+}
+
+@mixin answersOptionThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      background: linear-gradient(135deg, var(--#{$theme}C), var(--#{$theme}Gradient) 60%, var(--#{$theme}C) 100%);
+      & button {
+        background-color: var(--#{$theme}B);
+
+        & .answers__button__alpha {
+          background-color: var(--#{$theme}C);
+        }
+      }
+    }
+  }
+}
+
+@mixin themeDropdownThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+        background-color: var(--#{$theme}A);
+
+        & div {
+          background-color: var(--#{$theme}B);
+          border: 1px solid var(--#{$theme}C);
+        }
+    }
+  }
+}
+

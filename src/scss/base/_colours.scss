@@ -1,6 +1,9 @@
 :root {
-  --green: rgb(115, 214, 115);
-  --red: rgb(244, 132, 132);
+  --indGreen: rgb(115, 214, 115);
+  --indRed: rgb(244, 132, 132);
+
+  --indBlue: rgb(115, 115, 214);
+  --indYellow: rgb(244, 244, 132);
 
   --blueA: rgb(238, 238, 255);
   --yellowA: rgb(255, 255, 238);
@@ -16,6 +19,11 @@
   --yellowC: rgb(212, 212, 89);
   --pinkC: rgb(200, 100, 100);
   --tealC: rgb(100, 200, 162);
+
+  --blueGradient: rgb(115, 229, 229);
+  --yellowGradient: rgb(255, 255, 116);
+  --pinkGradient: rgb(255, 139, 207);
+  --tealGradient: rgb(28, 255, 240);
 }
 
 

@@ -3,9 +3,15 @@ import { nanoid } from "nanoid"
 import { Country } from "./interfaces"
 
 export function generateAnswerNodes(answerNodes: string[]) {
+  // Grabs the current indicator so it can be applied to the nodes
+  const currentIndicator = localStorage.getItem('indicator') || 'redgreen'
   return answerNodes.map(node => {
     return (
-      <span key={nanoid()} className={`node--${node}`}></span>
+      <span
+        key={nanoid()}
+        className={`node node--${node} ${currentIndicator}`}
+        onClick={() => console.log(currentIndicator)}
+      ></span>
     )
   })
 }
@@ -25,9 +31,9 @@ export function updateAnswerNodes(
   : ''
   if (round !== 1) {
     if (prevGuessName === prevAnswerName) {
-      setAnswerNodes(prev => [...prev, 'green'])
+      setAnswerNodes(prev => [...prev, 'correct'])
     } else {
-      setAnswerNodes(prev => [...prev, 'red'])
+      setAnswerNodes(prev => [...prev, 'incorrect'])
     }
   }
 }

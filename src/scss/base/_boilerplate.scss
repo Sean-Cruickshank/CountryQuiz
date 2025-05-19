@@ -1,3 +1,5 @@
+@use '../base/mixins' as mixins;
+
 html {
   box-sizing: border-box;
   font-size: 100%;
@@ -34,32 +36,13 @@ meter {
   border-radius: 10px;
   height: 15px;
   background: rgb(226, 226, 226);
-  &.blue {
-    &::-moz-meter-bar, &::-webkit-meter-optimum-value {
-      background: linear-gradient(90deg, var(--blueC), rgb(115, 229, 229) 100%);
-    }
-  }
-  &.yellow {
-    &::-moz-meter-bar, &::-webkit-meter-optimum-value {
-      background: linear-gradient(90deg, var(--yellowC), rgb(255, 255, 116) 100%);
-    }
-  }
-  &.pink {
-    &::-webkit-meter-optimum-value, &::-moz-meter-bar {
-      background: linear-gradient(90deg, var(--pinkC), rgb(255, 139, 207) 100%);
-    }
-  }
-  &.teal {
-    &::-moz-meter-bar, &::-webkit-meter-optimum-value {
-      background: var(--tealC);
-    }
-  }
+  @include mixins.meterThemes();
 }
 
 .button {
   width: 80px;
   aspect-ratio: 2;
-  background-color: red;
+  background-color: white;
   border: solid 3px black;
   border-radius: 10px;
   cursor: pointer;
@@ -73,23 +56,5 @@ meter {
     transform: scale(0.9);
   }
 
-  &.blue {
-    background-color: var(--blueB);
-    border: solid 3px var(--blueC);
-  }
-
-  &.yellow {
-    background-color: var(--yellowB);
-    border: solid 3px var(--yellowC);
-  }
-
-  &.pink {
-    background-color: var(--pinkB);
-    border: solid 3px var(--pinkC);
-  }
-
-  &.teal {
-    background-color: var(--tealB);
-    border: solid 3px var(--tealC);
-  }
+  @include mixins.buttonThemes();
 }

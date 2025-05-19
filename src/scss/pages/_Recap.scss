@@ -1,0 +1,56 @@
+@use '../base/mixins' as mixins;
+
+.recap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-around;
+
+  &--correct {
+    @extend .recap;
+    @include mixins.indicatorsCorrect()
+  }
+
+  &--incorrect {
+    @extend .recap;
+    @include mixins.indicatorsIncorrect()
+  }
+
+  &__result {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__text {
+      transition: 0.2s;
+      font-weight: bold;
+      margin: 0;
+    }
+  }
+
+  &__title p {
+    margin: 0;
+  }
+
+  &__guess {
+
+  }
+
+  &__answers {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+
+    &__item {
+      margin: 2px auto;
+      padding: 2px 4px;
+      width: max-content;
+    }
+
+    &__guess {
+      background-color: white;
+      border-radius: 5px;
+      @include mixins.recapGuessHighlightThemes()
+    }
+  }
+}

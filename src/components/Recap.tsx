@@ -20,6 +20,9 @@ interface RecapProps {
 }
 
 export default function Recap({ category, currentTheme, prevGuess, prevAnswer, prevAnswers, answersLog, setAnswersLog }: RecapProps) {
+  // Grabs the current indicator so it can be applied to the nodes
+  const currentIndicator = localStorage.getItem('indicator') || 'redgreen'
+  
   // Generates the recap for the previous question, shows the correct answer and the guessed answer
   function generateRecap() {
     if (category.length > 1) {
@@ -67,7 +70,8 @@ export default function Recap({ category, currentTheme, prevGuess, prevAnswer, p
             className={`
               recap__answers__item
               ${prevGuessName === country.name
-              ? `recap__answers__guess ${currentTheme}` : ''}
+                ? `recap__answers__guess ${currentTheme}`
+                : ''}
             `}>
             <b>#{index}</b>
             {generateAnswerText(country)}
@@ -89,7 +93,9 @@ export default function Recap({ category, currentTheme, prevGuess, prevAnswer, p
       }
   
       return (
-        <div className={prevGuessName === prevAnswerName ? 'recap--correct' : 'recap--incorrect'}>
+        <div className={prevGuessName === prevAnswerName
+          ? `${currentIndicator} recap recap--correct`
+          : `${currentIndicator} recap recap--incorrect`}>
           <div className="recap__content__left">
             <div className="recap__result">
               {prevGuessName === prevAnswerName

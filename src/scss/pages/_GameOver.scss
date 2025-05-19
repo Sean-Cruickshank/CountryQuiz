@@ -1,3 +1,5 @@
+@use '../base/mixins' as mixins;
+
 .gameover {
 
   &__title {
@@ -23,19 +25,19 @@
   }
 }
 
-.answers-log {
+.log {
   &__entry {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 
-    &--red {
-      @extend .answers-log__entry;
-      background-color: var(--red);
+    &--correct {
+      @extend .log__entry;
+      @include mixins.indicatorsCorrect()
     }
 
-    &--green {
-      @extend .answers-log__entry;
-      background-color: var(--green);
+    &--incorrect {
+      @extend .log__entry;
+      @include mixins.indicatorsIncorrect()
     }
   }
 }
