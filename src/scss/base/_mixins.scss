@@ -1,36 +1,63 @@
+/* --- INDICATORS --- */
+
+$greenred: (
+  'title': 'greenred',
+  'correct': 'green',
+  'incorrect': 'red'
+);
+$blueyellow: (
+  'title': 'blueyellow',
+  'correct': 'blue',
+  'incorrect': 'yellow'
+);
+
+$indicators: $greenred, $blueyellow;
+
+// Sets background colours for the nodes, recap, and post-game answers log when a question is answered correctly
+// Sets font colour for the "CORRECT!" header in the recap
 @mixin indicatorsCorrect() {
-  &.redgreen {
-    background-color: var(--indGreen);
+  @each $indicator in $indicators {
+    &.#{map-get($indicator, 'title')} {
+    background-color: var(--#{map-get($indicator, 'correct')}IndA);
     & .recap__result {
-      color: darkgreen;
+      color: var(--#{map-get($indicator, 'correct')}IndB);
     }
   }
-  &.blueyellow {
-    background-color: var(--indBlue);
-    & .recap__result {
-      color: darkblue;
-    }
   }
 }
 
+// Does the same as above but for when a question is answered incorrectly
 @mixin indicatorsIncorrect() {
-  &.redgreen {
-    background-color: var(--indRed);
+  @each $indicator in $indicators {
+    &.#{map-get($indicator, 'title')} {
+    background-color: var(--#{map-get($indicator, 'incorrect')}IndA);
     & .recap__result {
-      color: darkred;
+      color: var(--#{map-get($indicator, 'incorrect')}IndB);
     }
   }
+  }
+}
 
-  &.blueyellow {
-    background-color: var(--indYellow);
-    & .recap__result {
-      color: darkyellow;
+// Sets the correct and incorrect sample colours for indicators in the theme dropdown
+@mixin themeDropdownIndicators() {
+  @each $indicator in $indicators {
+    &.#{map-get($indicator, 'title')} {
+      & #sampleA {
+        background-color: var(--#{map-get($indicator, 'correct')}IndA);
+      }
+  
+      & #sampleB {
+        background-color: var(--#{map-get($indicator, 'incorrect')}IndA);
+      }
     }
   }
 }
 
-$themes: 'blue', 'yellow', 'pink', 'teal';
+/* --- THEMES --- */
 
+$themes: 'blue', 'yellow', 'green', 'pink', 'teal', 'purple';
+
+// Sets the text colour for the footer menu based on the active theme
 @mixin footerTextThemes() {
   @each $theme in $themes {
     &.#{$theme} {
@@ -39,6 +66,7 @@ $themes: 'blue', 'yellow', 'pink', 'teal';
   }
 }
 
+// Sets the highlighter colour for your guessed answer in the recap based on the active theme
 @mixin recapGuessHighlightThemes() {
   @each $theme in $themes {
     &.#{$theme} {
@@ -47,6 +75,7 @@ $themes: 'blue', 'yellow', 'pink', 'teal';
   }
 }
 
+// Sets the background colour and border colour for buttons based on the active theme
 @mixin buttonThemes() {
   @each $theme in $themes {
     &.#{$theme} {
@@ -56,6 +85,7 @@ $themes: 'blue', 'yellow', 'pink', 'teal';
   }
 }
 
+// Sets the colour gradient for meters based on active theme
 @mixin meterThemes() {
   @each $theme in $themes {
     &.#{$theme} {
@@ -66,6 +96,7 @@ $themes: 'blue', 'yellow', 'pink', 'teal';
   }
 }
 
+// Sets the background gradient, inner background colour, and alpha background colour for the answer buttons based on the active theme
 @mixin answersOptionThemes() {
   @each $theme in $themes {
     &.#{$theme} {
@@ -81,13 +112,15 @@ $themes: 'blue', 'yellow', 'pink', 'teal';
   }
 }
 
+// Sets the background colour and sample colour for the themes in the theme dropdown
 @mixin themeDropdownThemes() {
   @each $theme in $themes {
     &.#{$theme} {
         background-color: var(--#{$theme}A);
+        border: solid 2px var(--#{$theme}C);
 
         & div {
-          background-color: var(--#{$theme}B);
+          background: linear-gradient(135deg, var(--#{$theme}C), var(--#{$theme}Gradient) 60%, var(--#{$theme}C) 100%);
           border: 1px solid var(--#{$theme}C);
         }
     }

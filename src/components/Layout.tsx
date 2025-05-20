@@ -8,7 +8,7 @@ export default function Layout() {
 
   const [theme, setTheme] = React.useState(localStorage.getItem('theme') || 'blue')
 
-  const [indicator, setIndicator] = React.useState(localStorage.getItem('indicator') || 'redgreen')
+  const [indicator, setIndicator] = React.useState(localStorage.getItem('indicator') || 'greenred')
 
   React.useEffect(() => {
     updateTheme(theme)

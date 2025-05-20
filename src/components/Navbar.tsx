@@ -32,7 +32,7 @@ export default function Navbar({ selectTheme }: NavbarProps) {
     setToggle(prev => !prev)
   }
 
-  const themeColours = ['Blue', 'Yellow', 'Pink', 'Teal']
+  const themeColours = ['Blue', 'Yellow', 'Green', 'Pink', 'Teal', 'Purple']
 
   function generateThemes() {
     return themeColours.map(colour => {
@@ -47,7 +47,7 @@ export default function Navbar({ selectTheme }: NavbarProps) {
     })
   }
 
-  const indicatorColours = ['Red/Green', 'Blue/Yellow']
+  const indicatorColours = ['Green/Red', 'Blue/Yellow']
 
   function generateIndicators() {
     return indicatorColours.map(colour => {
@@ -59,7 +59,14 @@ export default function Navbar({ selectTheme }: NavbarProps) {
           key={nanoid()}
           className={`indicator__select ${l}`}
           onClick={() => dropdownSelect(l, 'indicator')}
-        >{splitA} / {splitB}<div></div></a>
+        >
+          {splitA} / {splitB}
+          <div className="indicator__samples">
+            <div id="sampleA" className="indicator__sample"></div>
+            <div id="sampleB" className="indicator__sample"></div>
+          </div>
+          
+        </a>
       )
     })
   }
@@ -77,8 +84,9 @@ export default function Navbar({ selectTheme }: NavbarProps) {
         onClick={() => setToggle(prev => !prev)}
       />
       <div className="theme__dropdown">
-        <h4>Theme Selector</h4>
+        <h4>Background Theme</h4>
         {generateThemes()}
+        <h4>Answer Theme</h4>
         {generateIndicators()}
       </div>
       <div onClick={() => setToggle(prev => !prev)} className="theme__background"></div>

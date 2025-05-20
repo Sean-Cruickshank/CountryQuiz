@@ -17,7 +17,7 @@ export default function GameOver({ answersLog, answerStats, score}: GameOverProp
   const currentTheme = localStorage.getItem('theme') || 'blue'
 
   // Grabs the current indicator so it can be applied to the nodes
-  const currentIndicator = localStorage.getItem('indicator') || 'redgreen'
+  const currentIndicator = localStorage.getItem('indicator') || 'greenred'
   
   function titleCase(string: string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase()

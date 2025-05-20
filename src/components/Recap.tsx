@@ -21,7 +21,7 @@ interface RecapProps {
 
 export default function Recap({ category, currentTheme, prevGuess, prevAnswer, prevAnswers, answersLog, setAnswersLog }: RecapProps) {
   // Grabs the current indicator so it can be applied to the nodes
-  const currentIndicator = localStorage.getItem('indicator') || 'redgreen'
+  const currentIndicator = localStorage.getItem('indicator') || 'greenred'
   
   // Generates the recap for the previous question, shows the correct answer and the guessed answer
   function generateRecap() {

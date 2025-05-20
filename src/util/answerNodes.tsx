@@ -4,7 +4,7 @@ import { Country } from "./interfaces"
 
 export function generateAnswerNodes(answerNodes: string[]) {
   // Grabs the current indicator so it can be applied to the nodes
-  const currentIndicator = localStorage.getItem('indicator') || 'redgreen'
+  const currentIndicator = localStorage.getItem('indicator') || 'greenred'
   return answerNodes.map(node => {
     return (
       <span
