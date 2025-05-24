@@ -18,6 +18,22 @@
     }
     
   }
+
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+  }
+
+  &__reset-history, &__reset-highscore {
+    width: 150px;
+    aspect-ratio: 3;
+  }
+
+  &__play-again {
+    display: block;
+    margin: 40px auto;
+  }
   
   &__entry, &__entry-titles {
     display: grid;

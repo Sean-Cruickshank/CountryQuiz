@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import React from "react"
 import useEffectOnUpdate from "../util/useEffectOnUpdate"
 
@@ -107,6 +107,12 @@ export default function Stats() {
   } else {
     averageScore = 0
   }
+
+  let navigate = useNavigate()
+
+  function playAgain() {
+    navigate('/play')
+  }
   
   return (
     <div className="stats">
@@ -114,6 +120,20 @@ export default function Stats() {
       <p>Average Score: {averageScore}</p>
       <p>Highscore: {highscore}</p>
       <p>Matches Played: {playerHistory.length}</p>
+      <div className="stats__buttons">
+        <button
+          title="Reset History"
+          onClick={resetHistory}
+          className={`stats__reset-history button ${currentTheme}`}
+          >Reset History
+        </button>
+        <button
+          title="Reset Highscore"
+          onClick={resetHighscore}
+          className={`stats__reset-highscore button ${currentTheme}`}
+          >Reset Highscore
+        </button>
+      </div>
       {playerHistory.length > 0 ?
         <div className="stats__averages">
           <div className="stats__category">
@@ -153,9 +173,14 @@ export default function Stats() {
           </div>
 
         </div>: ""}
-      <Link to='/play'>Play Again</Link>
-      <button onClick={resetHistory} className="stats__reset-history">Reset History</button>
-      <button onClick={resetHighscore} className="stats__reset-highscore">Reset Highscore</button>
+
+      <button
+        title="Play Again"
+        className={`stats__play-again button ${currentTheme}`}
+        onClick={() => playAgain()}
+        >Play Again
+      </button>
+
       {playerHistory.length > 0
       ?
         <div className="stats__entries">

@@ -139,6 +139,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
             key={nanoid()}
           >
             <button
+              title={country.name}
               disabled = {gameActive ? false : true}
               className={`answers__button answer__button-${alpha[index - 1]}`}
               onClick={() => answerCheck(category[category.length - 1], answer, country, countryAnswers)}
@@ -246,8 +247,13 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   if (countryData.length > 0) {
     return (
       <div className="play-game">
-        <h2 className="play-game__question">{generateTitle(1, category)}</h2>
-        <p className="play-game__progress">Question {round}/{gameLength}</p>
+        <p
+          className={`play-game__progress ${currentTheme}`}
+        >Question {round}/{gameLength}</p>
+        <h2
+          className={`play-game__question ${currentTheme}`}
+        >{generateTitle(1, category)}</h2>
+        
         <div className="answers">
           {displayData}
         </div>
@@ -258,11 +264,13 @@ export default function PlayGame({ countryData }: PlayGameProps) {
         </div>
 
         {gameActive && <button
+          title="Resign"
           className={`resign-button button ${currentTheme}`}
           onClick={() => {setGameActive(false); endMatch()}}
         >Resign</button>}
 
         {!gameActive && <button
+          title="Play Again"
           className={`play-again-button button ${currentTheme}`}
           onClick={resetGame}
         >Play Again</button>}

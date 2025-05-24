@@ -40,13 +40,15 @@ meter {
 }
 
 .button {
-  width: 80px;
+  width: 100px;
   aspect-ratio: 2;
   background-color: white;
-  border: solid 3px black;
+  border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: 0.3s;
+  font-weight: bold;
+  font-size: 0.8rem;
 
   &:hover {
     transform: scale(0.95);

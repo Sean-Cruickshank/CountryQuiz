@@ -10,7 +10,8 @@ interface NavbarProps {
 
 export default function Navbar({ selectTheme }: NavbarProps) {
 
-  // const currentTheme = localStorage.getItem('theme') || 'blue'
+  const currentTheme = localStorage.getItem('theme') || 'blue'
+  const currentIndicator = localStorage.getItem('indicator') || 'greenred'
 
   const [toggle, setToggle] = React.useState(false)
 
@@ -32,7 +33,7 @@ export default function Navbar({ selectTheme }: NavbarProps) {
     setToggle(prev => !prev)
   }
 
-  const themeColours = ['Blue', 'Yellow', 'Green', 'Pink', 'Teal', 'Purple']
+  const themeColours = ['Blue', 'Yellow', 'Green', 'Orange', 'Pink', 'Teal', 'Purple']
 
   function generateThemes() {
     return themeColours.map(colour => {
@@ -40,27 +41,24 @@ export default function Navbar({ selectTheme }: NavbarProps) {
       return (
         <a
           key={nanoid()}
-          className={`theme__select ${l}`}
+          className={`theme__select ${l} ${l === currentTheme ? 'active' : ''}`}
           onClick={() => dropdownSelect(l, 'theme')}
         >{colour}<div></div></a>
       )
     })
   }
 
-  const indicatorColours = ['Green/Red', 'Blue/Yellow']
+  const indicatorColours = ['greenred', 'blueyellow', 'tealtan', 'orangeblue', 'bluepink', 'yellowpink']
 
   function generateIndicators() {
     return indicatorColours.map(colour => {
-      const splitA = colour.split('/')[0]
-      const splitB = colour.split('/')[1]
-      const l = splitA.toLowerCase() + splitB.toLowerCase()
+      const l = colour.toLowerCase()
       return (
         <a
           key={nanoid()}
-          className={`indicator__select ${l}`}
+          className={`indicator__select ${l} ${l === currentIndicator ? 'active' : ''}`}
           onClick={() => dropdownSelect(l, 'indicator')}
         >
-          {splitA} / {splitB}
           <div className="indicator__samples">
             <div id="sampleA" className="indicator__sample"></div>
             <div id="sampleB" className="indicator__sample"></div>
@@ -74,10 +72,10 @@ export default function Navbar({ selectTheme }: NavbarProps) {
   return (
     <nav>
       <div className="nav__home">
-        <Link to='/'><FaHome /></Link>
+        <Link title="Home" to='/'><FaHome /></Link>
       </div>
-      <h1>Sean's Country Quiz</h1>
       <img
+        title="Theme Selector"
         width='40px'
         src="/images/themepicker.png"
         className="theme__icon"
@@ -87,7 +85,9 @@ export default function Navbar({ selectTheme }: NavbarProps) {
         <h4>Background Theme</h4>
         {generateThemes()}
         <h4>Answer Theme</h4>
-        {generateIndicators()}
+        <div className="indicator__grid">
+          {generateIndicators()}
+        </div>
       </div>
       <div onClick={() => setToggle(prev => !prev)} className="theme__background"></div>
     </nav>

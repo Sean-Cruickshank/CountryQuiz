@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid"
 
 import convertToMiles from '../util/convertToMiles.ts'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { AnswersLog, AnswerStats } from "../util/interfaces.ts"
 
@@ -114,15 +114,32 @@ export default function GameOver({ answersLog, answerStats, score}: GameOverProp
     )
   }
 
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0
+    });
+  }
+
+  let navigate = useNavigate()
+
+  function viewStats() {
+    navigate('/stats')
+    scrollToTop()
+  }
+
+  
+
   return (
     <div className="gameover hidden">
       <h2 className="gameover__title" id="gameover__title">Game Over!</h2>
       <p>You got {score} out of {answersLog.length} questions correct!</p>
       {generateStats()}
-      <Link
+      <button
+        title="View Stats"
         className={`button button__stats ${currentTheme}`}
-        to='/stats'>View Stats
-      </Link>
+        onClick={() => viewStats()}
+        >View Stats
+      </button>
       <div className="log">
         {answersLog.length > 0 && <div className="gameover__subheaders">
           <h3>Category:</h3>

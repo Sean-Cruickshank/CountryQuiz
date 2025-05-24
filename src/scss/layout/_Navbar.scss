@@ -59,7 +59,8 @@ nav {
     top: 25px;
     display: none;
     border-radius: 10px;
-    background-color: white;
+    background-color: black;
+    color: white;
     width: 200px;
     padding-bottom: 15px;
     text-align: center;
@@ -93,7 +94,18 @@ nav {
   }
 
   &__select {
+    cursor: pointer;
+    margin-inline: auto;
+    margin-bottom: 4px;
+    padding: 4px 12px;
+    width: 80%;
+    border-radius: 5px;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+
     @include mixins.themeDropdownThemes();
+
     & div {
       width: 20px;
       aspect-ratio: 1;
@@ -104,7 +116,21 @@ nav {
 }
 
 .indicator {
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  
   &__select {
+    cursor: pointer;
+    margin-inline: auto;
+    margin-bottom: 4px;
+    padding: 4px 12px;
+    width: 80%;
+    border-radius: 5px;
+    color: black;
+    display: flex;
+    justify-content: center;
     background-color: #eee;
     border: solid 2px black;
 
@@ -126,18 +152,14 @@ nav {
 }
 
 .theme__select, .indicator__select {
-  cursor: pointer;
-  margin-inline: auto;
-  margin-bottom: 4px;
-  padding: 4px 12px;
-  width: 80%;
-  border-radius: 5px;
-  color: black;
-  display: flex;
-  justify-content: space-between;
+
+  &.active {
+    opacity: 0.85;
+    transform: scale(0.97);
+  }
 
   &:hover {
-    color: black;
-    opacity: 0.8;
+    opacity: 0.85;
+    transform: scale(0.97);
   }
 }

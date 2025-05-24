@@ -2,16 +2,36 @@
 
 $greenred: (
   'title': 'greenred',
-  'correct': 'green',
-  'incorrect': 'red'
+  'correct': 'GR_green',
+  'incorrect': 'GR_red'
 );
 $blueyellow: (
   'title': 'blueyellow',
-  'correct': 'blue',
-  'incorrect': 'yellow'
+  'correct': 'BY_blue',
+  'incorrect': 'BY_yellow'
+);
+$tealtan: (
+  'title': 'tealtan',
+  'correct': 'TT_teal',
+  'incorrect': 'TT_tan'
+);
+$orangeblue: (
+  'title': 'orangeblue',
+  'correct': 'OB_orange',
+  'incorrect': 'OB_blue'
+);
+$bluepink: (
+  'title': 'bluepink',
+  'correct': 'BP_blue',
+  'incorrect': 'BP_pink'
+);
+$yellowpink: (
+  'title': 'yellowpink',
+  'correct': 'YP_yellow',
+  'incorrect': 'YP_pink'
 );
 
-$indicators: $greenred, $blueyellow;
+$indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpink;
 
 // Sets background colours for the nodes, recap, and post-game answers log when a question is answered correctly
 // Sets font colour for the "CORRECT!" header in the recap
@@ -55,7 +75,7 @@ $indicators: $greenred, $blueyellow;
 
 /* --- THEMES --- */
 
-$themes: 'blue', 'yellow', 'green', 'pink', 'teal', 'purple';
+$themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
 
 // Sets the text colour for the footer menu based on the active theme
 @mixin footerTextThemes() {
@@ -79,8 +99,8 @@ $themes: 'blue', 'yellow', 'green', 'pink', 'teal', 'purple';
 @mixin buttonThemes() {
   @each $theme in $themes {
     &.#{$theme} {
-      background-color: var(--#{$theme}B);
-      border: solid 3px var(--#{$theme}C);
+      background-color: var(--#{$theme}C);
+      color: var(--#{$theme}A);
     }
   }
 }
@@ -123,6 +143,25 @@ $themes: 'blue', 'yellow', 'green', 'pink', 'teal', 'purple';
           background: linear-gradient(135deg, var(--#{$theme}C), var(--#{$theme}Gradient) 60%, var(--#{$theme}C) 100%);
           border: 1px solid var(--#{$theme}C);
         }
+    }
+  }
+}
+
+@mixin questionHighlightThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      & i {
+        color: var(--#{$theme}C);
+      }
+    }
+  }
+}
+
+@mixin questionCounterThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      background-color: var(--#{$theme}C);
+      color: var(--#{$theme}A);
     }
   }
 }

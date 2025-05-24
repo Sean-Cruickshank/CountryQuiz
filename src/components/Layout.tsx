@@ -57,6 +57,12 @@ export default function Layout() {
     // These two control the colour theme for the user's highlighted answer in the recap
     document.querySelector('.recap__answers__guess')?.classList.remove(theme)
     document.querySelector('.recap__answers__guess')?.classList.add(newTheme)
+
+    document.querySelector('.play-game__question')?.classList.remove(theme)
+    document.querySelector('.play-game__question')?.classList.add(newTheme)
+
+    document.querySelector('.play-game__progress')?.classList.remove(theme)
+    document.querySelector('.play-game__progress')?.classList.add(newTheme)
   }
 
   const indicatorUpdateList = [

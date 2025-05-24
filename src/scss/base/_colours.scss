@@ -1,17 +1,26 @@
 :root {
-  --greenIndA: rgb(115, 214, 115);
-  --redIndA: rgb(244, 132, 132);
-  --blueIndA: rgb(115, 115, 214);
-  --yellowIndA: rgb(244, 244, 132);
+  --GR_greenIndA: rgb(115, 214, 115);
+  --GR_redIndA: rgb(244, 132, 132);
+  --BY_blueIndA: rgb(115, 115, 214);
+  --BY_yellowIndA: rgb(244, 244, 132);
+  --TT_tealIndA: rgb(64, 176, 166);
+  --TT_tanIndA: rgb(225, 190, 106);
+  --OB_orangeIndA: rgb(255, 194, 10);
+  --OB_blueIndA: rgb(12, 123, 220);
+  --BP_blueIndA: rgb(26, 133, 255);
+  --BP_pinkIndA: rgb(212, 17, 89);
+  --YP_yellowIndA: rgb(254, 254, 98);
+  --YP_pinkIndA: rgb(211, 95, 183);
 
-  --greenIndB: darkgreen;
-  --redIndB: darkred;
-  --blueIndB: darkblue;
-  --yellowIndB: darkgoldenrod;
+  --GR_greenIndB: darkgreen;
+  --GR_redIndB: darkred;
+  --BY_blueIndB: darkblue;
+  --BY_yellowIndB: darkgoldenrod;
 
   --blueA: rgb(238, 238, 255);
   --yellowA: rgb(255, 255, 238);
   --greenA: rgb(238, 255, 238);
+  --orangeA: rgb(255, 246, 238);
   --pinkA: rgb(255, 238, 238);
   --tealA: rgb(238, 255, 255);
   --purpleA: rgb(245, 235, 255);
@@ -19,20 +28,24 @@
   --blueB: rgb(200, 200, 255);
   --yellowB: rgb(255, 255, 200);
   --greenB: rgb(200, 255, 200);
+  --orangeB: rgb(255, 225, 200);
   --pinkB: rgb(255, 200, 200);
   --tealB: rgb(200, 255, 223);
   --purpleB: rgb(223, 162, 255);
 
   --blueC: rgb(100, 100, 200);
-  --yellowC: rgb(212, 212, 89);
+  --yellowC: rgb(212, 212, 90);
   --greenC: rgb(100, 200, 100);
+  --orangeC: rgb(212, 150, 90);
   --pinkC: rgb(200, 100, 100);
   --tealC: rgb(100, 200, 162);
   --purpleC: rgb(162, 80, 200);
 
+  --basicGradient: rgb(0, 0, 0);
   --blueGradient: rgb(115, 229, 229);
   --yellowGradient: rgb(255, 255, 116);
   --greenGradient: rgb(142, 255, 104);
+  --orangeGradient: rgb(255, 203, 151);
   --pinkGradient: rgb(255, 139, 207);
   --tealGradient: rgb(28, 255, 240);
   --purpleGradient: rgb(241, 111, 255);
