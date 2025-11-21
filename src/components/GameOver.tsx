@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid"
 
 import convertToMiles from '../util/convertToMiles.ts'
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import { AnswersLog, AnswerStats } from "../util/interfaces.ts"
 
@@ -34,7 +34,10 @@ export default function GameOver({ answersLog, answerStats, score}: GameOverProp
         return (
           <div className={classname} key={nanoid()}>
             <p>{titleCase(question.size)} {titleCase(question.type)}:</p>
-            <p>{question.prevGuessName} - {question.prevGuessValue.toLocaleString()}</p>
+            <p>{question.prevGuessName === 'No Answer'
+              ? `${question.prevGuessName}`
+              : `${question.prevGuessName} - ${question.prevGuessValue.toLocaleString()}`
+            }</p>
             <p>{question.prevAnswerName} - {question.prevAnswerValue.toLocaleString()}</p>
           </div>
         )
@@ -42,7 +45,10 @@ export default function GameOver({ answersLog, answerStats, score}: GameOverProp
         return (
           <div className={classname} key={nanoid()}>
             <p>{titleCase(question.size)} {titleCase(question.type)}:</p>
-            <p>{question.prevGuessName} - {question.prevGuessValue.toLocaleString()}km² ({convertToMiles(question.prevGuessValue)}mi²)</p>
+            <p>{question.prevGuessName === 'No Answer'
+              ? `${question.prevGuessName}`
+              : `${question.prevGuessName} - ${question.prevGuessValue.toLocaleString()}km² (${convertToMiles(question.prevGuessValue)}mi²)`
+            }</p>
             <p>{question.prevAnswerName} - {question.prevAnswerValue.toLocaleString()}km² ({convertToMiles(question.prevAnswerValue)}mi²)</p>
           </div>
         )

@@ -21,11 +21,10 @@ export default function Footer() {
         >Stats</Link>
       </div>
       <div className="footer__links">
-        <i>Website created by Sean Cruickshank © 2025</i>
-        <a
-          target="_blank"
-          href="https://seancruickshank.co.nz"
-        ><img src="/images/coollogo2.png" /></a>
+        <i>
+          Website created by <a className="footer__link" target="_blank" href="https://www.seancruickshank.co.nz">
+            Sean Cruickshank
+          </a> © 2025</i>
       </div>
     </footer>
   )

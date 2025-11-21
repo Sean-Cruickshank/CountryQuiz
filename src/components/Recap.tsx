@@ -81,14 +81,12 @@ export default function Recap({ category, currentTheme, prevGuess, prevAnswer, p
 
       // For generating the correct text based on the question type
       function generateAnswerText(country: Country | undefined) {
+        if (country && country.name === 'No Answer') { return <i> {country.name}</i> }
+
         if (country && type === 'area') {
-          return (
-            <i> {country.name} - {country.area.toLocaleString()}km² ({convertToMiles(country.area)}mi²)</i>
-          )
+          return <i> {country.name} - {country.area.toLocaleString()}km² ({convertToMiles(country.area)}mi²)</i>
         } else if (country && type === 'population') {
-          return (
-            <i> {country.name} (Population: {country.population.toLocaleString()})</i>
-          )
+          return <i> {country.name} (Population: {country.population.toLocaleString()})</i>
         }
       }
   

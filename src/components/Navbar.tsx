@@ -74,13 +74,14 @@ export default function Navbar({ selectTheme }: NavbarProps) {
       <div className="nav__home">
         <Link title="Home" to='/'><FaHome /></Link>
       </div>
-      <img
-        title="Theme Selector"
-        width='40px'
-        src="/images/themepicker.png"
-        className="theme__icon"
-        onClick={() => setToggle(prev => !prev)}
-      />
+      <div className="theme">
+        <img
+          title="Theme Selector"
+          src="/images/themepicker.png"
+          className="theme__icon"
+          onClick={() => setToggle(prev => !prev)}
+        />
+      </div>
       <div className="theme__dropdown">
         <h4>Background Theme</h4>
         {generateThemes()}

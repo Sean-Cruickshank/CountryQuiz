@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid"
 import dayjs from "dayjs"
 import React, { JSX } from "react"
-import { Navigate } from "react-router-dom"
+import { Navigate, useLocation } from "react-router-dom"
 
 import GameOver from "./GameOver"
 import Recap from "./Recap.tsx"
@@ -33,13 +33,19 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   },[highscore])
 
   const [round, setRound] = React.useState(1)
-  let gameLength = 10
   React.useEffect(() => {
     if (round > gameLength) {
       setRound(gameLength)
       endMatch()
     }
   },[round])
+
+  const location = useLocation()
+  const timerDuration = location.state ? location.state.timerLength : 10
+  const gameLength = location.state ? location.state.gameLength : 10
+
+  const [timer, setTimer] = React.useState<number>(timerDuration)
+  let timeoutAnswer: Country = { id: 999, name: 'No Answer', population: 99, area: 99 }
 
   // Contains an array of all category IDs for that match
   const [category, setCategory] = React.useState<string[]>([])
@@ -73,7 +79,32 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   function categoryOnUpdate() {
     generateQuestion()
     updateAnswerNodes(round, setAnswerNodes, prevGuess, prevAnswer)
+    runTimer()
   }
+
+  function runTimer() {
+    setTimer(timerDuration)
+  }
+
+  React.useEffect(() => {
+    let interval: number | undefined = undefined
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer(prev => prev - 1)
+      },1000)
+    } else if (timer <= 0 && gameActive) {
+      clearInterval(interval)
+      const answer = generateAnswer(category[category.length - 1], countryAnswers)
+      answerCheck(category[category.length - 1], answer, timeoutAnswer, countryAnswers)
+    }
+    if (!gameActive) {
+      setTimer(0)
+      clearInterval(interval)
+    }
+
+    return () => clearInterval(interval)
+  },[timer])
+
   // Custom useEffect for skipping the first render
   useEffectOnUpdate(categoryOnUpdate, [category])
 
@@ -110,47 +141,57 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   },[])
 
+  const [countryAnswers, setCountryAnswers] = React.useState<Country[]>([])
+
+  useEffectOnUpdate(generateQuestionHTML, [countryAnswers])
+
+  function generateQuestionHTML() {
+    const answer = generateAnswer(category[category.length - 1], countryAnswers)
+    // Generates the HTML for the four answers
+    const alpha = ['A','B','C','D']
+    let index = 0
+    const countryAnswersHTML = countryAnswers.map((country) => {
+      index++
+      return (
+        <div
+          className={`answers__option ${currentTheme} ${!gameActive && 'disabled'}`}
+          key={nanoid()}
+        >
+          <button
+            title={country.name}
+            disabled = {gameActive ? false : true}
+            className={`answers__button answer__button-${alpha[index - 1]}`}
+            onClick={() => answerCheck(category[category.length - 1], answer, country, countryAnswers)}
+          >
+            <div className="answers__button__alpha">{alpha[index - 1]}</div>
+            <div className="answers__button__text">{country.name}</div>
+          </button>
+        </div>
+      )
+    })
+    setDisplayData(countryAnswersHTML)
+  }
+
   function generateQuestion() {
-    let countryAnswers: Country[] = []
+    let tempCountryAnswers: Country[] = []
+    setCountryAnswers([])
     if (countryData.length > 0) {
       // Selects four countries at random from the array
-      while (countryAnswers.length < 4) {
+      let breakpoint = 0
+      while (tempCountryAnswers.length < 4) {
         const num = Math.floor(Math.random() * countryData.length)
         const country = countryData[num]
         // Filters out any duplicate answers
-        const compare = countryAnswers.some((item) => {
+        const compare = tempCountryAnswers.some((item) => {
           return country === item
         })
         if (!compare) {
-          countryAnswers.push(country)
+          tempCountryAnswers.push(country)
         }
+        breakpoint++
+        if (breakpoint >= 5) break
       }
-
-      const answer = generateAnswer(category[category.length - 1], countryAnswers)
-    
-      // Generates the HTML for the four answers
-      const alpha = ['A','B','C','D']
-      let index = 0
-      const countryAnswersHTML = countryAnswers.map((country) => {
-        index++
-        return (
-          <div
-            className={`answers__option ${currentTheme} ${!gameActive && 'disabled'}`}
-            key={nanoid()}
-          >
-            <button
-              title={country.name}
-              disabled = {gameActive ? false : true}
-              className={`answers__button answer__button-${alpha[index - 1]}`}
-              onClick={() => answerCheck(category[category.length - 1], answer, country, countryAnswers)}
-            >
-              <div className="answers__button__alpha">{alpha[index - 1]}</div>
-              <div className="answers__button__text">{country.name}</div>
-            </button>
-          </div>
-        )
-      })
-      setDisplayData(countryAnswersHTML)
+      setCountryAnswers(tempCountryAnswers)
     }
   }
 
@@ -191,6 +232,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     setPrevAnswer(answerCountry)
     setPrevAnswers(countryAnswers)
     setPrevGuess(country)
+
     // Generates the category for the next round (useEffect triggers the next question to also generate)
     setCategory(generateCategory(category))
     setRound(prev => prev + 1)
@@ -244,15 +286,25 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     }
   },[gameActive])
   
-  if (countryData.length > 0) {
+  if (countryData.length > 0 && location.state !== null) {
     return (
       <div className="play-game">
         <p
           className={`play-game__progress ${currentTheme}`}
         >Question {round}/{gameLength}</p>
+
         <h2
           className={`play-game__question ${currentTheme}`}
         >{generateTitle(1, category)}</h2>
+
+        <div className="timer">
+          <p className="timer__text">{timer}</p>
+          <meter
+            className={`timer__meter ${currentTheme}`}
+            value={timer}
+            max={timerDuration}
+          >{timer}</meter>
+        </div>
         
         <div className="answers">
           {displayData}
@@ -276,7 +328,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
         >Play Again</button>}
 
         <div className="nodes">
-          {generateAnswerNodes(answerNodes)}
+          {generateAnswerNodes(answerNodes, gameLength)}
         </div>
 
         <Recap
@@ -297,6 +349,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       </div>
     )
   } else {
-    return <Navigate to='/' />
+    return <Navigate to='/start' />
   }
 }

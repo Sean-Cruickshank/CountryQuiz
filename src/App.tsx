@@ -3,6 +3,7 @@ import React from 'react';
 
 import Home from './components/Home';
 import PlayGame from './components/PlayGame';
+import StartGame from './components/StartGame';
 import Stats from './components/Stats';
 import Layout from './components/Layout';
 
@@ -39,6 +40,7 @@ export default function App() {
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path='play' element={<PlayGame countryData={countryData} />} />
+          <Route path='start' element={<StartGame />} />
           <Route path='stats' element={<Stats />} />
         </Route>
       </Routes>

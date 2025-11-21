@@ -21,6 +21,30 @@
   }
 }
 
+.timer {
+  position: relative;
+  height: 50px;
+
+  &__text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    z-index: 3;
+  }
+
+  &__meter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 80%;
+    max-width: 600px;
+  }
+}
+
 .answers {
   width: 80%;
   display: grid;
@@ -94,18 +118,19 @@
 }
 
 .nodes {
-  margin-inline: auto;
+  display: flex;
   text-align: left;
-  width: 80%;
+  width: 100%;
+  padding: 0 5px;
+  margin: 20px auto 5px auto;
 }
 
 .node {
-  width: 2.9%;
-  aspect-ratio: 2;
+  aspect-ratio: 4;
+  max-height: 20px;
   background-color: black;
-
-  margin: 0.2%;
   display: inline-block;
+  width: 100%;
 
   &--correct {
     @extend .node;

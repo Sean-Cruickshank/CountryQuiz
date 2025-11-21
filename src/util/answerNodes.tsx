@@ -2,16 +2,23 @@ import { nanoid } from "nanoid"
 
 import { Country } from "./interfaces"
 
-export function generateAnswerNodes(answerNodes: string[]) {
+
+export function generateAnswerNodes(answerNodes: string[], gameLength: number) {
+  const nodeStyles = {
+    width: `${100 / gameLength}%`,
+    padding: '1px'
+  }
   // Grabs the current indicator so it can be applied to the nodes
   const currentIndicator = localStorage.getItem('indicator') || 'greenred'
   return answerNodes.map(node => {
     return (
-      <span
+      <div style={nodeStyles}>
+        <span
         key={nanoid()}
         className={`node node--${node} ${currentIndicator}`}
         onClick={() => console.log(currentIndicator)}
-      ></span>
+        ></span>
+      </div>
     )
   })
 }

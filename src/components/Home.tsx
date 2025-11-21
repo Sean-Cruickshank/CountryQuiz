@@ -6,16 +6,12 @@ export default function Home() {
   const currentTheme = localStorage.getItem('theme') || 'blue'
 
   let navigate = useNavigate()
-
-  function scrollToTop() {
-    window.scrollTo({
-      top: 0
-    });
-  }
-
+  
   function viewPage(page: string) {
     navigate(`/${page}`)
-    scrollToTop()
+    window.scrollTo({
+        top: 0
+    });
   }
 
   return (
@@ -24,10 +20,10 @@ export default function Home() {
       <p>This is a simple quiz intended to test your knowledge of different countries from around the world</p>
       <p>Big small </p>
       <button
-        title="Start Game"
+        title="New Game"
         className={`button button__stats ${currentTheme}`}
-        onClick={() => viewPage('play')}
-        >Start Game
+        onClick={() => viewPage('start')}
+        >New Game
       </button>
       <button
         title="View Stats"

@@ -30,15 +30,19 @@
     display: grid;
     grid-template-columns: 1fr;
 
-    & a {
-      margin-inline: auto;
-      cursor: pointer;
-      color: white;
-    }
-
     & img {
       width: 75px;
       margin-top: 20px;
     }
+  }
+
+  &__link {
+      margin-inline: auto;
+      cursor: pointer;
+      color: white;
+  }
+
+  &__link:hover {
+    text-decoration: underline;
   }
 }
