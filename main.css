@@ -458,6 +458,17 @@ meter.purple::-moz-meter-bar, meter.purple::-webkit-meter-optimum-value {
   color: var(--YP_pinkIndB);
 }
 
+.start-game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.start-game__range {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 50px;
+}
 .gameover__title {
   padding-top: 50px;
 }

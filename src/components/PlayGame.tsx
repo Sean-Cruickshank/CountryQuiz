@@ -41,8 +41,9 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   },[round])
 
   const location = useLocation()
-  const timerDuration = location.state ? location.state.timerLength : 10
   const gameLength = location.state ? location.state.gameLength : 10
+  const timerDuration = location.state ? location.state.timerLength : 10
+  const timerActive = location.state ? location.state.timerActive : true
 
   const [timer, setTimer] = React.useState<number>(timerDuration)
   let timeoutAnswer: Country = { id: 999, name: 'No Answer', population: 99, area: 99 }
@@ -86,13 +87,14 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     setTimer(timerDuration)
   }
 
+  // Handles logic for the timer
   React.useEffect(() => {
     let interval: number | undefined = undefined
-    if (timer > 0) {
+    if (timer > 0 && timerActive) {
       interval = setInterval(() => {
         setTimer(prev => prev - 1)
       },1000)
-    } else if (timer <= 0 && gameActive) {
+    } else if (timer <= 0 && gameActive && timerActive) {
       clearInterval(interval)
       const answer = generateAnswer(category[category.length - 1], countryAnswers)
       answerCheck(category[category.length - 1], answer, timeoutAnswer, countryAnswers)
@@ -297,14 +299,14 @@ export default function PlayGame({ countryData }: PlayGameProps) {
           className={`play-game__question ${currentTheme}`}
         >{generateTitle(1, category)}</h2>
 
-        <div className="timer">
+        {timerActive && gameActive && <div className="timer">
           <p className="timer__text">{timer}</p>
           <meter
             className={`timer__meter ${currentTheme}`}
             value={timer}
             max={timerDuration}
           >{timer}</meter>
-        </div>
+        </div>}
         
         <div className="answers">
           {displayData}
