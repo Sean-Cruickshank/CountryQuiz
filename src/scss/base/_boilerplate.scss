@@ -4,15 +4,15 @@ html {
   box-sizing: border-box;
   font-size: 100%;
   overflow-x: hidden;
+  @include mixins.backgroundThemes();
 }
 
 body {
   position: relative;
   margin: 0;
   padding: 0;
-  background-color: rgb(173, 230, 230);
   min-height: 100vh;
-  padding-bottom: 300px;
+  padding-bottom: 150px;
 }
 
 *, *::before, *::after {
@@ -39,6 +39,88 @@ meter {
   @include mixins.meterThemes();
 }
 
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  border: solid 1px darkgray;
+  @include mixins.rangeThemes();
+
+  // Range Input Thumb
+
+  @mixin range-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: solid 1px darkgray;
+    border-radius: 100%;
+    cursor: pointer;
+  }
+  &::-webkit-slider-thumb { @include range-thumb; transform: translateY(-25%); }
+  &::-moz-range-thumb { @include range-thumb; }
+  &::-ms-thumb { @include range-thumb; }
+  
+  // Range Input Active Track
+  
+  &::-webkit-slider-runnable-track {
+    height: 100%;
+    border-radius: 4px;
+  }
+  
+  &::-moz-range-progress {
+    height: 100%;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 45px;
+  height: 25.5px;
+  margin: 5px auto;
+
+  &__input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    @include mixins.sliderThemes();
+  }
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #ccc;
+  border-radius: 25.5px;
+  transition: 0.4s;
+  -webkit-transition: 0.4s;
+  cursor: pointer;
+
+  &:before {
+    position: absolute;
+    content: "";
+    width: 19.5px;
+    aspect-ratio: 1;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+    -webkit-transition: 0.4s;
+  }
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(19.5px);
+  transform: translateX(19.5px);
+  -ms-transform: translateX(19.5px);
+}
+
 .button {
   width: 100px;
   aspect-ratio: 2;
@@ -49,6 +131,7 @@ meter {
   transition: 0.3s;
   font-weight: bold;
   font-size: 0.8rem;
+  margin: 15px;
 
   &:hover {
     transform: scale(0.95);

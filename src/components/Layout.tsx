@@ -36,16 +36,17 @@ export default function Layout() {
 
   // Class names for every element on the page that needs to be updated when the theme changes
   const themeUpdateList = [
+    'html',
     '.answers__option',
     '.gameover__meter',
     '.stats__meter',
     '.footer__navlink',
-    '.button'
+    '.button',
+    '.start-game__range',
+    '.switch__input'
   ]
 
   function updateTheme(newTheme: string) {
-    document.body.style.backgroundColor = `var(--${newTheme}A)`
-
     // Runs a forEach inside updateTheme to replace the old theme with the new one
     themeUpdateList.forEach(item => {
       document.querySelectorAll(item).forEach(button => {

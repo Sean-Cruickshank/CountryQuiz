@@ -2,13 +2,59 @@
 
 .gameover {
 
-  &__title {
-    padding-top: 50px;
+  &__popup {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: calc(100% + 150px);
+    z-index: 1;
+    background-color: rgba($color: #000000, $alpha: 0.4);
+  }
+
+  &__details {
+    width: 90%;
+    max-width: 750px;
+    margin-inline: auto;
+    padding: 20px 0;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background-color: white;
+    border: solid 2px darkgray;
+    border-radius: 50px;
+  }
+
+  &__message {
+    font-weight: bold;
+    & span {
+      display: inline-block;
+      width: min-content;
+      margin: 0;
+      animation-name: wave;
+      animation-duration: 0.6s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      + .pos-1 { animation-delay: 0.1s; }
+      + .pos-2 { animation-delay: 0.2s; }
+      + .pos-3 { animation-delay: 0.3s; }
+      + .pos-4 { animation-delay: 0.4s; }
+      + .pos-5 { animation-delay: 0.5s; }
+      + .pos-6 { animation-delay: 0.6s; }
+    }
+    &--highscore {
+      color: green;
+    }
+    &--perfectgame {
+      color: rgb(181, 118, 208);
+    }
   }
   
   &__subheaders {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    background-color: white;
+    border: solid 2px darkgray;
   }
 
   &__category {
@@ -23,9 +69,29 @@
       margin-bottom: 0;
     }
   }
+
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+  }
+}
+
+@keyframes wave {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
 }
 
 .log {
+  position: relative;
+  z-index: 2;
+  margin-top: 10px;
   &__entry {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

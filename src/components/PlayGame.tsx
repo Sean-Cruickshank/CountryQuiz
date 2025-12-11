@@ -166,7 +166,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
             onClick={() => answerCheck(category[category.length - 1], answer, country, countryAnswers)}
           >
             <div className="answers__button__alpha">{alpha[index - 1]}</div>
-            <div className="answers__button__text">{country.name}</div>
+            <div><p className="answers__button__text">{country.name}</p></div>
           </button>
         </div>
       )
@@ -276,6 +276,9 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     setRound(1)
     setAnswerNodes([])
     document.querySelector('.gameover')?.classList.add('hidden')
+    window.scrollTo({
+      top: 0
+    });
   }
 
   // When true (game has ended) regenerates the question buttons so that disabled = true
@@ -291,9 +294,14 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   if (countryData.length > 0 && location.state !== null) {
     return (
       <div className="play-game">
-        <p
-          className={`play-game__progress ${currentTheme}`}
-        >Question {round}/{gameLength}</p>
+        <div className={`play-game__progress ${currentTheme}`}>
+          <p>Question {round}/{gameLength}</p>
+          <div className="scoreboard">
+            <p>Score: {score}</p>
+            {highscore > 0 && <i>( Highscore: {highscore} )</i>}
+          </div>
+        </div>
+        
 
         <h2
           className={`play-game__question ${currentTheme}`}
@@ -311,23 +319,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
         <div className="answers">
           {displayData}
         </div>
-        
-        <div className="scoreboard">
-          <p>Score: {score}</p>
-          <p>Highscore: {highscore}</p>
-        </div>
-
-        {gameActive && <button
-          title="Resign"
-          className={`resign-button button ${currentTheme}`}
-          onClick={() => {setGameActive(false); endMatch()}}
-        >Resign</button>}
-
-        {!gameActive && <button
-          title="Play Again"
-          className={`play-again-button button ${currentTheme}`}
-          onClick={resetGame}
-        >Play Again</button>}
 
         <div className="nodes">
           {generateAnswerNodes(answerNodes, gameLength)}
@@ -341,12 +332,24 @@ export default function PlayGame({ countryData }: PlayGameProps) {
           prevAnswers={prevAnswers}
           answersLog={answersLog}
           setAnswersLog={setAnswersLog}
-        />
+          />
+
+          {gameActive &&
+            <div className="play-game__button-div">
+              <button
+                title="Resign"
+                className={`resign-button button ${currentTheme}`}
+                onClick={() => {setGameActive(false); endMatch()}}
+             >Resign</button>
+            </div>
+          }
 
         <GameOver
           answersLog={answersLog}
           answerStats={answerStats}
           score={score}
+          highscore={highscore}
+          resetGame={resetGame}
         />
       </div>
     )

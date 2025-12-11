@@ -1,8 +1,11 @@
-- Timer is running slow?
-- Add an option to change the timer length (default 150 seconds)
-
-- Find an appropriate font to use for titles and text
-- Consider reconfiguring the size of the option buttons
-- Consider reworking the theme colours
-- Add more padding around buttons
+## Home Page
 - Add content to the Home page
+- Style the Home page
+
+## Play Game Page
+- Implement pagination for the answers log
+- Rework score and highscore to be based off percentage instead of points
+
+## Stats Page
+- Redo styles for the stats section to match the New Game and Game Over format
+- Implement pagination for the match history

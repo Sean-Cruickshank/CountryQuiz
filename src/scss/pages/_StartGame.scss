@@ -4,17 +4,60 @@
     justify-content: center;
     align-items: center;
 
+    &__settings {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        max-width: 500px;
+        padding: 20px 0;
+        margin-bottom: 50px;
+        background-color: white;
+        border: solid 2px darkgray;
+        border-radius: 50px;
+
+        &--top {
+            display: grid;
+            grid-template-columns: 1fr;
+
+            & div {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        &--section {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            margin-inline: auto;
+            margin-bottom: 50px;
+        }
+
+        & label {
+            text-align: left;
+            align-items: left;
+        }
+
+        & hr {
+            margin: 25px auto;
+            color: lightgray;
+            width: 80%;
+            height: 2px;
+        }
+    }
+
     &__range {
         width: 100%;
-        max-width: 600px;
-        margin-bottom: 50px;
+        height: 10px;
+        border-radius: 4px;
+        margin: 10px 0 15px 0;
+        cursor: pointer;
     }
 
-    &__checkbox {
-
-    }
-
-    &__button {
-
+    &__output {
+        margin: 0 auto;
+        font-weight: bold;
+        font-size: 1.5rem;
     }
 }

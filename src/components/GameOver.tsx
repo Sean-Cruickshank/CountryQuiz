@@ -1,26 +1,36 @@
 import { nanoid } from "nanoid"
-
 import convertToMiles from '../util/convertToMiles.ts'
 import { useNavigate } from "react-router-dom"
-
 import { AnswersLog, AnswerStats } from "../util/interfaces.ts"
 
 interface GameOverProps {
   answersLog: AnswersLog[],
   answerStats: AnswerStats,
-  score: number
+  score: number,
+  highscore: number,
+  resetGame: () => void
 }
 
-export default function GameOver({ answersLog, answerStats, score}: GameOverProps) {
+export default function GameOver({ answersLog, answerStats, score, highscore, resetGame}: GameOverProps) {
   
   // Grabs the current page theme so it can be applied to the answer buttons
   const currentTheme = localStorage.getItem('theme') || 'blue'
 
   // Grabs the current indicator so it can be applied to the nodes
   const currentIndicator = localStorage.getItem('indicator') || 'greenred'
+
+  let scorePercent = Number((score / answersLog.length).toFixed(2)) * 100 || 0
   
   function titleCase(string: string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase()
+  }
+
+  let navigate = useNavigate()
+  function viewPage(page: string) {
+      navigate(`/${page}`)
+      window.scrollTo({
+        top: 0
+      });
   }
   
   // Generates the HTML for the Answers Log
@@ -120,32 +130,78 @@ export default function GameOver({ answersLog, answerStats, score}: GameOverProp
     )
   }
 
-  function scrollToTop() {
-    window.scrollTo({
-      top: 0
-    });
+  // Generates the message at the end of the match based on the user's score percentage
+  function generateEndMessage() {
+    const lsHistory = localStorage.getItem('history')
+    const playerHistory = lsHistory !== null ? JSON.parse(lsHistory) : []
+    
+    let message
+    let effect = 'none'
+    if (answersLog.length < 5) message = "You can alter your game settings by clicking the 'New Game' button!"
+    else if (playerHistory.length === 1) {
+      if (scorePercent === 100) {
+        message = "A perfect first game! You must be good at this!"
+        effect = 'perfectgame'
+      }
+      else if (scorePercent < 100 && scorePercent >= 80) message = "What an incredible first game!"
+      else if (scorePercent < 80 && scorePercent >= 50) message = "That was a great first game!"
+      else if (scorePercent < 50) message = "That's a solid effort for your first game!"
+    }
+    else if (scorePercent === 100) {
+      message = "That's a perfect score!"
+      effect = 'perfectgame'
+    }
+    else if (score >= highscore) {
+      message = "That's a new highscore!"
+      effect = 'highscore'
+    }
+    else if (scorePercent < 100 && scorePercent >= 80) message = "That's a great score!"
+    else if (scorePercent < 80 && scorePercent >= 50) message = "Nice effort!"
+    else if (scorePercent < 50) message = "Nice effort!"
+
+    if (effect === 'none') {
+      return <p className="gameover__message">{message}</p>
+    } else {
+      let position = 1
+      let messageSpan = message?.split('').map(letter => {
+        position !== 6 ? position++ : position = 1
+        if (letter === ' ') return <span className={`pos-${position}`}>&nbsp;</span>
+        else return <span className={`pos-${position}`}>{`${letter}`}</span>
+      })
+      return <div className={`gameover__message gameover__message--${effect}`}>{messageSpan}</div>
+    }
   }
-
-  let navigate = useNavigate()
-
-  function viewStats() {
-    navigate('/stats')
-    scrollToTop()
-  }
-
-  
 
   return (
     <div className="gameover hidden">
-      <h2 className="gameover__title" id="gameover__title">Game Over!</h2>
-      <p>You got {score} out of {answersLog.length} questions correct!</p>
-      {generateStats()}
-      <button
-        title="View Stats"
-        className={`button button__stats ${currentTheme}`}
-        onClick={() => viewStats()}
-        >View Stats
-      </button>
+      <div className="gameover__popup">
+        <div className="gameover__details">
+          <h2 className="gameover__title" id="gameover__title">Game Over!</h2>
+          <p>You got {score} out of {answersLog.length} questions correct! ({scorePercent}%)</p>
+          {generateEndMessage()}
+          {generateStats()}
+
+          <div className="gameover__buttons">
+            <button
+              title="New Game"
+              className={`play-again-button button ${currentTheme}`}
+              onClick={() => viewPage('start')}
+            >New Game</button>
+
+            <button
+              title="Play Again"
+              className={`play-again-button button ${currentTheme}`}
+              onClick={resetGame}
+            >Play Again</button>
+
+            <button
+              title="View Stats"
+              className={`button button__stats ${currentTheme}`}
+              onClick={() => viewPage('stats')}
+              >View Stats</button>
+          </div>
+        </div>
+      </div>
       <div className="log">
         {answersLog.length > 0 && <div className="gameover__subheaders">
           <h3>Category:</h3>

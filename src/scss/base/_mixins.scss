@@ -33,6 +33,15 @@ $yellowpink: (
 
 $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpink;
 
+// Sets the background gradient for the body
+@mixin backgroundThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      background: linear-gradient(180deg, white 0% 5%, var(--#{$theme}B) 100vh);
+    }
+  }
+}
+
 // Sets background colours for the nodes, recap, and post-game answers log when a question is answered correctly
 // Sets font colour for the "CORRECT!" header in the recap
 @mixin indicatorsCorrect() {
@@ -112,6 +121,44 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
       &::-moz-meter-bar, &::-webkit-meter-optimum-value {
       background: linear-gradient(90deg, var(--#{$theme}C), var(--#{$theme}Gradient) 100%);
     }
+    }
+  }
+}
+
+// Sets the colour for range inputs based on active theme
+@mixin rangeThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      background: var(--#{$theme}B);
+      &:disabled { background-color: lightgray; }
+
+      // Styling for the thumb/handle
+      &::-webkit-slider-thumb { background: var(--#{$theme}C); }
+      &::-moz-range-thumb { background: var(--#{$theme}C); }
+      &::-ms-thumb { background: var(--#{$theme}C); }
+
+      // Styling for the active portion of the bar
+      &::-moz-range-progress { background-color: var(--#{$theme}C); }
+      &::-webkit-slider-runnable-track { background: linear-gradient(to right, var(--#{$theme}C) var(--range-progress), var(--#{$theme}B) var(--range-progress)) }
+      &::-ms-track { background-color: var(--#{$theme}C); }
+
+      &:disabled::-webkit-slider-thumb { background: grey; }
+      &:disabled::-moz-range-thumb { background: grey; }
+      &:disabled::-ms-thumb { background: grey; }
+
+      &:disabled::-webkit-slider-runnable-track { background: lightgray }
+      &:disabled::-moz-range-progress { background-color: lightgray }
+    }
+  }
+}
+
+// Sets the colour for sliders when active
+@mixin sliderThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      &:checked + .slider {
+        background-color: var(--#{$theme}C);
+      }
     }
   }
 }

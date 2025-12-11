@@ -94,7 +94,7 @@ export default function Recap({ category, currentTheme, prevGuess, prevAnswer, p
         <div className={prevGuessName === prevAnswerName
           ? `${currentIndicator} recap recap--correct`
           : `${currentIndicator} recap recap--incorrect`}>
-          <div className="recap__content__left">
+          <div className="recap__content">
             <div className="recap__result">
               {prevGuessName === prevAnswerName
                 ? <p className="recap__result__text">CORRECT!</p>
@@ -104,12 +104,6 @@ export default function Recap({ category, currentTheme, prevGuess, prevAnswer, p
             <div className="recap__title">
               {generateTitle(2, category)}
             </div>
-            <p>You picked:</p>
-            {generateAnswerText(prevGuess)}
-          </div>
-  
-          <div className="recap__content__right">
-            <p>The answers were:</p>
             <div className="recap__answers">
               {allAnswers(type, size)}
             </div>

@@ -2,7 +2,7 @@
 
 .recap {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   justify-content: space-around;
 
   &--correct {
@@ -32,14 +32,11 @@
     margin: 0;
   }
 
-  &__guess {
-
-  }
-
   &__answers {
     display: grid;
     grid-template-columns: 1fr;
     justify-content: center;
+    margin: 10px auto;
 
     &__item {
       margin: 2px auto;

@@ -1,7 +1,24 @@
 @use '../base/mixins' as mixins;
 
 .play-game {
+  position: relative;
   text-align: center;
+  padding-top: 5px;
+
+  &__progress {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    margin: 5px auto;
+    padding: 4px;
+    @include mixins.questionCounterThemes();
+
+    & p {
+      margin: 0;
+    }
+  }
 
   &__question {
     font-size: clamp(1.5rem, -0.0882rem + 4.4118vw, 3rem);
@@ -12,13 +29,19 @@
 
     @include mixins.questionHighlightThemes();
   }
+}
 
-  &__progress {
-    font-size: 1.4rem;
-    margin: 20px auto;
-    padding: 4px;
-    @include mixins.questionCounterThemes()
-  }
+.scoreboard {
+  position: absolute;
+  width: 33%;
+  height: 100%;
+  right: 0;
+  display: flex;
+  gap: 10px;
+  padding-right: 10px;
+  justify-content: right;
+  align-items: center;
+  font-size: 1rem;
 }
 
 .timer {
@@ -59,6 +82,7 @@
     background: black;
     border-radius: 500px;
     padding: 4px;
+    aspect-ratio: 3.7;
 
     &:hover {
       transform: scale(0.97);
@@ -113,6 +137,7 @@
     &__text {
       font-size: 1.2rem;
       font-weight: 100;
+      margin: 0;
     }
   }
 }
@@ -122,12 +147,12 @@
   text-align: left;
   width: 100%;
   padding: 0 5px;
-  margin: 20px auto 5px auto;
+  margin: 20px auto 0px auto;
 }
 
 .node {
   aspect-ratio: 4;
-  max-height: 20px;
+  max-height: 10px;
   background-color: black;
   display: inline-block;
   width: 100%;
@@ -141,4 +166,10 @@
     @extend .node;
     @include mixins.indicatorsIncorrect()
   }
+}
+
+.node__container {
+  display: flex;
+  margin-bottom: 2px;
+  padding: 0 1px;
 }
