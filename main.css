@@ -975,6 +975,7 @@ html {
   background-color: white;
   border: solid 2px darkgray;
   border-radius: 50px;
+  z-index: 2;
 }
 .gameover__message {
   font-weight: bold;

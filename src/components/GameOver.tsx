@@ -2,6 +2,8 @@ import { nanoid } from "nanoid"
 import convertToMiles from '../util/convertToMiles.ts'
 import { useNavigate } from "react-router-dom"
 import { AnswersLog, AnswerStats } from "../util/interfaces.ts"
+import Confetti from 'react-confetti'
+import React from "react"
 
 interface GameOverProps {
   answersLog: AnswersLog[],
@@ -15,6 +17,8 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
   
   // Grabs the current page theme so it can be applied to the answer buttons
   const currentTheme = localStorage.getItem('theme') || 'blue'
+
+  const allThemes = ['rgb(100, 100, 200)', 'rgb(212, 212, 90)','rgb(100, 200, 100)','rgb(212, 150, 90)','rgb(200, 100, 100)','rgb(100, 200, 162)','rgb(162, 80, 200)']
 
   // Grabs the current indicator so it can be applied to the nodes
   const currentIndicator = localStorage.getItem('indicator') || 'greenred'
@@ -34,37 +38,48 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
   }
   
   // Generates the HTML for the Answers Log
-  const generateLog = answersLog.map((question) => {
+  const logHTML = answersLog.map((question) => {
     let classname = ''
     question.prevGuessName === question.prevAnswerName
       ? classname = `${currentIndicator} log__entry log__entry--correct`
       : classname = `${currentIndicator} log__entry log__entry--incorrect`
     if (answersLog.length > 0) {
+      let logGuess, logAnswer
+
       if (question.type === 'population') {
-        return (
-          <div className={classname} key={nanoid()}>
-            <p>{titleCase(question.size)} {titleCase(question.type)}:</p>
-            <p>{question.prevGuessName === 'No Answer'
-              ? `${question.prevGuessName}`
-              : `${question.prevGuessName} - ${question.prevGuessValue.toLocaleString()}`
-            }</p>
-            <p>{question.prevAnswerName} - {question.prevAnswerValue.toLocaleString()}</p>
-          </div>
-        )
-      } else {
-        return (
-          <div className={classname} key={nanoid()}>
-            <p>{titleCase(question.size)} {titleCase(question.type)}:</p>
-            <p>{question.prevGuessName === 'No Answer'
-              ? `${question.prevGuessName}`
-              : `${question.prevGuessName} - ${question.prevGuessValue.toLocaleString()}km² (${convertToMiles(question.prevGuessValue)}mi²)`
-            }</p>
-            <p>{question.prevAnswerName} - {question.prevAnswerValue.toLocaleString()}km² ({convertToMiles(question.prevAnswerValue)}mi²)</p>
-          </div>
-        )
+        logGuess = `${question.prevGuessName} - ${question.prevGuessValue.toLocaleString()}`
+        logAnswer = `${question.prevAnswerName} - ${question.prevAnswerValue.toLocaleString()}`
       }
+
+      if (question.type === 'area') {
+        logGuess = `${question.prevGuessName} - ${question.prevGuessValue.toLocaleString()}km² (${convertToMiles(question.prevGuessValue)}mi²)`
+        logAnswer = `${question.prevAnswerName} - ${question.prevAnswerValue.toLocaleString()}km² (${convertToMiles(question.prevAnswerValue)}mi²)`
+      }
+
+      return (
+        <div className={classname} key={nanoid()}>
+          <p>{titleCase(question.size)} {titleCase(question.type)}:</p>
+          <p>{question.prevGuessName === 'No Answer'
+            ? `${question.prevGuessName}`
+            : logGuess
+          }</p>
+          <p>{logAnswer}</p>
+        </div>
+      )
     }
   })
+
+  const [page, setPage] = React.useState(0)
+  const [selectedLog, setSelectedLog] = React.useState(logHTML.slice(page * 10, (page + 1) * 10))
+
+  function changePage(type: string) {
+    type === '+' && setPage(prev => prev + 1)
+    type === '-' && setPage(prev => prev - 1)
+  }
+
+  React.useEffect(() => {
+    setSelectedLog(logHTML.slice(page * 10, (page + 1) * 10))
+  },[page, answersLog])
 
   // Generates the HTML for the stats overview
   function generateStats() {
@@ -174,6 +189,7 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
 
   return (
     <div className="gameover hidden">
+      {scorePercent === 100 && <Confetti width={1920} height={window.innerHeight} colors={allThemes} />}
       <div className="gameover__popup">
         <div className="gameover__details">
           <h2 className="gameover__title" id="gameover__title">Game Over!</h2>
@@ -208,7 +224,10 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
           <h3>You Guessed:</h3>
           <h3>Correct Answer:</h3>
         </div>}
-        {generateLog}
+        {selectedLog}
+        <button onClick={() => changePage('-')}>-</button>
+        <p>{page + 1} / {Math.ceil(answersLog.length / 10)}</p>
+        <button onClick={() => changePage('+')}>+</button>
       </div>
     </div>
   )
