@@ -5,6 +5,8 @@ import { AnswersLog, AnswerStats } from "../util/interfaces.ts"
 import Confetti from 'react-confetti'
 import React from "react"
 
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+
 interface GameOverProps {
   answersLog: AnswersLog[],
   answerStats: AnswerStats,
@@ -23,7 +25,7 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
   // Grabs the current indicator so it can be applied to the nodes
   const currentIndicator = localStorage.getItem('indicator') || 'greenred'
 
-  let scorePercent = Number((score / answersLog.length).toFixed(2)) * 100 || 0
+  let scorePercent = Number(((score / answersLog.length) * 100).toFixed(2)) || 0
   
   function titleCase(string: string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase()
@@ -38,6 +40,7 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
   }
   
   // Generates the HTML for the Answers Log
+  let questionCount = 0
   const logHTML = answersLog.map((question) => {
     let classname = ''
     question.prevGuessName === question.prevAnswerName
@@ -55,9 +58,11 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
         logGuess = `${question.prevGuessName} - ${question.prevGuessValue.toLocaleString()}km² (${convertToMiles(question.prevGuessValue)}mi²)`
         logAnswer = `${question.prevAnswerName} - ${question.prevAnswerValue.toLocaleString()}km² (${convertToMiles(question.prevAnswerValue)}mi²)`
       }
+      questionCount++
 
       return (
         <div className={classname} key={nanoid()}>
+          <p>#{questionCount}</p>
           <p>{titleCase(question.size)} {titleCase(question.type)}:</p>
           <p>{question.prevGuessName === 'No Answer'
             ? `${question.prevGuessName}`
@@ -73,8 +78,8 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
   const [selectedLog, setSelectedLog] = React.useState(logHTML.slice(page * 10, (page + 1) * 10))
 
   function changePage(type: string) {
-    type === '+' && setPage(prev => prev + 1)
-    type === '-' && setPage(prev => prev - 1)
+    type === '+' && page + 1 < Math.ceil(answersLog.length / 10) && setPage(prev => prev + 1)
+    type === '-' && page > 0 && setPage(prev => prev - 1)
   }
 
   React.useEffect(() => {
@@ -218,17 +223,29 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
           </div>
         </div>
       </div>
-      <div className="log">
-        {answersLog.length > 0 && <div className="gameover__subheaders">
+      {answersLog.length > 0 && <div className="log">
+        <div className="log__subheaders">
+          <h3>Question:</h3>
           <h3>Category:</h3>
           <h3>You Guessed:</h3>
           <h3>Correct Answer:</h3>
-        </div>}
-        {selectedLog}
-        <button onClick={() => changePage('-')}>-</button>
-        <p>{page + 1} / {Math.ceil(answersLog.length / 10)}</p>
-        <button onClick={() => changePage('+')}>+</button>
-      </div>
+        </div>
+        <div className="log__entries">
+          {selectedLog}
+        </div>
+
+        <div className="pagination">
+          <button
+            className={`button pagination__button ${currentTheme}`}
+            onClick={() => changePage('-')}
+            ><MdKeyboardArrowLeft /></button>
+          <p>{page + 1} / {Math.ceil(answersLog.length / 10)}</p>
+          <button
+            className={`button pagination__button ${currentTheme}`}
+            onClick={() => changePage('+')}
+            ><MdKeyboardArrowRight /></button>
+        </div>
+      </div>}
     </div>
   )
 }

@@ -1014,12 +1014,6 @@ html {
 .gameover__message--perfectgame {
   color: rgb(181, 118, 208);
 }
-.gameover__subheaders {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  background-color: white;
-  border: solid 2px darkgray;
-}
 .gameover__category meter {
   width: 80%;
   max-width: 600px;
@@ -1047,10 +1041,19 @@ html {
   position: relative;
   z-index: 2;
   margin-top: 10px;
+  background-color: lightgray;
+}
+.log__subheaders {
+  display: grid;
+  grid-template-columns: 2fr 3fr 5fr 5fr;
+  background-color: white;
+}
+.log__entries {
+  min-height: 505px;
 }
 .log__entry, .log__entry--incorrect, .log__entry--correct {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 2fr 3fr 5fr 5fr;
 }
 .log__entry--correct.greenred {
   background-color: var(--GR_greenIndA);
@@ -1123,6 +1126,24 @@ html {
 }
 .log__entry--incorrect.yellowpink .recap__result {
   color: var(--YP_pinkIndB);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  background-color: white;
+}
+.pagination__button {
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+}
+.pagination svg {
+  color: black;
 }
 
 .stats {

@@ -50,13 +50,6 @@
       color: rgb(181, 118, 208);
     }
   }
-  
-  &__subheaders {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    background-color: white;
-    border: solid 2px darkgray;
-  }
 
   &__category {
 
@@ -93,9 +86,21 @@
   position: relative;
   z-index: 2;
   margin-top: 10px;
+  background-color: lightgray;
+
+  &__subheaders {
+    display: grid;
+    grid-template-columns: 2fr 3fr 5fr 5fr;
+    background-color: white;
+  }
+
+  &__entries {
+    min-height: 505px;
+  }
+
   &__entry {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 2fr 3fr 5fr 5fr;
 
     &--correct {
       @extend .log__entry;
@@ -106,5 +111,25 @@
       @extend .log__entry;
       @include mixins.indicatorsIncorrect()
     }
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  background-color: white;
+
+  &__button {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+  }
+
+  & svg {
+    color: black;
   }
 }
