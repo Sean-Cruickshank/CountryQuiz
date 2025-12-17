@@ -3,11 +3,10 @@ import convertToMiles from '../util/convertToMiles.ts'
 import { useNavigate } from "react-router-dom"
 import { AnswersLog, AnswerStats } from "../util/interfaces.ts"
 import Confetti from 'react-confetti'
-import React from "react"
-
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import Pagination from "./Pagination.tsx"
 
 interface GameOverProps {
+  gameLength: number,
   answersLog: AnswersLog[],
   answerStats: AnswerStats,
   score: number,
@@ -15,7 +14,7 @@ interface GameOverProps {
   resetGame: () => void
 }
 
-export default function GameOver({ answersLog, answerStats, score, highscore, resetGame}: GameOverProps) {
+export default function GameOver({ gameLength, answersLog, answerStats, score, highscore, resetGame}: GameOverProps) {
   
   // Grabs the current page theme so it can be applied to the answer buttons
   const currentTheme = localStorage.getItem('theme') || 'blue'
@@ -25,7 +24,7 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
   // Grabs the current indicator so it can be applied to the nodes
   const currentIndicator = localStorage.getItem('indicator') || 'greenred'
 
-  let scorePercent = Number(((score / answersLog.length) * 100).toFixed(2)) || 0
+  let scorePercent = Number(((score / gameLength) * 100).toFixed(2)) || 0
   
   function titleCase(string: string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase()
@@ -73,18 +72,6 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
       )
     }
   })
-
-  const [page, setPage] = React.useState(0)
-  const [selectedLog, setSelectedLog] = React.useState(logHTML.slice(page * 10, (page + 1) * 10))
-
-  function changePage(type: string) {
-    type === '+' && page + 1 < Math.ceil(answersLog.length / 10) && setPage(prev => prev + 1)
-    type === '-' && page > 0 && setPage(prev => prev - 1)
-  }
-
-  React.useEffect(() => {
-    setSelectedLog(logHTML.slice(page * 10, (page + 1) * 10))
-  },[page, answersLog])
 
   // Generates the HTML for the stats overview
   function generateStats() {
@@ -193,12 +180,12 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
   }
 
   return (
-    <div className="gameover hidden">
+    <div className="gameover">
       {scorePercent === 100 && <Confetti width={1920} height={window.innerHeight} colors={allThemes} />}
       <div className="gameover__popup">
         <div className="gameover__details">
           <h2 className="gameover__title" id="gameover__title">Game Over!</h2>
-          <p>You got {score} out of {answersLog.length} questions correct! ({scorePercent}%)</p>
+          <p>You got {score} out of {gameLength} questions correct! ({scorePercent}%)</p>
           {generateEndMessage()}
           {generateStats()}
 
@@ -230,21 +217,7 @@ export default function GameOver({ answersLog, answerStats, score, highscore, re
           <h3>You Guessed:</h3>
           <h3>Correct Answer:</h3>
         </div>
-        <div className="log__entries">
-          {selectedLog}
-        </div>
-
-        <div className="pagination">
-          <button
-            className={`button pagination__button ${currentTheme}`}
-            onClick={() => changePage('-')}
-            ><MdKeyboardArrowLeft /></button>
-          <p>{page + 1} / {Math.ceil(answersLog.length / 10)}</p>
-          <button
-            className={`button pagination__button ${currentTheme}`}
-            onClick={() => changePage('+')}
-            ><MdKeyboardArrowRight /></button>
-        </div>
+        <Pagination lastPage={Math.ceil(answersLog.length / 10)} pageContent={logHTML} />
       </div>}
     </div>
   )

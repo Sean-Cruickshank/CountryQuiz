@@ -4,7 +4,6 @@
 
 ## Play Game Page
 - Implement pagination for the answers log
-- Fix floating point error in the game over answers percentage
 
 ## Stats Page
 - Redo styles for the stats section to match the New Game and Game Over format

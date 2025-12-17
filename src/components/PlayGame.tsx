@@ -41,9 +41,9 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   },[round])
 
   const location = useLocation()
-  const gameLength = location.state ? location.state.gameLength : 10
-  const timerDuration = location.state ? location.state.timerLength : 10
-  const timerActive = location.state ? location.state.timerActive : true
+  const gameLength: number = location.state ? location.state.gameLength : 10
+  const timerDuration: number = location.state ? location.state.timerLength : 10
+  const timerActive: boolean = location.state ? location.state.timerActive : true
 
   const [timer, setTimer] = React.useState<number>(timerDuration)
   let timeoutAnswer: Country = { id: 999, name: 'No Answer', population: 99, area: 99 }
@@ -257,7 +257,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     if (score > highscore) {
       setHighscore(score)
     }
-    document.querySelector('.gameover')?.classList.remove('hidden')
+    // document.querySelector('.gameover')?.classList.remove('hidden')
     // document.getElementById('gameover__title')?.scrollIntoView({behavior: "smooth"})
   }
 
@@ -275,7 +275,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     setScore(0)
     setRound(1)
     setAnswerNodes([])
-    document.querySelector('.gameover')?.classList.add('hidden')
+    // document.querySelector('.gameover')?.classList.add('hidden')
     window.scrollTo({
       top: 0
     });
@@ -344,13 +344,14 @@ export default function PlayGame({ countryData }: PlayGameProps) {
             </div>
           }
 
-        <GameOver
+        {!gameActive && <GameOver
+          gameLength={gameLength}
           answersLog={answersLog}
           answerStats={answerStats}
           score={score}
           highscore={highscore}
           resetGame={resetGame}
-        />
+        />}
       </div>
     )
   } else {
