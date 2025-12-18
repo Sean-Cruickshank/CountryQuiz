@@ -56,6 +56,9 @@ meter {
   border-radius: 10px;
   height: 15px;
   background: rgb(226, 226, 226);
+  width: 80%;
+  max-width: 600px;
+  margin-bottom: 0;
 }
 meter.blue::-moz-meter-bar, meter.blue::-webkit-meter-optimum-value {
   background: linear-gradient(90deg, var(--blueC), var(--blueGradient) 100%);
@@ -77,6 +80,10 @@ meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
 }
 meter.purple::-moz-meter-bar, meter.purple::-webkit-meter-optimum-value {
   background: linear-gradient(90deg, var(--purpleC), var(--purpleGradient) 100%);
+}
+
+.meterdiv p {
+  margin-bottom: 0;
 }
 
 input[type=range] {
@@ -1014,14 +1021,6 @@ html {
 .gameover__message--perfectgame {
   color: rgb(181, 118, 208);
 }
-.gameover__category meter {
-  width: 80%;
-  max-width: 600px;
-  margin-bottom: 0;
-}
-.gameover__category p {
-  margin-bottom: 0;
-}
 .gameover__buttons {
   display: flex;
   justify-content: center;
@@ -1151,14 +1150,6 @@ html {
 }
 .stats__entries {
   margin-inline: auto;
-}
-.stats__category meter {
-  width: 80%;
-  max-width: 600px;
-  margin-bottom: 0;
-}
-.stats__category p {
-  margin-bottom: 0;
 }
 .stats__buttons {
   display: flex;

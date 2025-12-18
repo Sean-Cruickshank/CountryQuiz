@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom"
 import React from "react"
+import Pagination from "./Pagination"
 import useEffectOnUpdate from "../util/useEffectOnUpdate"
+import { formatStats, generateMeter } from "../util/generateMeter"
 
 export default function Stats() {
 
@@ -17,18 +19,13 @@ export default function Stats() {
     }
   }
 
-  // Handles Player History array
-  // Pulls playerHistory from localStorage and saves to state
-  // Reset playerHistory sets state to 0 and then updates localStorage
   const lsHistory = localStorage.getItem('history')
   const [playerHistory, setPlayerHistory] = React.useState<PlayerHistory[]>(lsHistory !== null ? JSON.parse(lsHistory) : [])
 
-  // Grabs the current page theme so it can be applied to the answer buttons
   const currentTheme = localStorage.getItem('theme') || 'blue'
 
-  function resetHistory() {
-    setPlayerHistory([])
-  }
+  let navigate = useNavigate()
+
   const playerHistoryFirstRender = React.useRef(true)
   React.useEffect(() => {
     if (playerHistoryFirstRender.current) {
@@ -38,21 +35,11 @@ export default function Stats() {
     }
   },[playerHistory])
   
-  // Handles Highscore
-  // Pulls highscore from localStorage and saves to state
-  // Reset Highscore sets state to 0 and then updates localStorage
   const lsHighscore = localStorage.getItem('highscore')
   const [highscore, setHighscore] = React.useState(lsHighscore !== null ? JSON.parse(lsHighscore) : 0)
 
-  function resetHighscore() {
-    setHighscore(0)
-  }
-
-  function highscoreOnUpdate() {
-    localStorage.setItem('highscore', JSON.stringify(highscore))
-  }
   // Custom useEffect for skipping the first render
-  useEffectOnUpdate(highscoreOnUpdate, [highscore])
+  useEffectOnUpdate(() => localStorage.setItem('highscore', JSON.stringify(highscore)), [highscore])
 
   let scoreSum = 0, gameLengthSum = 0
   let statsSum = {
@@ -60,9 +47,7 @@ export default function Stats() {
     haq: 0, haa: 0, laq: 0, laa: 0
   }
   
-  // Generates HTML for player history
-  const historyList = playerHistory.map((match) => {
-    // Adds stats for each game to cumulative values
+  const historyHTML = playerHistory.reverse().map((match) => {
     scoreSum += match.score
     gameLengthSum += match.gameLength
     statsSum.hpq += match.answerStats.highpopulation.Q
@@ -85,12 +70,6 @@ export default function Stats() {
     )
   })
 
-  function formatStats(a: number, q: number): string {
-    if (q > 0) {
-      return `${((a / q) * 100).toFixed(0)}%`
-    } else return 'N/A'
-  }
-
   function formatDate(date: string): string {
     const split = date.split(' ')
     let suffix = 'th'
@@ -101,17 +80,10 @@ export default function Stats() {
   }
 
   let averageScore
-
   if (playerHistory.length > 0) {
     averageScore = (scoreSum / playerHistory.length).toFixed(1)
   } else {
     averageScore = 0
-  }
-
-  let navigate = useNavigate()
-
-  function playAgain() {
-    navigate('/play')
   }
   
   return (
@@ -120,64 +92,35 @@ export default function Stats() {
       <p>Average Score: {averageScore}</p>
       <p>Highscore: {highscore}</p>
       <p>Matches Played: {playerHistory.length}</p>
+
       <div className="stats__buttons">
         <button
           title="Reset History"
-          onClick={resetHistory}
+          onClick={() => setPlayerHistory([])}
           className={`stats__reset-history button ${currentTheme}`}
           >Reset History
         </button>
         <button
           title="Reset Highscore"
-          onClick={resetHighscore}
+          onClick={() => setHighscore(0)}
           className={`stats__reset-highscore button ${currentTheme}`}
           >Reset Highscore
         </button>
       </div>
-      {playerHistory.length > 0 ?
+
+      {playerHistory.length > 0 &&
         <div className="stats__averages">
-          <div className="stats__category">
-            <p>High Population: {formatStats(statsSum.hpa, statsSum.hpq)} ({statsSum.hpa}/{statsSum.hpq})</p>
-            <meter
-              className={`stats__meter ${currentTheme}`}
-              value={statsSum.hpa}
-              max={statsSum.hpq}
-            ></meter>
-          </div>
-
-          <div className="stats__category">
-            <p>Low Population: {formatStats(statsSum.lpa, statsSum.lpq)} ({statsSum.lpa}/{statsSum.lpq})</p>
-            <meter
-              className={`stats__meter ${currentTheme}`}
-              value={statsSum.lpa}
-              max={statsSum.lpq}
-            ></meter>
-          </div>
-
-          <div className="stats__category">
-            <p>High Area: {formatStats(statsSum.haa, statsSum.haq)} ({statsSum.haa}/{statsSum.haq})</p>
-            <meter
-              className={`stats__meter ${currentTheme}`}
-              value={statsSum.haa}
-              max={statsSum.haq}
-            ></meter>
-          </div>
-
-          <div className="stats__category">
-            <p>Low Area: {formatStats(statsSum.laa, statsSum.laq)} ({statsSum.laa}/{statsSum.laq})</p>
-            <meter
-              className={`stats__meter ${currentTheme}`}
-              value={statsSum.laa}
-              max={statsSum.laq}
-            ></meter>
-          </div>
-
-        </div>: ""}
+          {generateMeter('High Population', statsSum.hpq, statsSum.hpa)}
+          {generateMeter('Low Population', statsSum.lpq, statsSum.lpa)}
+          {generateMeter('High Area', statsSum.haq, statsSum.haa)}
+          {generateMeter('Low Area', statsSum.laq, statsSum.laa)}
+        </div>
+      }
 
       <button
         title="Play Again"
         className={`stats__play-again button ${currentTheme}`}
-        onClick={() => playAgain()}
+        onClick={() => navigate('/play')}
         >Play Again
       </button>
 
@@ -186,19 +129,18 @@ export default function Stats() {
         <div className="stats__entries">
           <h2>Match History</h2>
           <div className="stats__entry-titles">
-            <p>Date:</p>
-            <p>Score:</p>
-            <p>High Population:</p>
-            <p>Low Population:</p>
-            <p>High Area:</p>
-            <p>Low Area:</p>
+            <h3>Date:</h3>
+            <h3>Score:</h3>
+            <h3>High Population:</h3>
+            <h3>Low Population:</h3>
+            <h3>High Area:</h3>
+            <h3>Low Area:</h3>
           </div>
-          {historyList}
+          <Pagination lastPage={Math.ceil(historyHTML.length / 10)} pageContent={historyHTML} />
         </div>
       :
         <p>You have no matches on record!</p>
       }
-      
     </div>
   )
 }

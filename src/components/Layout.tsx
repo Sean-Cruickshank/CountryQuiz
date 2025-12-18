@@ -1,13 +1,11 @@
 import { Outlet } from "react-router-dom"
 import React from "react"
-
 import Navbar from "./Navbar"
 import Footer from "./Footer"
 
 export default function Layout() {
 
   const [theme, setTheme] = React.useState(localStorage.getItem('theme') || 'blue')
-
   const [indicator, setIndicator] = React.useState(localStorage.getItem('indicator') || 'greenred')
 
   React.useEffect(() => {
@@ -38,8 +36,7 @@ export default function Layout() {
   const themeUpdateList = [
     'html',
     '.answers__option',
-    '.gameover__meter',
-    '.stats__meter',
+    '.meter',
     '.footer__navlink',
     '.button',
     '.start-game__range',

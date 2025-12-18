@@ -8,12 +8,10 @@ import Recap from "./Recap.tsx"
 
 import breakCategory from '../util/breakCategory.ts'
 import useEffectOnUpdate from "../util/useEffectOnUpdate.ts"
-
 import generateTitle from "../util/generateTitle.tsx"
 import generateCategory from "../util/generateCategory.tsx"
 import generateAnswer from "../util/generateAnswer.tsx"
 import { generateAnswerNodes, updateAnswerNodes } from "../util/answerNodes.tsx"
-
 import { Country, AnswersLog, AnswerStats } from "../util/interfaces.ts"
 
 interface PlayGameProps {

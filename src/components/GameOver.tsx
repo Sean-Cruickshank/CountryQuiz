@@ -1,9 +1,12 @@
 import { nanoid } from "nanoid"
-import convertToMiles from '../util/convertToMiles.ts'
 import { useNavigate } from "react-router-dom"
-import { AnswersLog, AnswerStats } from "../util/interfaces.ts"
 import Confetti from 'react-confetti'
+
 import Pagination from "./Pagination.tsx"
+
+import { AnswersLog, AnswerStats } from "../util/interfaces.ts"
+import convertToMiles from '../util/convertToMiles.ts'
+import { generateMeter } from "../util/generateMeter.tsx"
 
 interface GameOverProps {
   gameLength: number,
@@ -73,70 +76,6 @@ export default function GameOver({ gameLength, answersLog, answerStats, score, h
     }
   })
 
-  // Generates the HTML for the stats overview
-  function generateStats() {
-    let highPopulation, lowPopulation, highArea, lowArea
-    // Sets the percentage of questions scored correctly per category
-    // Defaults to 0 if no questions have been asked to avoid dividing by 0
-    answerStats.highpopulation.Q > 0
-      ? highPopulation = answerStats.highpopulation.A / answerStats.highpopulation.Q
-      : highPopulation = 0
-
-      answerStats.lowpopulation.Q > 0
-      ? lowPopulation = answerStats.lowpopulation.A / answerStats.lowpopulation.Q
-      : lowPopulation = 0
-
-      answerStats.higharea.Q > 0
-      ? highArea = answerStats.higharea.A / answerStats.higharea.Q
-      : highArea = 0
-
-      answerStats.lowarea.Q > 0
-      ? lowArea = answerStats.lowarea.A / answerStats.lowarea.Q
-      : lowArea = 0
-
-      function formatStats(stat: number): string {
-        return (stat * 100).toFixed(0)
-      }
-
-    return (
-      <div>
-        <div className="gameover__category">
-         <p>High Population: {formatStats(highPopulation)}% ({answerStats.highpopulation.A}/{answerStats.highpopulation.Q})</p>
-          <meter
-            className={`gameover__meter ${currentTheme}`}
-            value={formatStats(highPopulation)} max='100'
-          ></meter>
-        </div>
-
-        <div className="gameover__category">
-          <p>Low Population: {formatStats(lowPopulation)}% ({answerStats.lowpopulation.A}/{answerStats.lowpopulation.Q})</p>
-          <meter
-            className={`gameover__meter ${currentTheme}`}
-            value={formatStats(lowPopulation)} max='100'
-          ></meter>
-        </div>
-
-        <div className="gameover__category">
-          <p>High Area: {formatStats(highArea)}% ({answerStats.higharea.A}/{answerStats.higharea.Q})</p>  
-          <meter
-            className={`gameover__meter ${currentTheme}`}
-            value={formatStats(highArea)} 
-            max='100'
-          ></meter>
-        </div>
-
-        <div className="gameover__category">
-          <p>Low Area: {formatStats(lowArea)}% ({answerStats.lowarea.A}/{answerStats.lowarea.Q})</p>
-          <meter
-          className={`gameover__meter ${currentTheme}`}
-          value={formatStats(lowArea)}
-          max='100'
-        ></meter>
-        </div>
-      </div>
-    )
-  }
-
   // Generates the message at the end of the match based on the user's score percentage
   function generateEndMessage() {
     const lsHistory = localStorage.getItem('history')
@@ -187,7 +126,12 @@ export default function GameOver({ gameLength, answersLog, answerStats, score, h
           <h2 className="gameover__title" id="gameover__title">Game Over!</h2>
           <p>You got {score} out of {gameLength} questions correct! ({scorePercent}%)</p>
           {generateEndMessage()}
-          {generateStats()}
+          <div>
+            {generateMeter('High Population', answerStats.highpopulation.Q, answerStats.highpopulation.A)}
+            {generateMeter('Low Population', answerStats.lowpopulation.Q, answerStats.lowpopulation.A)}
+            {generateMeter('High Area', answerStats.higharea.Q, answerStats.higharea.A)}
+            {generateMeter('Low Area', answerStats.lowarea.Q, answerStats.lowarea.A)}
+          </div>
 
           <div className="gameover__buttons">
             <button

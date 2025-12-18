@@ -27,7 +27,7 @@ export default function Pagination({ pageContent, lastPage } : PaginationProps) 
       <div className="log__entries">
             {selectedLog}
           </div>
-      <div className="pagination">
+      {lastPage > 1 && <div className="pagination">
         <button
         className={`button pagination__button ${currentTheme}`}
         onClick={() => changePage('-')}
@@ -37,7 +37,7 @@ export default function Pagination({ pageContent, lastPage } : PaginationProps) 
         className={`button pagination__button ${currentTheme}`}
         onClick={() => changePage('+')}
         ><MdKeyboardArrowRight /></button>
-      </div>
+      </div>}
     </>
   )
 }

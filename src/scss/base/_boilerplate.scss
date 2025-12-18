@@ -36,7 +36,14 @@ meter {
   border-radius: 10px;
   height: 15px;
   background: rgb(226, 226, 226);
+  width: 80%;
+  max-width: 600px;
+  margin-bottom: 0;
   @include mixins.meterThemes();
+}
+
+.meterdiv p {
+  margin-bottom: 0;
 }
 
 input[type="range"] {
