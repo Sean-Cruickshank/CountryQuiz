@@ -1,8 +1,9 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useOutletContext } from "react-router-dom"
 import React from "react"
 import Pagination from "./Pagination"
 import useEffectOnUpdate from "../util/useEffectOnUpdate"
 import { formatStats, generateMeter } from "../util/generateMeter"
+import generateWaveEffect from "../util/generateWaveEffect"
 
 export default function Stats() {
 
@@ -22,7 +23,8 @@ export default function Stats() {
   const lsHistory = localStorage.getItem('history')
   const [playerHistory, setPlayerHistory] = React.useState<PlayerHistory[]>(lsHistory !== null ? JSON.parse(lsHistory) : [])
 
-  const currentTheme = localStorage.getItem('theme') || 'blue'
+  const context: {theme: string, indicator: string} = useOutletContext()
+  const theme = context ? context.theme : 'blue'
 
   let navigate = useNavigate()
 
@@ -46,8 +48,10 @@ export default function Stats() {
     hpq: 0, hpa: 0, lpq: 0, lpa: 0,
     haq: 0, haa: 0, laq: 0, laa: 0
   }
+
+  let perfectCount = 0
   
-  const historyHTML = playerHistory.reverse().map((match) => {
+  const historyHTML = playerHistory.slice().reverse().map((match) => {
     scoreSum += match.score
     gameLengthSum += match.gameLength
     statsSum.hpq += match.answerStats.highpopulation.Q
@@ -58,10 +62,17 @@ export default function Stats() {
     statsSum.haa += match.answerStats.higharea.A
     statsSum.laq += match.answerStats.lowarea.Q
     statsSum.laa += match.answerStats.lowarea.A
+    let statsScore = `${formatStats(match.score, match.gameLength)} (${match.score}/${match.gameLength})`
+    let effect = 'none'
+    if (match.score === match.gameLength) {
+      effect = 'perfect'
+      perfectCount++
+    }
+    let formattedStatsScore = generateWaveEffect(statsScore, effect)
     return (
       <div key={match.id} className="stats__entry">
         <p>{formatDate(match.date)}</p>
-        <p>{formatStats(match.score, match.gameLength)} ({match.score}/{match.gameLength})</p>
+        {match.score === match.gameLength ? formattedStatsScore : <p>{statsScore}</p>}
         <p>{formatStats(match.answerStats.highpopulation.A, match.answerStats.highpopulation.Q)}</p>
         <p>{formatStats(match.answerStats.lowpopulation.A, match.answerStats.lowpopulation.Q)}</p>
         <p>{formatStats(match.answerStats.higharea.A, match.answerStats.higharea.Q)}</p>
@@ -81,47 +92,56 @@ export default function Stats() {
 
   let averageScore
   if (playerHistory.length > 0) {
-    averageScore = (scoreSum / playerHistory.length).toFixed(1)
+    averageScore = (scoreSum / playerHistory.length).toFixed(0)
   } else {
     averageScore = 0
   }
   
   return (
     <div className="stats">
-      <h2>Statistics</h2>
-      <p>Average Score: {averageScore}</p>
-      <p>Highscore: {highscore}</p>
-      <p>Matches Played: {playerHistory.length}</p>
-
-      <div className="stats__buttons">
-        <button
-          title="Reset History"
-          onClick={() => setPlayerHistory([])}
-          className={`stats__reset-history button ${currentTheme}`}
-          >Reset History
-        </button>
-        <button
-          title="Reset Highscore"
-          onClick={() => setHighscore(0)}
-          className={`stats__reset-highscore button ${currentTheme}`}
-          >Reset Highscore
-        </button>
-      </div>
-
-      {playerHistory.length > 0 &&
-        <div className="stats__averages">
-          {generateMeter('High Population', statsSum.hpq, statsSum.hpa)}
-          {generateMeter('Low Population', statsSum.lpq, statsSum.lpa)}
-          {generateMeter('High Area', statsSum.haq, statsSum.haa)}
-          {generateMeter('Low Area', statsSum.laq, statsSum.laa)}
+      <h1>Statistics</h1>
+      <div className={`panel stats__panel ${theme}`}>
+        <div className="stats__text">
+          <p>MATCHES PLAYED: <b>{playerHistory.length}</b></p>
         </div>
-      }
+        <div className="stats__text">
+          <p className="stats__text--p1">AVERAGE SCORE: <b>{averageScore}</b></p>
+          <p className="stats__text--p2">HIGHSCORE: <b>{highscore}</b></p>
+        </div>
+        <div className="stats__text">
+          {perfectCount > 0 && generateWaveEffect(`PERFECT MATCHES: ${perfectCount}`, 'perfect')}
+        </div>
+
+        {playerHistory.length > 0 &&
+          <div className="stats__averages">
+            {generateMeter('High Population', statsSum.hpq, statsSum.hpa)}
+            {generateMeter('Low Population', statsSum.lpq, statsSum.lpa)}
+            {generateMeter('High Area', statsSum.haq, statsSum.haa)}
+            {generateMeter('Low Area', statsSum.laq, statsSum.laa)}
+          </div>
+        }
+
+        <div className="stats__buttons">
+          <button
+            title="Reset History"
+            onClick={() => setPlayerHistory([])}
+            className={`stats__reset-history button ${theme}`}
+            >Reset History
+          </button>
+          <button
+            title="Reset Highscore"
+            onClick={() => setHighscore(0)}
+            className={`stats__reset-highscore button ${theme}`}
+            >Reset Highscore
+          </button>
+        </div>
+      </div>
 
       <button
         title="Play Again"
-        className={`stats__play-again button ${currentTheme}`}
+        className={`stats__play-again button ${theme}`}
         onClick={() => navigate('/play')}
-        >Play Again
+        >New Game
       </button>
 
       {playerHistory.length > 0

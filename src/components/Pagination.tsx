@@ -1,5 +1,6 @@
 import React, { JSX } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { useOutletContext } from "react-router-dom";
 
 interface PaginationProps {
   pageContent: (JSX.Element | undefined)[],
@@ -8,7 +9,8 @@ interface PaginationProps {
 
 export default function Pagination({ pageContent, lastPage } : PaginationProps) {
     
-  const currentTheme = localStorage.getItem('theme') || 'blue'
+  const context: {theme: string, indicator: string} = useOutletContext()
+  const theme = context ? context.theme : 'blue'
 
   const [page, setPage] = React.useState(0)
   const [selectedLog, setSelectedLog] = React.useState(pageContent.slice(page * 10, (page + 1) * 10))
@@ -22,6 +24,7 @@ export default function Pagination({ pageContent, lastPage } : PaginationProps) 
     type === '-' && page > 0 && setPage(prev => prev - 1)
   }
 
+
   return (
     <>
       <div className="log__entries">
@@ -29,12 +32,12 @@ export default function Pagination({ pageContent, lastPage } : PaginationProps) 
           </div>
       {lastPage > 1 && <div className="pagination">
         <button
-        className={`button pagination__button ${currentTheme}`}
+        className={`button pagination__button ${theme}`}
         onClick={() => changePage('-')}
         ><MdKeyboardArrowLeft /></button>
         <p>{page + 1} / {lastPage}</p>
         <button
-        className={`button pagination__button ${currentTheme}`}
+        className={`button pagination__button ${theme}`}
         onClick={() => changePage('+')}
         ><MdKeyboardArrowRight /></button>
       </div>}

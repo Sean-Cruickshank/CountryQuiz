@@ -1,14 +1,51 @@
 .stats {
   text-align: center;
+
+  &__panel {
+    max-width: 800px;
+    background-color: white;
+    border: solid 2px darkgray;
+  }
+
+  &__text {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    gap: 35px;
+
+    & p {
+      width: max-content;
+      margin: 0;
+      flex: 1;
+    }
+
+    &--p1 {
+      text-align: right;
+    }
+
+    &--p2 {
+      text-align: left;
+    }
+  }
   
   &__entries {
     margin-inline: auto;
+  }
+
+  &__entry {
+    & div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   &__buttons {
     display: flex;
     justify-content: center;
     gap: 100px;
+    margin-top: 30px;
   }
 
   &__reset-history, &__reset-highscore {
@@ -23,7 +60,7 @@
   
   &__entry, &__entry-titles {
     display: grid;
-    grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
     text-align: center;
   }
 

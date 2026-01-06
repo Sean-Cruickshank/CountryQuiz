@@ -42,9 +42,8 @@ $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpi
   }
 }
 
-// Sets background colours for the nodes, recap, and post-game answers log when a question is answered correctly
-// Sets font colour for the "CORRECT!" header in the recap
-@mixin indicatorsCorrect() {
+// Sets styles for the nodes and recap when a question is answered correctly
+@mixin recapCorrect() {
   @each $indicator in $indicators {
     &.#{map-get($indicator, 'title')} {
     background-color: var(--#{map-get($indicator, 'correct')}IndA);
@@ -56,13 +55,31 @@ $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpi
 }
 
 // Does the same as above but for when a question is answered incorrectly
-@mixin indicatorsIncorrect() {
+@mixin recapIncorrect() {
   @each $indicator in $indicators {
     &.#{map-get($indicator, 'title')} {
     background-color: var(--#{map-get($indicator, 'incorrect')}IndA);
     & .recap__result {
       color: var(--#{map-get($indicator, 'incorrect')}IndB);
     }
+  }
+  }
+}
+
+// Sets styles for the answer log when a question is answered correctly
+@mixin logEntryCorrect() {
+  @each $indicator in $indicators {
+    &.#{map-get($indicator, 'title')} {
+    color: var(--#{map-get($indicator, 'correct')}IndA);
+  }
+  }
+}
+
+// Does the same as above but for when a question is answered incorrectly
+@mixin logEntryIncorrect() {
+  @each $indicator in $indicators {
+    &.#{map-get($indicator, 'title')} {
+    color: var(--#{map-get($indicator, 'incorrect')}IndA);
   }
   }
 }
@@ -87,10 +104,13 @@ $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpi
 $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
 
 // Sets the text colour for the footer menu based on the active theme
-@mixin footerTextThemes() {
+@mixin footerThemes() {
   @each $theme in $themes {
     &.#{$theme} {
       color: var(--#{$theme}C);
+      & a {
+        color: var(--#{$theme}C);
+      }
     }
   }
 }
@@ -100,6 +120,15 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
   @each $theme in $themes {
     &.#{$theme} {
       background-color: var(--#{$theme}B);
+    }
+  }
+}
+
+// Sets the highlighter colour for your guessed answer in the recap based on the active theme
+@mixin logEntryThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      background-color: var(--#{$theme}A);
     }
   }
 }
@@ -209,6 +238,16 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
     &.#{$theme} {
       background-color: var(--#{$theme}C);
       color: var(--#{$theme}A);
+    }
+  }
+}
+
+// Background and border colour for the panels on the Start Game, Game Over, and Stats pages
+@mixin panelThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      background-color: var(--#{$theme}A);
+      border: solid 2px var(--#{$theme}C);
     }
   }
 }

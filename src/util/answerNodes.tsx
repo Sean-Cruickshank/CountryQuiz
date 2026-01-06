@@ -1,21 +1,24 @@
 import { nanoid } from "nanoid"
 
 import { Country } from "./interfaces"
+import { useOutletContext } from "react-router-dom"
 
 
 export function generateAnswerNodes(answerNodes: string[], gameLength: number) {
+  const context: {theme: string, indicator: string} = useOutletContext()
+  const indicator = context ? context.indicator : 'greenred'
+  
   const nodeStyles = {
     width: `${100 / gameLength}%`
   }
-  // Grabs the current indicator so it can be applied to the nodes
-  const currentIndicator = localStorage.getItem('indicator') || 'greenred'
+
   return answerNodes.map(node => {
     return (
       <div className="node__container" style={nodeStyles}>
         <span
         key={nanoid()}
-        className={`node node--${node} ${currentIndicator}`}
-        onClick={() => console.log(currentIndicator)}
+        className={`node node--${node} ${indicator}`}
+        onClick={() => console.log(indicator)}
         ></span>
       </div>
     )

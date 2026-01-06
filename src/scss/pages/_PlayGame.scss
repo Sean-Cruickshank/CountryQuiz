@@ -159,12 +159,12 @@
 
   &--correct {
     @extend .node;
-    @include mixins.indicatorsCorrect()
+    @include mixins.recapCorrect()
   }
 
   &--incorrect {
     @extend .node;
-    @include mixins.indicatorsIncorrect()
+    @include mixins.recapIncorrect()
   }
 }
 

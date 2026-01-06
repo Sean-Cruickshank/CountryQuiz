@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid"
 import dayjs from "dayjs"
 import React, { JSX } from "react"
-import { Navigate, useLocation } from "react-router-dom"
+import { Navigate, useLocation, useOutletContext } from "react-router-dom"
 
 import GameOver from "./GameOver"
 import Recap from "./Recap.tsx"
@@ -71,8 +71,8 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   // Handles the game active status, used for triggering things when the game starts/ends
   const [gameActive, setGameActive] = React.useState(true)
 
-  // Grabs the current page theme so it can be applied to the answer buttons
-  const currentTheme = localStorage.getItem('theme') || 'blue'
+  const context: {theme: string, indicator: string} = useOutletContext()
+  const theme = context ? context.theme : 'blue'
 
   // Generates a new question when the category is selected
   function categoryOnUpdate() {
@@ -154,7 +154,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       index++
       return (
         <div
-          className={`answers__option ${currentTheme} ${!gameActive && 'disabled'}`}
+          className={`answers__option ${theme} ${!gameActive && 'disabled'}`}
           key={nanoid()}
         >
           <button
@@ -292,7 +292,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   if (countryData.length > 0 && location.state !== null) {
     return (
       <div className="play-game">
-        <div className={`play-game__progress ${currentTheme}`}>
+        <div className={`play-game__progress ${theme}`}>
           <p>Question {round}/{gameLength}</p>
           <div className="scoreboard">
             <p>Score: {score}</p>
@@ -302,13 +302,13 @@ export default function PlayGame({ countryData }: PlayGameProps) {
         
 
         <h2
-          className={`play-game__question ${currentTheme}`}
+          className={`play-game__question ${theme}`}
         >{generateTitle(1, category)}</h2>
 
         {timerActive && gameActive && <div className="timer">
           <p className="timer__text">{timer}</p>
           <meter
-            className={`timer__meter ${currentTheme}`}
+            className={`timer__meter ${theme}`}
             value={timer}
             max={timerDuration}
           >{timer}</meter>
@@ -324,7 +324,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
 
         <Recap
           category={category}
-          currentTheme={currentTheme}
           prevGuess={prevGuess}
           prevAnswer={prevAnswer}
           prevAnswers={prevAnswers}
@@ -336,7 +335,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
             <div className="play-game__button-div">
               <button
                 title="Resign"
-                className={`resign-button button ${currentTheme}`}
+                className={`resign-button button ${theme}`}
                 onClick={() => {setGameActive(false); endMatch()}}
              >Resign</button>
             </div>

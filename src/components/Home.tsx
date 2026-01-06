@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useOutletContext } from "react-router-dom"
 
 export default function Home() {
-  
-  // Grabs the current page theme so it can be applied to the answer buttons
-  const currentTheme = localStorage.getItem('theme') || 'blue'
+
+  const context: {theme: string, indicator: string} = useOutletContext()
+  const theme = context ? context.theme : 'blue'
 
   let navigate = useNavigate()
   
@@ -21,13 +21,13 @@ export default function Home() {
       <p>Big small </p>
       <button
         title="New Game"
-        className={`button button__stats ${currentTheme}`}
+        className={`button button__stats ${theme}`}
         onClick={() => viewPage('start')}
         >New Game
       </button>
       <button
         title="View Stats"
-        className={`button button__stats ${currentTheme}`}
+        className={`button button__stats ${theme}`}
         onClick={() => viewPage('stats')}
         >View Stats
       </button>

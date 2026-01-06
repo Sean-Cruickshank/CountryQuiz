@@ -7,12 +7,12 @@
 
   &--correct {
     @extend .recap;
-    @include mixins.indicatorsCorrect()
+    @include mixins.recapCorrect()
   }
 
   &--incorrect {
     @extend .recap;
-    @include mixins.indicatorsIncorrect()
+    @include mixins.recapIncorrect()
   }
 
   &__result {

@@ -8,47 +8,17 @@
     left: 0;
     z-index: 1;
     width: 100%;
-    height: calc(100% + 150px);
+    height: calc(100% + 50px);
     z-index: 1;
     background-color: rgba($color: #000000, $alpha: 0.4);
   }
 
-  &__details {
-    width: 90%;
+  &__panel {
     max-width: 750px;
-    margin-inline: auto;
-    padding: 20px 0;
     margin-top: 50px;
-    margin-bottom: 50px;
     background-color: white;
     border: solid 2px darkgray;
-    border-radius: 50px;
     z-index: 2;
-  }
-
-  &__message {
-    font-weight: bold;
-    & span {
-      display: inline-block;
-      width: min-content;
-      margin: 0;
-      animation-name: wave;
-      animation-duration: 0.6s;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
-      + .pos-1 { animation-delay: 0.1s; }
-      + .pos-2 { animation-delay: 0.2s; }
-      + .pos-3 { animation-delay: 0.3s; }
-      + .pos-4 { animation-delay: 0.4s; }
-      + .pos-5 { animation-delay: 0.5s; }
-      + .pos-6 { animation-delay: 0.6s; }
-    }
-    &--highscore {
-      color: green;
-    }
-    &--perfectgame {
-      color: rgb(181, 118, 208);
-    }
   }
 
   &__buttons {
@@ -59,44 +29,47 @@
   }
 }
 
-@keyframes wave {
-  0%, 100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-2px);
-  }
-}
-
 .log {
   position: relative;
   z-index: 2;
   margin-top: 10px;
-  background-color: lightgray;
-
+  @include mixins.logEntryThemes();
+  
   &__subheaders {
     display: grid;
     grid-template-columns: 2fr 3fr 5fr 5fr;
     background-color: white;
   }
-
+  
   &__entries {
     min-height: 505px;
   }
-
+  
   &__entry {
     display: grid;
     grid-template-columns: 2fr 3fr 5fr 5fr;
+  }
+  
+  &__guess {
+    font-weight: bold;
+    width: max-content;
+    margin-inline: auto;
+    padding: 2px;
 
     &--correct {
-      @extend .log__entry;
-      @include mixins.indicatorsCorrect()
-    }
+      @include mixins.logEntryCorrect();
 
+      &.yellowpink {
+        background-color: rgba($color: #000000, $alpha: 0.2);
+      }
+    }
+  
     &--incorrect {
-      @extend .log__entry;
-      @include mixins.indicatorsIncorrect()
+      @include mixins.logEntryIncorrect();
+      
+      &.blueyellow {
+        background-color: rgba($color: #000000, $alpha: 0.2);
+      }
     }
   }
 }

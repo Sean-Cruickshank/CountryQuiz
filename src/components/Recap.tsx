@@ -8,10 +8,10 @@ import React, { JSX } from "react"
 import generateTitle from "../util/generateTitle"
 
 import { Country, AnswersLog } from "../util/interfaces"
+import { useOutletContext } from "react-router-dom"
 
 interface RecapProps {
   category: string[],
-  currentTheme: string,
   prevGuess?: Country,
   prevAnswer?: Country,
   prevAnswers?: Country[],
@@ -19,9 +19,11 @@ interface RecapProps {
   setAnswersLog: React.Dispatch<React.SetStateAction<AnswersLog[]>>
 }
 
-export default function Recap({ category, currentTheme, prevGuess, prevAnswer, prevAnswers, answersLog, setAnswersLog }: RecapProps) {
-  // Grabs the current indicator so it can be applied to the nodes
-  const currentIndicator = localStorage.getItem('indicator') || 'greenred'
+export default function Recap({ category, prevGuess, prevAnswer, prevAnswers, answersLog, setAnswersLog }: RecapProps) {
+
+  const context: {theme: string, indicator: string} = useOutletContext()
+  const theme = context ? context.theme : 'blue'
+  const indicator = context ? context.indicator : 'greenred'
   
   // Generates the recap for the previous question, shows the correct answer and the guessed answer
   function generateRecap() {
@@ -70,7 +72,7 @@ export default function Recap({ category, currentTheme, prevGuess, prevAnswer, p
             className={`
               recap__answers__item
               ${prevGuessName === country.name
-                ? `recap__answers__guess ${currentTheme}`
+                ? `recap__answers__guess ${theme}`
                 : ''}
             `}>
             <b>#{index}</b>
@@ -92,8 +94,8 @@ export default function Recap({ category, currentTheme, prevGuess, prevAnswer, p
   
       return (
         <div className={prevGuessName === prevAnswerName
-          ? `${currentIndicator} recap recap--correct`
-          : `${currentIndicator} recap recap--incorrect`}>
+          ? `${indicator} recap recap--correct`
+          : `${indicator} recap recap--incorrect`}>
           <div className="recap__content">
             <div className="recap__result">
               {prevGuessName === prevAnswerName

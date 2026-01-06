@@ -5,12 +5,11 @@ import { nanoid } from "nanoid";
 
 interface NavbarProps {
   selectTheme: (newTheme: string, type: string) => void
+  theme: string,
+  indicator: string
 }
 
-export default function Navbar({ selectTheme }: NavbarProps) {
-
-  const currentTheme = localStorage.getItem('theme') || 'blue'
-  const currentIndicator = localStorage.getItem('indicator') || 'greenred'
+export default function Navbar({ selectTheme, theme, indicator }: NavbarProps) {
 
   const [toggle, setToggle] = React.useState(false)
 
@@ -40,7 +39,7 @@ export default function Navbar({ selectTheme }: NavbarProps) {
       return (
         <a
           key={nanoid()}
-          className={`theme__select ${l} ${l === currentTheme ? 'active' : ''}`}
+          className={`theme__select ${l} ${l === theme ? 'active' : ''}`}
           onClick={() => dropdownSelect(l, 'theme')}
         >{colour}<div></div></a>
       )
@@ -55,7 +54,7 @@ export default function Navbar({ selectTheme }: NavbarProps) {
       return (
         <a
           key={nanoid()}
-          className={`indicator__select ${l} ${l === currentIndicator ? 'active' : ''}`}
+          className={`indicator__select ${l} ${l === indicator ? 'active' : ''}`}
           onClick={() => dropdownSelect(l, 'indicator')}
         >
           <div className="indicator__samples">

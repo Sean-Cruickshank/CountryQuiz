@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useOutletContext } from "react-router-dom"
 import { useEffect, useState } from "react"
 
 export default function StartGame() {
-    // Grabs the current page theme so it can be applied to the answer buttons
-    const currentTheme = localStorage.getItem('theme') || 'blue'
+    const context: {theme: string, indicator: string} = useOutletContext()
+    const theme = context ? context.theme : 'blue'
 
     const savedGameLength = Number(localStorage.getItem('gameLength')) || 30
     const savedTimerLength = Number(localStorage.getItem('timerLength')) || 10
@@ -77,13 +77,13 @@ export default function StartGame() {
     return (
         <div className="start-game">
             <h1>New Game</h1>
-            <div className="start-game__settings">
-                <div className="start-game__settings--top">
+            <div className={`panel start-game__panel ${theme}`}>
+                <div className="start-game__panel--top">
                     <div>
                         <label htmlFor="timerActive">Enable Timer:</label>
                         <label className='switch'>
                             <input type="checkbox"
-                                id="timerActive" name="timerActive" className={`switch__input ${currentTheme}`}
+                                id="timerActive" name="timerActive" className={`switch__input ${theme}`}
                                 checked={timerActive} onChange={handleCheckbox}>
                             </input>
                             <span className='slider'></span>
@@ -93,20 +93,20 @@ export default function StartGame() {
 
                 <hr />
                 
-                <div className="start-game__settings--section">
+                <div className="start-game__panel--section">
                     <label htmlFor="gameLength">NUMBER OF QUESTIONS</label>
                     <input type="range"
-                        id="gameLength" name="gameLength" className={`start-game__range ${currentTheme}`}
+                        id="gameLength" name="gameLength" className={`start-game__range ${theme}`}
                         min="5" max="100" step="5"
                         value={gameLength} onChange={handleRange}>
                     </input>
                     <p className="start-game__output">{gameLength}</p>
                 </div>
 
-                <div className="start-game__settings--section">
+                <div className="start-game__panel--section">
                     <label htmlFor="timerLength">ROUND LENGTH</label>
                     <input type="range"
-                        id="timerLength" name="timerLength" className={`start-game__range ${currentTheme}`}
+                        id="timerLength" name="timerLength" className={`start-game__range ${theme}`}
                         min="5" max="60" step="5"
                         value={timerLength} onChange={handleRange} disabled={!timerActive}>
                     </input>
@@ -118,7 +118,7 @@ export default function StartGame() {
 
             <button
                 title="Start Game"
-                className={`button start-game__button ${currentTheme}`}
+                className={`button start-game__button ${theme}`}
                 onClick={() => viewPage('play')}
                 >Start Game
             </button>

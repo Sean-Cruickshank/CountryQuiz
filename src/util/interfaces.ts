@@ -20,13 +20,3 @@ export interface AnswerStats {
   higharea:  {Q: number, A: number},
   lowarea:  {Q: number, A: number},
 }
-
-export interface RecapParameters {
-  category: string[],
-  currentTheme: string,
-  prevGuess?: Country,
-  prevAnswer?: Country,
-  prevAnswers?: Country[],
-  answersLog: AnswersLog[],
-  setAnswersLog: React.Dispatch<React.SetStateAction<AnswersLog[]>>
-}

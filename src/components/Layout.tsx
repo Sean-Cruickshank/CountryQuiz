@@ -35,12 +35,14 @@ export default function Layout() {
   // Class names for every element on the page that needs to be updated when the theme changes
   const themeUpdateList = [
     'html',
+    '.footer',
     '.answers__option',
     '.meter',
-    '.footer__navlink',
     '.button',
     '.start-game__range',
-    '.switch__input'
+    '.switch__input',
+    '.log',
+    '.panel'
   ]
 
   function updateTheme(newTheme: string) {
@@ -66,7 +68,7 @@ export default function Layout() {
   const indicatorUpdateList = [
     '.node',
     '.recap',
-    '.log__entry'
+    '.log__guess'
   ]
 
   function updateIndicator(newIndicator: string) {
@@ -80,11 +82,11 @@ export default function Layout() {
   
   return (
     <>
-      <Navbar selectTheme={selectTheme} />
+      <Navbar theme={theme} indicator={indicator} selectTheme={selectTheme} />
       <div className='layout-outlet'>
-        <Outlet />
+        <Outlet context={{theme, indicator}} />
       </div>
-      <Footer />
+      <Footer theme={theme} />
     </>
   )
 }
