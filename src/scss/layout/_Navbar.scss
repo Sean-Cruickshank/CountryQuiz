@@ -7,26 +7,27 @@ nav {
   top: 0;
   background-color: #222;
   display: flex;
-  justify-content: right;
+  justify-content: left;
   align-items: center;
   z-index: 99;
   @include mixins.navThemes();
+
+  @include mixins.breakpoint('small') {
+    justify-content: center;
+  }
 }
 
 .nav {
   &__title {
     width: max-content;
-    text-align: center;
-    margin-inline: auto;
+
     cursor: pointer;
 
     & h1 {
       color: white;
-      font-size: 1.5rem;
-      letter-spacing: 6px;
+      font-size: clamp(0.9rem, 0.6158rem + 1.2632vw, 1.5rem);
       font-weight: 900;
-      margin: 0;
-      padding: 0;
+      margin-inline: 10px;
     }
   }
 
@@ -37,16 +38,30 @@ nav {
   }
   
   &__icon {
-    width: 30px;
+    width: 20px;
     aspect-ratio: 1;
     border-radius: 100%;
-    margin-inline: 10px;
+    margin-inline: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
-
     transition: 0.3s;
     cursor: pointer;
+
+    @include mixins.breakpoint('medium') {
+      width: 24px;
+      margin-inline: 6px;
+    }
+
+    @include mixins.breakpoint('large') {
+      width: 28px;
+      margin-inline: 8px;
+    }
+
+    @include mixins.breakpoint('xlarge') {
+      width: 30px;
+      margin-inline: 10px;
+    }
 
     &:hover {
       transform: scale(0.95);
@@ -59,7 +74,7 @@ nav {
 
     & svg {
       color: #222;
-      font-size: 1rem;
+      font-size: clamp(0.7rem, 0.4632rem + 1.0526vw, 1.2rem);
     }
   }
 }
