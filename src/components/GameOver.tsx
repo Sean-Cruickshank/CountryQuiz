@@ -124,7 +124,7 @@ export default function GameOver({ gameLength, answersLog, answerStats, score, h
           <div className="gameover__buttons">
             <button
               title="New Game"
-              className={`play-again-button button ${theme}`}
+              className={`new-game-button button ${theme}`}
               onClick={() => viewPage('start')}
             >New Game</button>
 

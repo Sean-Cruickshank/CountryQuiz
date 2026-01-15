@@ -6,25 +6,25 @@ html {
   overflow-x: hidden;
 }
 html.blue {
-  background: linear-gradient(180deg, white 0% 5%, var(--blueB) 100vh);
+  background: linear-gradient(180deg, white 0% 5%, var(--blueA) 100vh);
 }
 html.yellow {
-  background: linear-gradient(180deg, white 0% 5%, var(--yellowB) 100vh);
+  background: linear-gradient(180deg, white 0% 5%, var(--yellowA) 100vh);
 }
 html.green {
-  background: linear-gradient(180deg, white 0% 5%, var(--greenB) 100vh);
+  background: linear-gradient(180deg, white 0% 5%, var(--greenA) 100vh);
 }
 html.orange {
-  background: linear-gradient(180deg, white 0% 5%, var(--orangeB) 100vh);
+  background: linear-gradient(180deg, white 0% 5%, var(--orangeA) 100vh);
 }
 html.pink {
-  background: linear-gradient(180deg, white 0% 5%, var(--pinkB) 100vh);
+  background: linear-gradient(180deg, white 0% 5%, var(--pinkA) 100vh);
 }
 html.teal {
-  background: linear-gradient(180deg, white 0% 5%, var(--tealB) 100vh);
+  background: linear-gradient(180deg, white 0% 5%, var(--tealA) 100vh);
 }
 html.purple {
-  background: linear-gradient(180deg, white 0% 5%, var(--purpleB) 100vh);
+  background: linear-gradient(180deg, white 0% 5%, var(--purpleA) 100vh);
 }
 
 body {
@@ -32,8 +32,8 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 40px;
+  padding-bottom: 20px;
 }
 
 *, *::before, *::after {
@@ -53,7 +53,7 @@ a, a:visited, a:active {
 }
 
 meter {
-  border: solid 1px black;
+  border: solid 1px #222;
   border-radius: 10px;
   height: 15px;
   background: rgb(226, 226, 226);
@@ -603,11 +603,23 @@ input:checked + .slider:before {
 }
 
 html {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", sans-serif;
+  color: #222;
 }
 
 .answers__button__text {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", sans-serif;
+  color: #222;
+}
+
+h1 {
+  text-transform: uppercase;
+  letter-spacing: 6px;
+}
+
+h2 {
+  text-transform: uppercase;
+  letter-spacing: 6px;
 }
 
 @keyframes wave {
@@ -655,6 +667,70 @@ html {
 
 .home {
   text-align: center;
+  margin-bottom: 150px;
+}
+.home.blue a, .home.blue span, .home.blue h2 {
+  color: var(--blueC);
+}
+.home.yellow a, .home.yellow span, .home.yellow h2 {
+  color: var(--yellowC);
+}
+.home.green a, .home.green span, .home.green h2 {
+  color: var(--greenC);
+}
+.home.orange a, .home.orange span, .home.orange h2 {
+  color: var(--orangeC);
+}
+.home.pink a, .home.pink span, .home.pink h2 {
+  color: var(--pinkC);
+}
+.home.teal a, .home.teal span, .home.teal h2 {
+  color: var(--tealC);
+}
+.home.purple a, .home.purple span, .home.purple h2 {
+  color: var(--purpleC);
+}
+.home h2 {
+  margin-top: 100px;
+  font-size: 2.5rem;
+}
+.home p {
+  font-size: 1.4rem;
+}
+.home a {
+  font-weight: bold;
+}
+.home a:hover {
+  text-decoration: underline;
+}
+.home img {
+  position: fixed;
+  width: 40%;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  z-index: -1;
+  opacity: 0.2;
+}
+.home__text-container {
+  width: 80%;
+  margin-inline: auto;
+}
+.home__text-container span {
+  font-weight: bold;
+}
+.home__controls {
+  width: clamp(400px, 60%, 800px);
+  margin-inline: auto;
+  font-weight: bold;
+}
+.home__controls--A {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.home__controls--B {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .play-game {
@@ -776,7 +852,7 @@ html {
 .answers__option {
   display: flex;
   justify-content: center;
-  background: black;
+  background: #222;
   border-radius: 500px;
   padding: 4px;
   aspect-ratio: 3.7;
@@ -878,8 +954,8 @@ html {
   cursor: default;
 }
 .answers__button__alpha {
-  background-color: black;
-  color: black;
+  background-color: #222;
+  color: #222;
   font-size: 1.4rem;
   font-weight: bold;
   aspect-ratio: 1;
@@ -889,7 +965,7 @@ html {
   border-radius: 100%;
 }
 .answers__button__text {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 100;
   margin: 0;
 }
@@ -905,7 +981,7 @@ html {
 .node, .node--incorrect, .node--correct {
   aspect-ratio: 4;
   max-height: 10px;
-  background-color: black;
+  background-color: #222;
   display: inline-block;
   width: 100%;
 }
@@ -1044,7 +1120,7 @@ html {
   left: 0;
   z-index: 1;
   width: 100%;
-  height: calc(100% + 50px);
+  height: calc(100% + 20px);
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.4);
 }
@@ -1154,7 +1230,7 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: black;
+  color: #222;
   background-color: white;
 }
 .pagination__button {
@@ -1165,7 +1241,7 @@ html {
   font-size: 1.4rem;
 }
 .pagination svg {
-  color: black;
+  color: #222;
 }
 
 .stats {
@@ -1213,7 +1289,7 @@ html {
   width: 150px;
   aspect-ratio: 3;
 }
-.stats__play-again {
+.stats__new-game {
   display: block;
   margin: 40px auto;
 }
@@ -1359,49 +1435,101 @@ html {
 nav {
   position: fixed;
   width: 100%;
-  height: 50px;
+  height: 40px;
   top: 0;
-  background-color: black;
+  background-color: #222;
   display: flex;
+  justify-content: right;
   align-items: center;
   z-index: 99;
 }
-nav h1 {
-  font-size: 2rem;
-  margin: auto;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
+nav.blue h1 {
+  color: var(--blueB);
+}
+nav.blue .nav__icon {
+  background-color: var(--blueA);
+}
+nav.yellow h1 {
+  color: var(--yellowB);
+}
+nav.yellow .nav__icon {
+  background-color: var(--yellowA);
+}
+nav.green h1 {
+  color: var(--greenB);
+}
+nav.green .nav__icon {
+  background-color: var(--greenA);
+}
+nav.orange h1 {
+  color: var(--orangeB);
+}
+nav.orange .nav__icon {
+  background-color: var(--orangeA);
+}
+nav.pink h1 {
+  color: var(--pinkB);
+}
+nav.pink .nav__icon {
+  background-color: var(--pinkA);
+}
+nav.teal h1 {
+  color: var(--tealB);
+}
+nav.teal .nav__icon {
+  background-color: var(--tealA);
+}
+nav.purple h1 {
+  color: var(--purpleB);
+}
+nav.purple .nav__icon {
+  background-color: var(--purpleA);
 }
 
-.nav__home {
-  width: 40px;
+.nav__title {
+  width: -moz-max-content;
+  width: max-content;
+  text-align: center;
+  margin-inline: auto;
+  cursor: pointer;
+}
+.nav__title h1 {
+  color: white;
+  font-size: 1.5rem;
+  letter-spacing: 6px;
+  font-weight: 900;
+  margin: 0;
+  padding: 0;
+}
+.nav__icons {
+  position: absolute;
+  right: 0;
+  display: flex;
+}
+.nav__icon {
+  width: 30px;
   aspect-ratio: 1;
   border-radius: 100%;
-  margin-left: 5px;
+  margin-inline: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
   transition: 0.3s;
+  cursor: pointer;
 }
-.nav__home:hover {
+.nav__icon:hover {
   transform: scale(0.95);
   box-shadow: 0px 0px 10px white;
 }
-.nav__home:active {
+.nav__icon:active {
   transform: scale(0.9);
 }
-.nav__home svg {
-  color: black;
-  font-size: 1.5rem;
-  cursor: pointer;
+.nav__icon svg {
+  color: #222;
+  font-size: 1rem;
 }
 
 .theme {
-  position: absolute;
-  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1409,7 +1537,7 @@ nav h1 {
   width: 50px;
 }
 .theme__icon {
-  width: 35px;
+  width: 30px;
   transition: 0.25s;
   cursor: pointer;
 }
@@ -1426,7 +1554,7 @@ nav h1 {
   top: 25px;
   display: none;
   border-radius: 10px;
-  background-color: black;
+  background-color: #222;
   color: white;
   width: 200px;
   padding-bottom: 15px;
@@ -1440,6 +1568,8 @@ nav h1 {
 }
 .theme__dropdown h4 {
   margin: 10px;
+  font-weight: 100;
+  letter-spacing: 3px;
 }
 .theme__background {
   position: absolute;
@@ -1462,7 +1592,7 @@ nav h1 {
   padding: 4px 12px;
   width: 80%;
   border-radius: 5px;
-  color: black;
+  color: #222;
   display: flex;
   justify-content: space-between;
 }
@@ -1525,7 +1655,7 @@ nav h1 {
 .theme__select div {
   width: 20px;
   aspect-ratio: 1;
-  border: 1px solid black;
+  border: 1px solid #222;
   border-radius: 100%;
 }
 
@@ -1540,11 +1670,11 @@ nav h1 {
   padding: 4px 12px;
   width: 80%;
   border-radius: 5px;
-  color: black;
+  color: #222;
   display: flex;
   justify-content: center;
   background-color: #eee;
-  border: solid 2px black;
+  border: solid 2px #222;
 }
 .indicator__select.greenred #sampleA {
   background-color: var(--GR_greenIndA);
@@ -1591,7 +1721,7 @@ nav h1 {
   width: 15px;
   margin-inline: 2px;
   aspect-ratio: 1;
-  border: 1px solid black;
+  border: 1px solid #222;
 }
 
 .theme__select.active, .indicator__select.active {
@@ -1610,49 +1740,52 @@ nav h1 {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 50px;
+  height: 20px;
   color: white;
-  background-color: black;
+  background-color: #222;
   z-index: 99;
+  font-weight: 100;
+  letter-spacing: 3px;
+  font-size: 0.6rem;
 }
 .footer.blue {
-  color: var(--blueC);
+  color: var(--blueB);
 }
 .footer.blue a {
   color: var(--blueC);
 }
 .footer.yellow {
-  color: var(--yellowC);
+  color: var(--yellowB);
 }
 .footer.yellow a {
   color: var(--yellowC);
 }
 .footer.green {
-  color: var(--greenC);
+  color: var(--greenB);
 }
 .footer.green a {
   color: var(--greenC);
 }
 .footer.orange {
-  color: var(--orangeC);
+  color: var(--orangeB);
 }
 .footer.orange a {
   color: var(--orangeC);
 }
 .footer.pink {
-  color: var(--pinkC);
+  color: var(--pinkB);
 }
 .footer.pink a {
   color: var(--pinkC);
 }
 .footer.teal {
-  color: var(--tealC);
+  color: var(--tealB);
 }
 .footer.teal a {
   color: var(--tealC);
 }
 .footer.purple {
-  color: var(--purpleC);
+  color: var(--purpleB);
 }
 .footer.purple a {
   color: var(--purpleC);

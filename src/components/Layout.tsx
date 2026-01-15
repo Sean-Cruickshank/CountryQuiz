@@ -8,9 +8,33 @@ export default function Layout() {
   const [theme, setTheme] = React.useState(localStorage.getItem('theme') || 'blue')
   const [indicator, setIndicator] = React.useState(localStorage.getItem('indicator') || 'greenred')
 
+  // Detects whether a game is currently active with at least one round completed
+  // Determines whether or not to trigger a redirect warning popup
+  const [redirectWarning, setRedirectWarning] = React.useState(false)
+
   React.useEffect(() => {
     updateTheme(theme)
     updateIndicator(indicator)
+  },[])
+
+  // Enables keyboard functionality for shortcuts
+  React.useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      let className = ''
+      event.key === 'a' || event.key === 'A' || event.key === '1' ? className = '.answer__button-A' : ''
+      event.key === 'b' || event.key === 'B' || event.key === '2' ? className = '.answer__button-B' : ''
+      event.key === 'c' || event.key === 'C' || event.key === '3' ? className = '.answer__button-C' : ''
+      event.key === 'd' || event.key === 'D' || event.key === '4' ? className = '.answer__button-D' : ''
+      event.key === 'P' || event.key === 'p' ? className = '.play-again-button' : ''
+      event.key === 'H' || event.key === 'h' ? className = '.nav__home' : ''
+      event.key === 'N' || event.key === 'n' ? className = '.nav__new-game' : ''
+      event.key === 'S' || event.key === 's' ? className = '.nav__stats' : ''
+      event.key === 'Escape' ? className = '.resign-button' : ''
+      let element: HTMLElement | null = document.querySelector(className)
+      if (element) element?.click()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
   },[])
 
   React.useEffect(() => {
@@ -35,6 +59,8 @@ export default function Layout() {
   // Class names for every element on the page that needs to be updated when the theme changes
   const themeUpdateList = [
     'html',
+    '.home',
+    '.nav',
     '.footer',
     '.answers__option',
     '.meter',
@@ -82,9 +108,9 @@ export default function Layout() {
   
   return (
     <>
-      <Navbar theme={theme} indicator={indicator} selectTheme={selectTheme} />
+      <Navbar theme={theme} indicator={indicator} selectTheme={selectTheme} redirectWarning={redirectWarning} />
       <div className='layout-outlet'>
-        <Outlet context={{theme, indicator}} />
+        <Outlet context={{theme, indicator, setRedirectWarning}} />
       </div>
       <Footer theme={theme} />
     </>

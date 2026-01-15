@@ -8,7 +8,7 @@
     left: 0;
     z-index: 1;
     width: 100%;
-    height: calc(100% + 50px);
+    height: calc(100% + 20px);
     z-index: 1;
     background-color: rgba($color: #000000, $alpha: 0.4);
   }
@@ -78,7 +78,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: black;
+  color: #222;
   background-color: white;
 
   &__button {
@@ -90,6 +90,6 @@
   }
 
   & svg {
-    color: black;
+    color: #222;
   }
 }

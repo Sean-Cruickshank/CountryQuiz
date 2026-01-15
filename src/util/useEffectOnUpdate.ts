@@ -2,7 +2,7 @@ import React from "react"
 
 export default function useEffectOnUpdate(
   effectFunction: () => void,
-  deps: any[][]
+  deps: React.DependencyList
 ) {
   const firstRender = React.useRef(true)
   React.useEffect(() => {

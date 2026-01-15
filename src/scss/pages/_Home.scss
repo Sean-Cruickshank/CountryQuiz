@@ -1,3 +1,59 @@
+@use '../base/mixins' as mixins;
+
 .home {
   text-align: center;
+  margin-bottom: 150px;
+  @include mixins.homeThemes();
+
+  & h2 {
+    margin-top: 100px;
+    font-size: 2.5rem;
+  }
+
+  & p {
+    font-size: 1.4rem;
+  }
+
+  & a {
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  & img {
+    position: fixed;
+    width: 40%;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: -1;
+    opacity: 0.2;
+  }
+
+  &__text-container {
+    width: 80%;
+    margin-inline: auto;
+
+    & span {
+      font-weight: bold;
+    }
+  }
+
+  &__controls {
+    width: clamp(400px, 60%, 800px);
+    margin-inline: auto;
+    font-weight: bold;
+
+    &--A {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    &--B {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
 }

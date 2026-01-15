@@ -33,15 +33,6 @@ $yellowpink: (
 
 $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpink;
 
-// Sets the background gradient for the body
-@mixin backgroundThemes() {
-  @each $theme in $themes {
-    &.#{$theme} {
-      background: linear-gradient(180deg, white 0% 5%, var(--#{$theme}B) 100vh);
-    }
-  }
-}
-
 // Sets styles for the nodes and recap when a question is answered correctly
 @mixin recapCorrect() {
   @each $indicator in $indicators {
@@ -103,12 +94,45 @@ $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpi
 
 $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
 
+// Sets the background gradient for the body
+@mixin backgroundThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      background: linear-gradient(180deg, white 0% 5%, var(--#{$theme}A) 100vh);
+    }
+  }
+}
+
+@mixin navThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      & h1 {
+        color: var(--#{$theme}B);
+      }
+
+      & .nav__icon {
+        background-color: var(--#{$theme}A);
+      }
+    }
+  }
+}
+
 // Sets the text colour for the footer menu based on the active theme
 @mixin footerThemes() {
   @each $theme in $themes {
     &.#{$theme} {
-      color: var(--#{$theme}C);
+      color: var(--#{$theme}B);
       & a {
+        color: var(--#{$theme}C);
+      }
+    }
+  }
+}
+
+@mixin homeThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      & a, span, h2 {
         color: var(--#{$theme}C);
       }
     }
@@ -124,7 +148,6 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
   }
 }
 
-// Sets the highlighter colour for your guessed answer in the recap based on the active theme
 @mixin logEntryThemes() {
   @each $theme in $themes {
     &.#{$theme} {
@@ -133,7 +156,7 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
   }
 }
 
-// Sets the background colour and border colour for buttons based on the active theme
+// Sets the background colour and text colour for buttons based on the active theme
 @mixin buttonThemes() {
   @each $theme in $themes {
     &.#{$theme} {

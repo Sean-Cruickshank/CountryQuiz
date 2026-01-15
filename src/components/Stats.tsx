@@ -96,6 +96,16 @@ export default function Stats() {
   } else {
     averageScore = 0
   }
+
+  function resetHighscore() {
+    const confirmation = window.confirm('Are you sure you want to reset your highscore? \nThis cannot be undone.')
+    confirmation && setHighscore(0)
+  }
+
+  function resetHistory() {
+    const confirmation = window.confirm('Are you sure you want to reset your match history? \nThis cannot be undone.')
+    confirmation && setPlayerHistory([])
+  }
   
   return (
     <div className="stats">
@@ -124,13 +134,13 @@ export default function Stats() {
         <div className="stats__buttons">
           <button
             title="Reset History"
-            onClick={() => setPlayerHistory([])}
+            onClick={() => resetHistory()}
             className={`stats__reset-history button ${theme}`}
             >Reset History
           </button>
           <button
             title="Reset Highscore"
-            onClick={() => setHighscore(0)}
+            onClick={() => resetHighscore()}
             className={`stats__reset-highscore button ${theme}`}
             >Reset Highscore
           </button>
@@ -138,8 +148,8 @@ export default function Stats() {
       </div>
 
       <button
-        title="Play Again"
-        className={`stats__play-again button ${theme}`}
+        title="New Game"
+        className={`stats__new-game button ${theme}`}
         onClick={() => navigate('/play')}
         >New Game
       </button>

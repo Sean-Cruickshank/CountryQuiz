@@ -19,11 +19,13 @@ interface PlayGameProps {
 }
 
 export default function PlayGame({ countryData }: PlayGameProps) {
-  // Contains the HTML for the four answer buttons
+  
+  const location = useLocation()
+
+  const { gameLength, timerLength, timerActive } = location.state
+
   const [displayData, setDisplayData] = React.useState<JSX.Element[]>([])
-
   const [score, setScore] = React.useState(0)
-
   const lsHighscore = localStorage.getItem('highscore')
   const [highscore, setHighscore] = React.useState(lsHighscore !== null ? JSON.parse(lsHighscore) : 0)
   React.useEffect(() => {
@@ -38,12 +40,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     }
   },[round])
 
-  const location = useLocation()
-  const gameLength: number = location.state ? location.state.gameLength : 10
-  const timerDuration: number = location.state ? location.state.timerLength : 10
-  const timerActive: boolean = location.state ? location.state.timerActive : true
-
-  const [timer, setTimer] = React.useState<number>(timerDuration)
+  const [timer, setTimer] = React.useState<number>(timerLength)
   let timeoutAnswer: Country = { id: 999, name: 'No Answer', population: 99, area: 99 }
 
   // Contains an array of all category IDs for that match
@@ -68,11 +65,12 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     lowarea: { Q: 0, A: 0 }
   })
 
-  // Handles the game active status, used for triggering things when the game starts/ends
   const [gameActive, setGameActive] = React.useState(true)
 
-  const context: {theme: string, indicator: string} = useOutletContext()
+  const context: {theme: string, indicator: string, setRedirectWarning: React.Dispatch<React.SetStateAction<boolean>>} = useOutletContext()
   const theme = context ? context.theme : 'blue'
+  const indicator = context ? context.indicator : 'greenred'
+  const setRedirectWarning = context && context.setRedirectWarning
 
   // Generates a new question when the category is selected
   function categoryOnUpdate() {
@@ -82,7 +80,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   }
 
   function runTimer() {
-    setTimer(timerDuration)
+    setTimer(timerLength)
   }
 
   // Handles logic for the timer
@@ -108,37 +106,8 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   // Custom useEffect for skipping the first render
   useEffectOnUpdate(categoryOnUpdate, [category])
 
-  // Enables keyboard functionality for the answer buttons, the resign button, and the play again button
   React.useEffect(() => {
     setCategory(generateCategory(category))
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'a' || event.key === 'A' || event.key === '1') {
-        let element: HTMLElement | null = document.querySelector('.answer__button-A')
-        element?.click()
-      }
-      if (event.key === 'b' || event.key === 'B' || event.key === '2') {
-        let element: HTMLElement | null = document.querySelector('.answer__button-B')
-        element?.click()
-      }
-      if (event.key === 'c' || event.key === 'C' || event.key === '3') {
-        let element: HTMLElement | null = document.querySelector('.answer__button-C')
-        element?.click()
-      }
-      if (event.key === 'd' || event.key === 'D' || event.key === '4') {
-        let element: HTMLElement | null = document.querySelector('.answer__button-D')
-        element?.click()
-      }
-      if (event.key === 'Enter') {
-        let element: HTMLElement | null = document.querySelector('.play-again-button')
-        element?.click()
-      }
-      if (event.key === 'Escape') {
-        let element: HTMLElement | null = document.querySelector('.resign-button')
-        element?.click()
-      }
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
   },[])
 
   const [countryAnswers, setCountryAnswers] = React.useState<Country[]>([])
@@ -288,6 +257,15 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       generateQuestion()
     }
   },[gameActive])
+
+  React.useEffect(() => {
+    if (gameActive && round > 1) {
+      setRedirectWarning(true)
+    }
+    if (!gameActive) {
+      setRedirectWarning(false)
+    }
+  },[round, gameActive])
   
   if (countryData.length > 0 && location.state !== null) {
     return (
@@ -310,7 +288,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
           <meter
             className={`timer__meter ${theme}`}
             value={timer}
-            max={timerDuration}
+            max={timerLength}
           >{timer}</meter>
         </div>}
         
@@ -319,7 +297,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
         </div>
 
         <div className="nodes">
-          {generateAnswerNodes(answerNodes, gameLength)}
+          {generateAnswerNodes(answerNodes, gameLength, indicator)}
         </div>
 
         <Recap

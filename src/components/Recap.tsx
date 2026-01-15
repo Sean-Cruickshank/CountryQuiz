@@ -1,9 +1,6 @@
 import breakCategory from "../util/breakCategory"
 import convertToMiles from "../util/convertToMiles"
-import useEffectOnUpdate from "../util/useEffectOnUpdate"
-
-import { nanoid } from "nanoid"
-import React, { JSX } from "react"
+import React from "react"
 
 import generateTitle from "../util/generateTitle"
 
@@ -24,110 +21,99 @@ export default function Recap({ category, prevGuess, prevAnswer, prevAnswers, an
   const context: {theme: string, indicator: string} = useOutletContext()
   const theme = context ? context.theme : 'blue'
   const indicator = context ? context.indicator : 'greenred'
-  
-  // Generates the recap for the previous question, shows the correct answer and the guessed answer
-  function generateRecap() {
-    if (category.length > 1) {
-      // Grabs some values from the previous quesiton
-      const [type, size] = breakCategory(category[category.length - 2])
-  
-      const prevGuessName: string = prevGuess
-        ? prevGuess.name
-        : ''
-      let prevGuessValue: number
-  
-      const prevAnswerName = prevAnswer
-      ? prevAnswer.name
-      : ''
-      let prevAnswerValue: number
-  
-      // Grab the category values from the previous guess/answer, save all values in the answers log, generate and return the HTML for the previous question recap
-      prevGuess
-      ? prevGuessValue = prevGuess[type]
-      : prevGuessValue = 0
-      prevAnswer
-      ? prevAnswerValue = prevAnswer[type]
-      : prevAnswerValue = 0
-      setAnswersLog([...answersLog, {
-        type, size,
-        prevGuessName, prevGuessValue,
-        prevAnswerName, prevAnswerValue
-      }])
-  
-      function allAnswers(type: string, size: string) {
-        let index = 0
-        if (type === 'population' || type === 'area') {
-          if (size === 'low') {
-            prevAnswers?.sort((a,b) => a[type] - b[type])
-          }
-          if (size === 'high') {
-            prevAnswers?.sort((a,b) => b[type] - a[type])
-          }
-        }
-        
-        return prevAnswers?.map(country => {
-          index++
-          return <p
-            key={nanoid()}
-            className={`
-              recap__answers__item
-              ${prevGuessName === country.name
-                ? `recap__answers__guess ${theme}`
-                : ''}
-            `}>
-            <b>#{index}</b>
-            {generateAnswerText(country)}
-          </p>
-        })
-      }
 
-      // For generating the correct text based on the question type
-      function generateAnswerText(country: Country | undefined) {
-        if (country && country.name === 'No Answer') { return <i> {country.name}</i> }
+  const recapData = React.useMemo(generateRecapData, [category, prevGuess, prevAnswer, prevAnswers])
 
-        if (country && type === 'area') {
-          return <i> {country.name} - {country.area.toLocaleString()}km² ({convertToMiles(country.area)}mi²)</i>
-        } else if (country && type === 'population') {
-          return <i> {country.name} (Population: {country.population.toLocaleString()})</i>
-        }
-      }
-  
-      return (
-        <div className={prevGuessName === prevAnswerName
-          ? `${indicator} recap recap--correct`
-          : `${indicator} recap recap--incorrect`}>
-          <div className="recap__content">
-            <div className="recap__result">
-              {prevGuessName === prevAnswerName
-                ? <p className="recap__result__text">CORRECT!</p>
-                : <p className="recap__result__text">INCORRECT!</p>
-              }
-            </div>
-            <div className="recap__title">
-              {generateTitle(2, category)}
-            </div>
-            <div className="recap__answers">
-              {allAnswers(type, size)}
-            </div>
-          </div>
-        </div>
+  React.useEffect(() => {
+    if (!recapData) return
+
+    setAnswersLog(prev => {
+      const alreadyLogged = prev.some(
+        log =>
+          log.prevGuessName === recapData.prevGuessName &&
+          log.prevAnswerName === recapData.prevAnswerName &&
+          log.type === recapData.type &&
+          log.size === recapData.size
       )
-    }
+
+      if (alreadyLogged) return prev
+
+      return [
+        ...prev,
+        {
+          type: recapData.type,
+          size: recapData.size,
+          prevGuessName: recapData.prevGuessName,
+          prevGuessValue: recapData.prevGuessValue,
+          prevAnswerName: recapData.prevAnswerName,
+          prevAnswerValue: recapData.prevAnswerValue
+        }
+      ]
+    })
+  }, [recapData])
+
+  function generateRecapData() {
+    if (category.length <= 1 || !prevGuess || !prevAnswer || !prevAnswers) return null
+
+    const [type, size] = breakCategory(category[category.length - 2])
+
+    const prevGuessName = prevGuess.name
+    const prevGuessValue = prevGuess[type]
+    const prevAnswerName = prevAnswer.name
+    const prevAnswerValue = prevAnswer[type]
+
+    return {type, size, prevGuessName, prevGuessValue, prevAnswerName, prevAnswerValue, prevAnswers}
   }
 
-  // Contains the HTML for the previous questions guess and answer
-  const [recap, setRecap] = React.useState<JSX.Element>()
-
-  function categoryOnUpdate() {
-    setRecap(generateRecap())
+  if (!recapData || answersLog.length === 0) {
+    return null
   }
-
-  // Custom useEffect for skipping the first render
-  useEffectOnUpdate(categoryOnUpdate, [category])
 
   return (
-    <>
-      {answersLog.length > 0 && recap}
-    </>
+    <div
+      className={
+        recapData.prevGuessName === recapData.prevAnswerName
+          ? `${indicator} recap recap--correct`
+          : `${indicator} recap recap--incorrect`
+      }
+    >
+      <div className="recap__content">
+        <div className="recap__result">
+          {recapData.prevGuessName === recapData.prevAnswerName ? (
+            <p className="recap__result__text">CORRECT!</p>
+          ) : (
+            <p className="recap__result__text">INCORRECT!</p>
+          )}
+        </div>
+
+        <div className="recap__title">
+          {recapData && generateTitle(2, category)}
+        </div>
+
+        <div className="recap__answers">
+          {recapData.prevAnswers
+            .slice()
+            .sort((a, b) => {
+              if (recapData.type === "area" || recapData.type === "population") {
+                return recapData.size === "low"
+                  ? a[recapData.type] - b[recapData.type]
+                  : b[recapData.type] - a[recapData.type]
+              }
+              return 0
+            })
+            .map((country, index) => (
+              <p
+                key={country.id}
+                className={`recap__answers__item ${recapData.prevGuessName === country.name ? `recap__answers__guess ${theme}` : ""}`}>
+                <b>#{index + 1}</b>{" "}
+                {recapData.type === "area"
+                  ? <i>{country.name} - {country.area.toLocaleString()}km² ({convertToMiles(country.area)}mi²)</i>
+                  : <i>{country.name} (Population: {country.population.toLocaleString()})</i>}
+              </p>
+            ))}
+        </div>
+      </div>
+    </div>
   )
+
 }
