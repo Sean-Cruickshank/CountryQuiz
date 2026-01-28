@@ -7,6 +7,6 @@ export default function generateTitle(num: number, category: string[]) {
     const [type, size] = breakCategory(category[category.length - num])
     const typeText = type === 'population' ? 'population' : 'land area'
     const sizeText = size === 'high' ? 'largest' : 'smallest'
-    return <p>Guess the country with the <i>{sizeText} {typeText}!</i></p>
+    return <>Guess the country with the <i>{sizeText} {typeText}!</i></>
   }
 }

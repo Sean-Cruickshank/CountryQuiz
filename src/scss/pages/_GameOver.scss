@@ -14,82 +14,46 @@
   }
 
   &__panel {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     max-width: 750px;
     margin-top: 50px;
     background-color: white;
     border: solid 2px darkgray;
-    z-index: 2;
+    z-index: 3;
+  }
+
+  &__close {
+    position: absolute;
+    top: 4%;
+    right: 4%;
+    cursor: pointer;
+    font-size: 1.6rem;
+    &:hover {
+      transform: scale(0.95);
+    }
+    &:active {
+      transform: scale(0.9);
+    }
   }
 
   &__buttons {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 30px;
-  }
-}
-
-.log {
-  position: relative;
-  z-index: 2;
-  margin-top: 10px;
-  @include mixins.logEntryThemes();
-  
-  &__subheaders {
-    display: grid;
-    grid-template-columns: 2fr 3fr 5fr 5fr;
-    background-color: white;
-  }
-  
-  &__entries {
-    min-height: 505px;
-  }
-  
-  &__entry {
-    display: grid;
-    grid-template-columns: 2fr 3fr 5fr 5fr;
-  }
-  
-  &__guess {
-    font-weight: bold;
-    width: max-content;
+    margin-top: 15px;
+    width: 95%;
     margin-inline: auto;
-    padding: 2px;
-
-    &--correct {
-      @include mixins.logEntryCorrect();
-
-      &.yellowpink {
-        background-color: rgba($color: #000000, $alpha: 0.2);
-      }
-    }
-  
-    &--incorrect {
-      @include mixins.logEntryIncorrect();
-      
-      &.blueyellow {
-        background-color: rgba($color: #000000, $alpha: 0.2);
-      }
+    
+    @include mixins.breakpoint('small') {
+      margin-top: 30px;
     }
   }
-}
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #222;
-  background-color: white;
-
-  &__button {
-    width: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.4rem;
-  }
-
-  & svg {
-    color: #222;
+  &__end-message {
+    font-size: clamp(0.8rem, 0.7053rem + 0.4211vw, 1rem);
+    padding-inline: 5px;
   }
 }

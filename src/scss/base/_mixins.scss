@@ -13,36 +13,12 @@ $breakpoints-up: (
 
 /* --- INDICATORS --- */
 
-$greenred: (
-  'title': 'greenred',
-  'correct': 'GR_green',
-  'incorrect': 'GR_red'
-);
-$blueyellow: (
-  'title': 'blueyellow',
-  'correct': 'BY_blue',
-  'incorrect': 'BY_yellow'
-);
-$tealtan: (
-  'title': 'tealtan',
-  'correct': 'TT_teal',
-  'incorrect': 'TT_tan'
-);
-$orangeblue: (
-  'title': 'orangeblue',
-  'correct': 'OB_orange',
-  'incorrect': 'OB_blue'
-);
-$bluepink: (
-  'title': 'bluepink',
-  'correct': 'BP_blue',
-  'incorrect': 'BP_pink'
-);
-$yellowpink: (
-  'title': 'yellowpink',
-  'correct': 'YP_yellow',
-  'incorrect': 'YP_pink'
-);
+$greenred: ('title': 'greenred', 'correct': 'GR_green', 'incorrect': 'GR_red');
+$blueyellow: ('title': 'blueyellow', 'correct': 'BY_blue', 'incorrect': 'BY_yellow');
+$tealtan: ('title': 'tealtan', 'correct': 'TT_teal', 'incorrect': 'TT_tan');
+$orangeblue: ('title': 'orangeblue', 'correct': 'OB_orange', 'incorrect': 'OB_blue');
+$bluepink: ('title': 'bluepink', 'correct': 'BP_blue', 'incorrect': 'BP_pink');
+$yellowpink: ('title': 'yellowpink', 'correct': 'YP_yellow', 'incorrect': 'YP_pink');
 
 $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpink;
 
@@ -107,7 +83,6 @@ $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpi
 
 $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
 
-// Sets the background gradient for the body
 @mixin backgroundThemes() {
   @each $theme in $themes {
     &.#{$theme} {
@@ -130,7 +105,6 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
   }
 }
 
-// Sets the text colour for the footer menu based on the active theme
 @mixin footerThemes() {
   @each $theme in $themes {
     &.#{$theme} {
@@ -145,23 +119,49 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
 @mixin homeThemes() {
   @each $theme in $themes {
     &.#{$theme} {
-      & a, span, h2 {
+      & a, span, h1 {
         color: var(--#{$theme}C);
       }
     }
   }
 }
 
-// Sets the highlighter colour for your guessed answer in the recap based on the active theme
-@mixin recapGuessHighlightThemes() {
+@mixin playGameThemes() {
   @each $theme in $themes {
     &.#{$theme} {
-      background-color: var(--#{$theme}B);
+      & .play-game__question i {
+        color: var(--#{$theme}C);
+      }
+
+      & .play-game__progress {
+        background-color: var(--#{$theme}C);
+        color: var(--#{$theme}A);
+      }
+
+      & .answers__option {
+        background: linear-gradient(135deg, var(--#{$theme}C), var(--#{$theme}Gradient) 60%, var(--#{$theme}C) 100%);
+        & button {
+          background-color: var(--#{$theme}B);
+          & .answers__button__alpha {
+            background-color: var(--#{$theme}C);
+          }
+        }
+      }
     }
   }
 }
 
-@mixin logEntryThemes() {
+@mixin recapThemes() {
+  @each $theme in $themes {
+    &.#{$theme} {
+      & .recap__answers__guess {
+        background-color: var(--#{$theme}B);
+      }
+    }
+  }
+}
+
+@mixin logThemes() {
   @each $theme in $themes {
     &.#{$theme} {
       background-color: var(--#{$theme}A);
@@ -169,7 +169,6 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
   }
 }
 
-// Sets the background colour and text colour for buttons based on the active theme
 @mixin buttonThemes() {
   @each $theme in $themes {
     &.#{$theme} {
@@ -179,7 +178,6 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
   }
 }
 
-// Sets the colour gradient for meters based on active theme
 @mixin meterThemes() {
   @each $theme in $themes {
     &.#{$theme} {
@@ -190,7 +188,6 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
   }
 }
 
-// Sets the colour for range inputs based on active theme
 @mixin rangeThemes() {
   @each $theme in $themes {
     &.#{$theme} {
@@ -217,26 +214,11 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
   }
 }
 
-// Sets the colour for sliders when active
-@mixin sliderThemes() {
+@mixin switchThemes() {
   @each $theme in $themes {
     &.#{$theme} {
-      &:checked + .slider {
-        background-color: var(--#{$theme}C);
-      }
-    }
-  }
-}
-
-// Sets the background gradient, inner background colour, and alpha background colour for the answer buttons based on the active theme
-@mixin answersOptionThemes() {
-  @each $theme in $themes {
-    &.#{$theme} {
-      background: linear-gradient(135deg, var(--#{$theme}C), var(--#{$theme}Gradient) 60%, var(--#{$theme}C) 100%);
-      & button {
-        background-color: var(--#{$theme}B);
-
-        & .answers__button__alpha {
+      & input {
+        &:checked + .slider {
           background-color: var(--#{$theme}C);
         }
       }
@@ -244,7 +226,6 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
   }
 }
 
-// Sets the background colour and sample colour for the themes in the theme dropdown
 @mixin themeDropdownThemes() {
   @each $theme in $themes {
     &.#{$theme} {
@@ -259,31 +240,15 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
   }
 }
 
-@mixin questionHighlightThemes() {
-  @each $theme in $themes {
-    &.#{$theme} {
-      & i {
-        color: var(--#{$theme}C);
-      }
-    }
-  }
-}
-
-@mixin questionCounterThemes() {
-  @each $theme in $themes {
-    &.#{$theme} {
-      background-color: var(--#{$theme}C);
-      color: var(--#{$theme}A);
-    }
-  }
-}
-
-// Background and border colour for the panels on the Start Game, Game Over, and Stats pages
 @mixin panelThemes() {
   @each $theme in $themes {
     &.#{$theme} {
       background-color: var(--#{$theme}A);
       border: solid 2px var(--#{$theme}C);
+
+      & svg {
+        color: var(--#{$theme}C)
+      }
     }
   }
 }

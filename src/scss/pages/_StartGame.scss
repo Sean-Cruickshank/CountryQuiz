@@ -52,6 +52,6 @@
     &__output {
         margin: 0 auto;
         font-weight: bold;
-        font-size: 1.5rem;
+        font-size: clamp(1rem, 0.4706rem + 1.4706vw, 1.5rem);
     }
 }

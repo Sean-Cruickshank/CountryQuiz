@@ -4,6 +4,7 @@
   display: grid;
   grid-template-columns: 1fr;
   justify-content: space-around;
+  @include mixins.recapThemes();
 
   &--correct {
     @extend .recap;
@@ -33,21 +34,19 @@
   }
 
   &__answers {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     margin: 10px auto;
 
     &__item {
       margin: 2px auto;
       padding: 2px 4px;
-      width: max-content;
     }
 
     &__guess {
       background-color: white;
       border-radius: 5px;
-      @include mixins.recapGuessHighlightThemes()
     }
   }
 }

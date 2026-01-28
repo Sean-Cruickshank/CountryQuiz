@@ -5,7 +5,7 @@
   margin-bottom: 150px;
   @include mixins.homeThemes();
 
-  & h2 {
+  & h1 {
     margin-top: 100px;
     font-size: clamp(1.6rem, 1.1737rem + 1.8947vw, 2.5rem);
   }
@@ -45,10 +45,6 @@
     width: clamp(300px, 60%, 800px);
     margin-inline: auto;
     font-weight: bold;
-
-    & p {
-
-    }
 
     &--A {
       display: grid;

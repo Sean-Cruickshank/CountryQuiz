@@ -1,6 +1,6 @@
 import { useNavigate, useOutletContext } from "react-router-dom"
 import React from "react"
-import Pagination from "./Pagination"
+import Log from "./Log"
 import useEffectOnUpdate from "../util/useEffectOnUpdate"
 import { formatStats, generateMeter } from "../util/generateMeter"
 import generateWaveEffect from "../util/generateWaveEffect"
@@ -23,8 +23,13 @@ export default function Stats() {
   const lsHistory = localStorage.getItem('history')
   const [playerHistory, setPlayerHistory] = React.useState<PlayerHistory[]>(lsHistory !== null ? JSON.parse(lsHistory) : [])
 
-  const context: {theme: string, indicator: string} = useOutletContext()
-  const theme = context ? context.theme : 'blue'
+  const context: {theme: string, indicator: string, unit: string} = useOutletContext()
+  
+  const preferences = {
+    theme : context ? context.theme : 'blue',
+    indicator : context ? context.indicator : 'greenred',
+    unit : context ? context.unit : 'metric'
+  }
 
   let navigate = useNavigate()
 
@@ -50,6 +55,10 @@ export default function Stats() {
   }
 
   let perfectCount = 0
+  const browserWidthSmall = window.innerWidth < 500
+  const pageTitles = browserWidthSmall
+    ? ['Date', 'Score', 'High Pop', 'Low Pop', 'High Area', 'Low Area']
+    : ['Date', 'Score', 'High Population', 'Low Population', 'High Area', 'Low Area']
   
   const historyHTML = playerHistory.slice().reverse().map((match) => {
     scoreSum += match.score
@@ -69,25 +78,27 @@ export default function Stats() {
       perfectCount++
     }
     let formattedStatsScore = generateWaveEffect(statsScore, effect)
+
     return (
-      <div key={match.id} className="stats__entry">
-        <p>{formatDate(match.date)}</p>
-        {match.score === match.gameLength ? formattedStatsScore : <p>{statsScore}</p>}
-        <p>{formatStats(match.answerStats.highpopulation.A, match.answerStats.highpopulation.Q)}</p>
-        <p>{formatStats(match.answerStats.lowpopulation.A, match.answerStats.lowpopulation.Q)}</p>
-        <p>{formatStats(match.answerStats.higharea.A, match.answerStats.higharea.Q)}</p>
-        <p>{formatStats(match.answerStats.lowarea.A, match.answerStats.lowarea.Q)}</p>
-      </div>
+      <tr key={match.id} className="stats__entry">
+        <td title={formatDate(match.date, 'long')}>{browserWidthSmall ? formatDate(match.date, 'short') : formatDate(match.date, 'long')}</td>
+        {match.score === match.gameLength ? <td>{formattedStatsScore}</td> : <td>{statsScore}</td>}
+        <td>{formatStats(match.answerStats.highpopulation.A, match.answerStats.highpopulation.Q)}</td>
+        <td>{formatStats(match.answerStats.lowpopulation.A, match.answerStats.lowpopulation.Q)}</td>
+        <td>{formatStats(match.answerStats.higharea.A, match.answerStats.higharea.Q)}</td>
+        <td>{formatStats(match.answerStats.lowarea.A, match.answerStats.lowarea.Q)}</td>
+      </tr>
     )
   })
 
-  function formatDate(date: string): string {
+  function formatDate(date: string, type: 'short' | 'long'): string {
     const split = date.split(' ')
     let suffix = 'th'
-    if (split[0] === '1' || split[0] === '21' || split[0] === '31') {suffix = 'st'}
-    if (split[0] === '2' || split[0] === '22') {suffix = 'nd'}
-    if (split[0] === '3' || split[0] === '23') {suffix = 'rd'}
-    return `${split[0]}${suffix} ${split[1]} ${split[2]} (${split[3]})`
+    if (split[0] === '1' || split[0] === '21' || split[0] === '31') suffix = 'st'
+    if (split[0] === '2' || split[0] === '22') suffix = 'nd'
+    if (split[0] === '3' || split[0] === '23') suffix = 'rd'
+    if (type === 'long') return `${split[0]}${suffix} ${split[1]} ${split[2]} (${split[3]})`
+    else return `${split[0]}${suffix} ${split[1]} ${split[2]}`
   }
 
   let averageScore
@@ -110,7 +121,7 @@ export default function Stats() {
   return (
     <div className="stats">
       <h1>Statistics</h1>
-      <div className={`panel stats__panel ${theme}`}>
+      <div className={`panel stats__panel ${preferences.theme}`}>
         <div className="stats__text">
           <p>MATCHES PLAYED: <b>{playerHistory.length}</b></p>
         </div>
@@ -135,13 +146,13 @@ export default function Stats() {
           <button
             title="Reset History"
             onClick={() => resetHistory()}
-            className={`stats__reset-history button ${theme}`}
+            className={`stats__reset-history button ${preferences.theme}`}
             >Reset History
           </button>
           <button
             title="Reset Highscore"
             onClick={() => resetHighscore()}
-            className={`stats__reset-highscore button ${theme}`}
+            className={`stats__reset-highscore button ${preferences.theme}`}
             >Reset Highscore
           </button>
         </div>
@@ -149,7 +160,7 @@ export default function Stats() {
 
       <button
         title="New Game"
-        className={`stats__new-game button ${theme}`}
+        className={`stats__new-game button ${preferences.theme}`}
         onClick={() => navigate('/play')}
         >New Game
       </button>
@@ -158,15 +169,11 @@ export default function Stats() {
       ?
         <div className="stats__entries">
           <h2>Match History</h2>
-          <div className="stats__entry-titles">
-            <h3>Date:</h3>
-            <h3>Score:</h3>
-            <h3>High Population:</h3>
-            <h3>Low Population:</h3>
-            <h3>High Area:</h3>
-            <h3>Low Area:</h3>
-          </div>
-          <Pagination lastPage={Math.ceil(historyHTML.length / 10)} pageContent={historyHTML} />
+          <Log
+            pageTitles={pageTitles}
+            lastPage={Math.ceil(historyHTML.length / 10)}
+            pageContent={historyHTML}
+          />
         </div>
       :
         <p>You have no matches on record!</p>

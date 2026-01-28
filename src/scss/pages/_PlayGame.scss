@@ -4,44 +4,57 @@
   position: relative;
   text-align: center;
   padding-top: 5px;
+  @include mixins.playGameThemes();
 
   &__progress {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.4rem;
     margin: 5px auto;
     padding: 4px;
-    @include mixins.questionCounterThemes();
 
     & p {
       margin: 0;
+      font-size: clamp(0.7rem, 0.3684rem + 1.4737vw, 1.4rem);
     }
   }
 
   &__question {
-    font-size: clamp(1.5rem, -0.0882rem + 4.4118vw, 3rem);
+    font-size: clamp(1.2rem, 0.8211rem + 1.6842vw, 2rem);
+    width: 95%;
+    margin-inline: auto;
 
     & p {
       margin: 20px auto;
     }
-
-    @include mixins.questionHighlightThemes();
   }
 }
 
 .scoreboard {
   position: absolute;
-  width: 33%;
+  width: 40%;
   height: 100%;
   right: 0;
   display: flex;
-  gap: 10px;
-  padding-right: 10px;
+  gap: 5px;
+  padding-right: 5px;
   justify-content: right;
   align-items: center;
-  font-size: 1rem;
+
+  @include mixins.breakpoint('medium') {
+    gap: 6px;
+    padding-right: 6px;
+  }
+
+  @include mixins.breakpoint('large') {
+    gap: 10px;
+    padding-right: 10px;
+  }
+
+  & p {
+    font-size: clamp(0.6rem, 0.1765rem + 1.1765vw, 1rem);
+  }
 }
 
 .timer {
@@ -69,12 +82,23 @@
 }
 
 .answers {
-  width: 80%;
+  width: 95%;
   display: grid;
   margin-inline: auto;
-  grid-template-columns: repeat(2, minmax(100px, 300px));
+  grid-template-columns: repeat(1, 70%);
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
+
+  @include mixins.breakpoint('small') {
+    grid-template-columns: repeat(2, minmax(100px, 300px));
+    width: 87.5%;
+    gap: 15px;
+  }
+
+  @include mixins.breakpoint('medium') {
+    width: 80%;
+    gap: 20px;
+  }
 
   &__option {
     display: flex;
@@ -97,7 +121,7 @@
       opacity: 0.7;
     }
 
-    @include mixins.answersOptionThemes();
+    // @include mixins.answersOptionThemes();
   }
 
   &__button {
@@ -125,20 +149,27 @@
     &__alpha {
       background-color: #222;
       color: #222;
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: bold;
       aspect-ratio: 1;
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 100%;
+
+      @include mixins.breakpoint('small') {
+        font-size: clamp(0.65rem, 0.3184rem + 1.4737vw, 1.35rem);
+      }
     }
 
     &__text {
-      // font-size: 1.2rem;
-      font-size: 1.4rem;
+      font-size: clamp(1rem, 0.4rem + 2.6667vw, 1.2rem);
       font-weight: 100;
       margin: 0;
+
+      @include mixins.breakpoint('small') {
+        font-size: clamp(0.65rem, 0.3184rem + 1.4737vw, 1.35rem);
+      }
     }
   }
 }
@@ -173,4 +204,12 @@
   display: flex;
   margin-bottom: 2px;
   padding: 0 1px;
+}
+
+.results__button {
+  margin-top: 20px;
+
+  @include mixins.breakpoint('medium') {
+    margin-top: 40px;
+  }
 }

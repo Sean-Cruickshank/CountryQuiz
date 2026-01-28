@@ -1,0 +1,71 @@
+@use '../base/mixins' as mixins;
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #222;
+  background-color: white;
+
+  &__button {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+  }
+
+  & svg {
+    color: #222;
+  }
+}
+
+.log {
+  position: relative;
+  z-index: 2;
+  margin-top: 10px;
+  @include mixins.logThemes();
+
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: clamp(0.75rem, 0.6316rem + 0.5263vw, 1rem);
+
+    & th {
+        background-color: white;
+        padding: 3px;
+    }
+
+    & tr {
+        height: 55px;
+        border: none;
+    }
+
+    & td {
+      padding: 3px;
+    }
+  }
+  
+  &__guess {
+    font-weight: bold;
+    width: max-content;
+    margin-inline: auto;
+    padding: 2px;
+
+    &--correct {
+      @include mixins.logEntryCorrect();
+
+      &.yellowpink {
+        background-color: rgba($color: #000000, $alpha: 0.2);
+      }
+    }
+  
+    &--incorrect {
+      @include mixins.logEntryIncorrect();
+      
+      &.blueyellow {
+        background-color: rgba($color: #000000, $alpha: 0.2);
+      }
+    }
+  }
+}

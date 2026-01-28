@@ -1,13 +1,19 @@
 import { useOutletContext } from "react-router-dom"
 
 export function generateMeter(text: string, max: number, value: number) {
-  const context: {theme: string, indicator: string} = useOutletContext()
-  const theme = context ? context.theme : 'blue'
+  const context: {theme: string, indicator: string, unit: string} = useOutletContext()
+  
+  const preferences = {
+    theme : context ? context.theme : 'blue',
+    indicator : context ? context.indicator : 'greenred',
+    unit : context ? context.unit : 'metric'
+  }
+  
     return (
         <div className="meterdiv">
             <p>{text}: {formatStats(value, max)} ({value}/{max})</p>
             <meter
-                className={`meter ${theme}`}
+                className={`meter ${preferences.theme}`}
                 value={value}
                 max={max > 0 ? max : 1}
             ></meter>

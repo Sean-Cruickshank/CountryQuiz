@@ -66,10 +66,15 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   })
 
   const [gameActive, setGameActive] = React.useState(true)
+  const [panelActive, setPanelActive] = React.useState(true)
 
-  const context: {theme: string, indicator: string, setRedirectWarning: React.Dispatch<React.SetStateAction<boolean>>} = useOutletContext()
-  const theme = context ? context.theme : 'blue'
-  const indicator = context ? context.indicator : 'greenred'
+  
+  const context: {theme: string, indicator: string, unit: string, setRedirectWarning: React.Dispatch<React.SetStateAction<boolean>>} = useOutletContext()
+  const preferences = {
+    theme : context ? context.theme : 'blue',
+    indicator : context ? context.indicator : 'greenred',
+    unit : context ? context.unit : 'metric'
+  }
   const setRedirectWarning = context && context.setRedirectWarning
 
   // Generates a new question when the category is selected
@@ -123,7 +128,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       index++
       return (
         <div
-          className={`answers__option ${theme} ${!gameActive && 'disabled'}`}
+          className={`answers__option ${!gameActive && 'disabled'}`}
           key={nanoid()}
         >
           <button
@@ -269,24 +274,24 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   
   if (countryData.length > 0 && location.state !== null) {
     return (
-      <div className="play-game">
-        <div className={`play-game__progress ${theme}`}>
+      <div className={`play-game ${preferences.theme}`}>
+        <div className="play-game__progress">
           <p>Question {round}/{gameLength}</p>
           <div className="scoreboard">
             <p>Score: {score}</p>
-            {highscore > 0 && <i>( Highscore: {highscore} )</i>}
+            {highscore > 0 && <p><i>( Highscore: {highscore} )</i></p>}
           </div>
         </div>
         
 
         <h2
-          className={`play-game__question ${theme}`}
+          className="play-game__question"
         >{generateTitle(1, category)}</h2>
 
         {timerActive && gameActive && <div className="timer">
           <p className="timer__text">{timer}</p>
           <meter
-            className={`timer__meter ${theme}`}
+            className={`timer__meter ${preferences.theme}`}
             value={timer}
             max={timerLength}
           >{timer}</meter>
@@ -296,8 +301,13 @@ export default function PlayGame({ countryData }: PlayGameProps) {
           {displayData}
         </div>
 
+        {!gameActive && <button
+          className={`button ${preferences.theme} results__button`}
+          onClick={() => setPanelActive(true)}
+        >Show Results</button>}
+
         <div className="nodes">
-          {generateAnswerNodes(answerNodes, gameLength, indicator)}
+          {generateAnswerNodes(answerNodes, gameLength, preferences.indicator)}
         </div>
 
         <Recap
@@ -313,7 +323,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
             <div className="play-game__button-div">
               <button
                 title="Resign"
-                className={`resign-button button ${theme}`}
+                className={`resign-button button ${preferences.theme}`}
                 onClick={() => {setGameActive(false); endMatch()}}
              >Resign</button>
             </div>
@@ -326,6 +336,8 @@ export default function PlayGame({ countryData }: PlayGameProps) {
           score={score}
           highscore={highscore}
           resetGame={resetGame}
+          panelActive={panelActive}
+          setPanelActive={setPanelActive}
         />}
       </div>
     )

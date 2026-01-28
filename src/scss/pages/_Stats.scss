@@ -29,6 +29,10 @@
     &--p2 {
       text-align: left;
     }
+
+    & span {
+      font-size: clamp(0.8rem, 0.7053rem + 0.4211vw, 1rem);
+    }
   }
   
   &__entries {
@@ -40,6 +44,16 @@
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+  }
+
+  &__perfect-score {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    & div {
+      display: flex;
+      
     }
   }
 
@@ -70,16 +84,6 @@
   &__new-game {
     display: block;
     margin: 40px auto;
-  }
-  
-  &__entry, &__entry-titles {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    text-align: center;
-
-    @include mixins.breakpoint('small') {
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
-    }
   }
 
   &__category-averages {

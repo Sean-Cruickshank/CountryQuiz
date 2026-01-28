@@ -1,5 +1,5 @@
 import breakCategory from "../util/breakCategory"
-import convertToMiles from "../util/convertToMiles"
+import generateUnit from "../util/generateUnit"
 import React from "react"
 
 import generateTitle from "../util/generateTitle"
@@ -18,9 +18,13 @@ interface RecapProps {
 
 export default function Recap({ category, prevGuess, prevAnswer, prevAnswers, answersLog, setAnswersLog }: RecapProps) {
 
-  const context: {theme: string, indicator: string} = useOutletContext()
-  const theme = context ? context.theme : 'blue'
-  const indicator = context ? context.indicator : 'greenred'
+  const context: {theme: string, indicator: string, unit: string} = useOutletContext()
+
+  const preferences = {
+    theme : context ? context.theme : 'blue',
+    indicator : context ? context.indicator : 'greenred',
+    unit : context ? context.unit : 'metric'
+  }
 
   const recapData = React.useMemo(generateRecapData, [category, prevGuess, prevAnswer, prevAnswers])
 
@@ -72,9 +76,8 @@ export default function Recap({ category, prevGuess, prevAnswer, prevAnswers, an
   return (
     <div
       className={
-        recapData.prevGuessName === recapData.prevAnswerName
-          ? `${indicator} recap recap--correct`
-          : `${indicator} recap recap--incorrect`
+          `${preferences.indicator} ${preferences.theme} recap
+          ${recapData.prevGuessName === recapData.prevAnswerName ? ` recap--correct` : `recap--incorrect`}`
       }
     >
       <div className="recap__content">
@@ -87,7 +90,7 @@ export default function Recap({ category, prevGuess, prevAnswer, prevAnswers, an
         </div>
 
         <div className="recap__title">
-          {recapData && generateTitle(2, category)}
+          {recapData && <p>{generateTitle(2, category)}</p>}
         </div>
 
         <div className="recap__answers">
@@ -104,10 +107,10 @@ export default function Recap({ category, prevGuess, prevAnswer, prevAnswers, an
             .map((country, index) => (
               <p
                 key={country.id}
-                className={`recap__answers__item ${recapData.prevGuessName === country.name ? `recap__answers__guess ${theme}` : ""}`}>
+                className={`recap__answers__item ${recapData.prevGuessName === country.name ? "recap__answers__guess" : ""}`}>
                 <b>#{index + 1}</b>{" "}
                 {recapData.type === "area"
-                  ? <i>{country.name} - {country.area.toLocaleString()}km² ({convertToMiles(country.area)}mi²)</i>
+                  ? <i>{country.name} - {generateUnit(country.area, preferences.unit)}</i>
                   : <i>{country.name} (Population: {country.population.toLocaleString()})</i>}
               </p>
             ))}

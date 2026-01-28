@@ -1,4 +1,9 @@
 ## Styling
-- Adjust all fonts to use clamp
-- Test all pages at mobile resolution
+- Simplify theme mixins
 - Test all meters and range sliders on different browsers
+- Change 'Theme Selector' to 'Settings'
+- Style unit options in settings
+- Create a favicon
+- Final sweep for dynamic display bugs
+- Final sweep for console bugs
+- npm run build

@@ -3,8 +3,13 @@ import { FaPalette } from "react-icons/fa";
 
 export default function Home() {
 
-  const context: {theme: string, indicator: string} = useOutletContext()
-  const theme = context ? context.theme : 'blue'
+  const context: {theme: string, indicator: string, unit: string} = useOutletContext()
+  
+  const preferences = {
+    theme : context ? context.theme : 'blue',
+    indicator : context ? context.indicator : 'greenred',
+    unit : context ? context.unit : 'metric'
+  }
 
   let navigate = useNavigate()
   
@@ -16,37 +21,37 @@ export default function Home() {
   }
 
   return (
-    <div className={`home ${theme}`}>
+    <div className={`home ${preferences.theme}`}>
       <img src="/images/home_answertags.png" />
       <div className="home__text-container">
-        <h2>How to play</h2>
+        <h1>How to play</h1>
         <p>This is a simple quiz intended to test your knowledge of different countries from around the world!</p>
         <p>All you need to do is find the country with the largest, or smallest <span>size</span> or <span>population</span></p>
         <p>For every question you will be given four options to choose from</p>
         <p>Correctly pick the country that matches the criteria to score points!</p>
         <button
           title="New Game"
-          className={`button button__stats ${theme}`}
+          className={`button button__stats ${preferences.theme}`}
           onClick={() => viewPage('start')}
           >New Game
         </button>
       </div>
 
       <div className="home__text-container">
-        <h2>Statistics</h2>
+        <h1>Statistics</h1>
         <p>Match history as well as lifetime statistics can be viewed on the Stats page!</p>
         <p>Compare your results over time and see which category you know best</p>
         <p>This information is stored locally on your browser and is not visible to other users</p>
         <button
           title="View Stats"
-          className={`button button__stats ${theme}`}
+          className={`button button__stats ${preferences.theme}`}
           onClick={() => viewPage('stats')}
           >View Stats
         </button>
       </div>
 
       <div className="home__text-container">
-        <h2>Controls & Accessibility</h2>
+        <h1>Controls & Accessibility</h1>
         <p>The following shortcuts can be used to to interact with the quiz via keyboard</p>
         <div className="home__controls">
           <div className="home__controls--A">
@@ -69,7 +74,7 @@ export default function Home() {
       </div>
 
       <div className="home__text-container">
-        <h2>Feedback</h2>
+        <h1>Feedback</h1>
         <p>Feedback is always appreciated. If you have any suggestions, recommendations, or just want to share your thoughts on this project I would love to hear it!</p>
         <p>I can be reached <a href="mailto:seancruickshank2025@gmail.com">by email</a> or in several other ways that should all be listed <a target="_blank" href="https://www.seancruickshank.co.nz">here</a></p>
         <p>Thank you for visiting my website</p>

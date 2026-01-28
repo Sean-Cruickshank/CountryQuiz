@@ -1,13 +1,15 @@
 import { nanoid } from "nanoid"
 import { useNavigate, useOutletContext } from "react-router-dom"
 import Confetti from 'react-confetti'
+import { IoIosCloseCircle } from "react-icons/io";
 
-import Pagination from "./Pagination.tsx"
+import Log from "./Log.tsx"
 
 import { AnswersLog, AnswerStats } from "../util/interfaces.ts"
-import convertToMiles from '../util/convertToMiles.ts'
+import generateUnit from "../util/generateUnit.tsx";
 import { generateMeter } from "../util/generateMeter.tsx"
 import generateWaveEffect from "../util/generateWaveEffect.tsx"
+import React from "react"
 
 interface GameOverProps {
   gameLength: number,
@@ -15,15 +17,21 @@ interface GameOverProps {
   answerStats: AnswerStats,
   score: number,
   highscore: number,
-  resetGame: () => void
+  resetGame: () => void,
+  panelActive: boolean,
+  setPanelActive: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function GameOver({ gameLength, answersLog, answerStats, score, highscore, resetGame}: GameOverProps) {
+export default function GameOver({ gameLength, answersLog, answerStats, score, highscore, resetGame, panelActive, setPanelActive}: GameOverProps) {
   const allThemes = ['rgb(100, 100, 200)', 'rgb(212, 212, 90)','rgb(100, 200, 100)','rgb(212, 150, 90)','rgb(200, 100, 100)','rgb(100, 200, 162)','rgb(162, 80, 200)']
   
-  const context: {theme: string, indicator: string} = useOutletContext()
-  const theme = context ? context.theme : 'blue'
-  const indicator = context ? context.indicator : 'greenred'
+  const context: {theme: string, indicator: string, unit: string} = useOutletContext()
+
+  const preferences = {
+    theme : context ? context.theme : 'blue',
+    indicator : context ? context.indicator : 'greenred',
+    unit : context ? context.unit : 'metric'
+  }
 
   let scorePercent = Number(((score / gameLength) * 100).toFixed(2)) || 0
   
@@ -44,8 +52,8 @@ export default function GameOver({ gameLength, answersLog, answerStats, score, h
   const logHTML = answersLog.map((question) => {
     let classname = ''
     question.prevGuessName === question.prevAnswerName
-      ? classname = `${indicator} log__guess log__guess--correct`
-      : classname = `${indicator} log__guess log__guess--incorrect`
+      ? classname = `${preferences.indicator} log__guess log__guess--correct`
+      : classname = `${preferences.indicator} log__guess log__guess--incorrect`
     if (answersLog.length > 0) {
       let logGuess, logAnswer
 
@@ -55,21 +63,21 @@ export default function GameOver({ gameLength, answersLog, answerStats, score, h
       }
 
       if (question.type === 'area') {
-        logGuess = `${question.prevGuessName} - ${question.prevGuessValue.toLocaleString()}km² (${convertToMiles(question.prevGuessValue)}mi²)`
-        logAnswer = `${question.prevAnswerName} - ${question.prevAnswerValue.toLocaleString()}km² (${convertToMiles(question.prevAnswerValue)}mi²)`
+        logGuess = `${question.prevGuessName} - ${generateUnit(question.prevGuessValue, preferences.unit)}`
+        logAnswer = `${question.prevAnswerName} - ${generateUnit(question.prevAnswerValue, preferences.unit)}`
       }
       questionCount++
 
       return (
-        <div className='log__entry' key={nanoid()}>
-          <p>#{questionCount}</p>
-          <p>{titleCase(question.size)} {titleCase(question.type)}:</p>
-          <p className={classname}>{question.prevGuessName === 'No Answer'
+        <tr className='log__entry' key={nanoid()}>
+          <td>#{questionCount}</td>
+          <td>{titleCase(question.size)} {titleCase(question.type)}:</td>
+          <td className={classname}>{question.prevGuessName === 'No Answer'
             ? `${question.prevGuessName}`
             : logGuess
-          }</p>
-          <p>{logAnswer}</p>
-        </div>
+          }</td>
+          <td>{logAnswer}</td>
+        </tr>
       )
     }
   })
@@ -103,54 +111,58 @@ export default function GameOver({ gameLength, answersLog, answerStats, score, h
     else if (scorePercent < 50 && scorePercent > 0) message = "Good try!"
     else if (scorePercent === 0) message = "It can only get better from here!"
 
-    return generateWaveEffect(message, effect)
+    if (effect !== 'none') return generateWaveEffect(message, effect)
+    else return <b>{message}</b>
   }
 
-  return (
+  if (panelActive) return (
     <div className="gameover">
       {scorePercent === 100 && <Confetti width={1920} height={window.innerHeight} colors={allThemes} />}
       <div className="gameover__popup">
-        <div className={`panel gameover__panel ${theme}`}>
-          <h2 className="gameover__title" id="gameover__title">Game Over!</h2>
-          <p>You got {score} out of {gameLength} questions correct! ({scorePercent}%)</p>
-          {generateEndMessage()}
-          <div>
-            {generateMeter('High Population', answerStats.highpopulation.Q, answerStats.highpopulation.A)}
-            {generateMeter('Low Population', answerStats.lowpopulation.Q, answerStats.lowpopulation.A)}
-            {generateMeter('High Area', answerStats.higharea.Q, answerStats.higharea.A)}
-            {generateMeter('Low Area', answerStats.lowarea.Q, answerStats.lowarea.A)}
-          </div>
+      </div>
+      <div className={`panel gameover__panel ${preferences.theme}`}>
+        <div
+          className="gameover__close"
+          onClick={() => setPanelActive(false)}
+        ><IoIosCloseCircle /></div>
 
-          <div className="gameover__buttons">
-            <button
-              title="New Game"
-              className={`new-game-button button ${theme}`}
-              onClick={() => viewPage('start')}
-            >New Game</button>
+        <h2 className="gameover__title" id="gameover__title">Game Over!</h2>
+        <p>You got {score} out of {gameLength} questions correct! ({scorePercent}%)</p>
+        <div className="gameover__end-message">{generateEndMessage()}</div>
+        
+        <div>
+          {generateMeter('High Population', answerStats.highpopulation.Q, answerStats.highpopulation.A)}
+          {generateMeter('Low Population', answerStats.lowpopulation.Q, answerStats.lowpopulation.A)}
+          {generateMeter('High Area', answerStats.higharea.Q, answerStats.higharea.A)}
+          {generateMeter('Low Area', answerStats.lowarea.Q, answerStats.lowarea.A)}
+        </div>
 
-            <button
-              title="Play Again"
-              className={`play-again-button button ${theme}`}
-              onClick={resetGame}
-            >Play Again</button>
+        <div className="gameover__buttons">
+          <button
+            title="New Game"
+            className={`button ${preferences.theme}`}
+            onClick={() => viewPage('start')}
+          >New Game</button>
 
-            <button
-              title="View Stats"
-              className={`button button__stats ${theme}`}
-              onClick={() => viewPage('stats')}
-              >View Stats</button>
-          </div>
+          <button
+            title="Play Again"
+            className={`button button__play-again ${preferences.theme}`}
+            onClick={resetGame}
+          >Play Again</button>
+
+          <button
+            title="View Stats"
+            className={`button button__stats ${preferences.theme}`}
+            onClick={() => viewPage('stats')}
+            >View Stats</button>
         </div>
       </div>
-      {answersLog.length > 0 && <div className={`log ${theme}`}>
-        <div className="log__subheaders">
-          <h3>Question:</h3>
-          <h3>Category:</h3>
-          <h3>You Guessed:</h3>
-          <h3>Correct Answer:</h3>
-        </div>
-        <Pagination lastPage={Math.ceil(answersLog.length / 10)} pageContent={logHTML}/>
-      </div>}
+      {answersLog.length > 0 &&
+        <Log
+          pageTitles={['Question', 'Category', 'You Guessed', 'Correct Answer']}
+          pageContent={logHTML}
+          lastPage={Math.ceil(answersLog.length / 10)}
+        />}
     </div>
   )
 }
