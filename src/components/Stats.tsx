@@ -45,7 +45,6 @@ export default function Stats() {
   const lsHighscore = localStorage.getItem('highscore')
   const [highscore, setHighscore] = React.useState(lsHighscore !== null ? JSON.parse(lsHighscore) : 0)
 
-  // Custom useEffect for skipping the first render
   useEffectOnUpdate(() => localStorage.setItem('highscore', JSON.stringify(highscore)), [highscore])
 
   let scoreSum = 0, gameLengthSum = 0
@@ -59,6 +58,15 @@ export default function Stats() {
   const pageTitles = browserWidthSmall
     ? ['Date', 'Score', 'High Pop', 'Low Pop', 'High Area', 'Low Area']
     : ['Date', 'Score', 'High Population', 'Low Population', 'High Area', 'Low Area']
+
+  const logHeaders = [
+    {title: pageTitles[0], width: 25},
+    {title: pageTitles[1], width: 15},
+    {title: pageTitles[2], width: 15},
+    {title: pageTitles[3], width: 15},
+    {title: pageTitles[4], width: 15},
+    {title: pageTitles[5], width: 15},
+  ]
   
   const historyHTML = playerHistory.slice().reverse().map((match) => {
     scoreSum += match.score
@@ -170,9 +178,9 @@ export default function Stats() {
         <div className="stats__entries">
           <h2>Match History</h2>
           <Log
-            pageTitles={pageTitles}
+            headers={logHeaders}
             lastPage={Math.ceil(historyHTML.length / 10)}
-            pageContent={historyHTML}
+            content={historyHTML}
           />
         </div>
       :

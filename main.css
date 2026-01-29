@@ -53,6 +53,9 @@ a, a:visited, a:active {
 }
 
 meter {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
   border: solid 1px #222;
   border-radius: 10px;
   height: 15px;
@@ -64,23 +67,54 @@ meter {
 meter.blue::-moz-meter-bar, meter.blue::-webkit-meter-optimum-value {
   background: linear-gradient(90deg, var(--blueC), var(--blueGradient) 100%);
 }
+meter.blue::-webkit-meter-optimum-value {
+  background: linear-gradient(90deg, var(--blueC), var(--blueGradient) 100%);
+}
 meter.yellow::-moz-meter-bar, meter.yellow::-webkit-meter-optimum-value {
+  background: linear-gradient(90deg, var(--yellowC), var(--yellowGradient) 100%);
+}
+meter.yellow::-webkit-meter-optimum-value {
   background: linear-gradient(90deg, var(--yellowC), var(--yellowGradient) 100%);
 }
 meter.green::-moz-meter-bar, meter.green::-webkit-meter-optimum-value {
   background: linear-gradient(90deg, var(--greenC), var(--greenGradient) 100%);
 }
+meter.green::-webkit-meter-optimum-value {
+  background: linear-gradient(90deg, var(--greenC), var(--greenGradient) 100%);
+}
 meter.orange::-moz-meter-bar, meter.orange::-webkit-meter-optimum-value {
+  background: linear-gradient(90deg, var(--orangeC), var(--orangeGradient) 100%);
+}
+meter.orange::-webkit-meter-optimum-value {
   background: linear-gradient(90deg, var(--orangeC), var(--orangeGradient) 100%);
 }
 meter.pink::-moz-meter-bar, meter.pink::-webkit-meter-optimum-value {
   background: linear-gradient(90deg, var(--pinkC), var(--pinkGradient) 100%);
 }
+meter.pink::-webkit-meter-optimum-value {
+  background: linear-gradient(90deg, var(--pinkC), var(--pinkGradient) 100%);
+}
 meter.teal::-moz-meter-bar, meter.teal::-webkit-meter-optimum-value {
+  background: linear-gradient(90deg, var(--tealC), var(--tealGradient) 100%);
+}
+meter.teal::-webkit-meter-optimum-value {
   background: linear-gradient(90deg, var(--tealC), var(--tealGradient) 100%);
 }
 meter.purple::-moz-meter-bar, meter.purple::-webkit-meter-optimum-value {
   background: linear-gradient(90deg, var(--purpleC), var(--purpleGradient) 100%);
+}
+meter.purple::-webkit-meter-optimum-value {
+  background: linear-gradient(90deg, var(--purpleC), var(--purpleGradient) 100%);
+}
+meter::-webkit-meter-bar {
+  background: rgb(226, 226, 226);
+  height: 13px;
+  border-radius: 10px;
+}
+meter::-webkit-meter-optimum-value {
+  height: 5px;
+  background: green;
+  border-radius: 10px;
 }
 
 .meterdiv p {
@@ -1223,7 +1257,7 @@ p {
   left: 0;
   z-index: 1;
   width: 100%;
-  height: calc(100% + 20px);
+  height: calc(100vh - 40px);
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.4);
 }
@@ -1237,6 +1271,9 @@ p {
   background-color: white;
   border: solid 2px darkgray;
   z-index: 3;
+}
+.gameover__title {
+  font-size: clamp(1.2rem, 1.0579rem + 0.6316vw, 1.5rem);
 }
 .gameover__close {
   position: absolute;
@@ -1320,6 +1357,8 @@ p {
   justify-content: center;
   gap: 25px;
   margin-top: 30px;
+  width: 90%;
+  margin-inline: auto;
 }
 @media (min-width: 30em) {
   .stats__buttons {
@@ -1702,26 +1741,14 @@ nav.purple .nav__icon {
   font-size: clamp(0.8rem, 0.3765rem + 1.1765vw, 1.2rem);
 }
 
-.theme {
+.settings {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 50px;
 }
-.theme__icon {
-  width: 30px;
-  transition: 0.25s;
-  cursor: pointer;
-}
-.theme__icon:hover {
-  transform: scale(0.95);
-  box-shadow: 0px 0px 10px white;
-}
-.theme__icon:active {
-  transform: scale(0.9);
-}
-.theme__dropdown {
+.settings__dropdown {
   position: absolute;
   right: 5px;
   top: 25px;
@@ -1735,16 +1762,16 @@ nav.purple .nav__icon {
   z-index: 101;
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
 }
-.theme__dropdown.active {
+.settings__dropdown.active {
   display: grid;
   grid-template-columns: 1fr;
 }
-.theme__dropdown h4 {
+.settings__dropdown h4 {
   margin: 10px;
   font-weight: 100;
   letter-spacing: 3px;
 }
-.theme__background {
+.settings__background {
   position: absolute;
   top: 0;
   left: 0;
@@ -1754,11 +1781,12 @@ nav.purple .nav__icon {
   width: 100vw;
   z-index: 100;
 }
-.theme__background.active {
+.settings__background.active {
   display: grid;
   grid-template-columns: 1fr;
 }
-.theme__select {
+
+.theme__button {
   cursor: pointer;
   margin-inline: auto;
   margin-bottom: 4px;
@@ -1766,66 +1794,67 @@ nav.purple .nav__icon {
   width: 80%;
   border-radius: 5px;
   color: #222;
+  font-size: 1rem;
   display: flex;
   justify-content: space-between;
 }
-.theme__select.blue {
+.theme__button.blue {
   background-color: var(--blueA);
   border: solid 2px var(--blueC);
 }
-.theme__select.blue div {
+.theme__button.blue div {
   background: linear-gradient(135deg, var(--blueC), var(--blueGradient) 60%, var(--blueC) 100%);
   border: 1px solid var(--blueC);
 }
-.theme__select.yellow {
+.theme__button.yellow {
   background-color: var(--yellowA);
   border: solid 2px var(--yellowC);
 }
-.theme__select.yellow div {
+.theme__button.yellow div {
   background: linear-gradient(135deg, var(--yellowC), var(--yellowGradient) 60%, var(--yellowC) 100%);
   border: 1px solid var(--yellowC);
 }
-.theme__select.green {
+.theme__button.green {
   background-color: var(--greenA);
   border: solid 2px var(--greenC);
 }
-.theme__select.green div {
+.theme__button.green div {
   background: linear-gradient(135deg, var(--greenC), var(--greenGradient) 60%, var(--greenC) 100%);
   border: 1px solid var(--greenC);
 }
-.theme__select.orange {
+.theme__button.orange {
   background-color: var(--orangeA);
   border: solid 2px var(--orangeC);
 }
-.theme__select.orange div {
+.theme__button.orange div {
   background: linear-gradient(135deg, var(--orangeC), var(--orangeGradient) 60%, var(--orangeC) 100%);
   border: 1px solid var(--orangeC);
 }
-.theme__select.pink {
+.theme__button.pink {
   background-color: var(--pinkA);
   border: solid 2px var(--pinkC);
 }
-.theme__select.pink div {
+.theme__button.pink div {
   background: linear-gradient(135deg, var(--pinkC), var(--pinkGradient) 60%, var(--pinkC) 100%);
   border: 1px solid var(--pinkC);
 }
-.theme__select.teal {
+.theme__button.teal {
   background-color: var(--tealA);
   border: solid 2px var(--tealC);
 }
-.theme__select.teal div {
+.theme__button.teal div {
   background: linear-gradient(135deg, var(--tealC), var(--tealGradient) 60%, var(--tealC) 100%);
   border: 1px solid var(--tealC);
 }
-.theme__select.purple {
+.theme__button.purple {
   background-color: var(--purpleA);
   border: solid 2px var(--purpleC);
 }
-.theme__select.purple div {
+.theme__button.purple div {
   background: linear-gradient(135deg, var(--purpleC), var(--purpleGradient) 60%, var(--purpleC) 100%);
   border: 1px solid var(--purpleC);
 }
-.theme__select div {
+.theme__button div {
   width: 20px;
   aspect-ratio: 1;
   border: 1px solid #222;
@@ -1836,7 +1865,7 @@ nav.purple .nav__icon {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
-.indicator__select {
+.indicator__button {
   cursor: pointer;
   margin-inline: auto;
   margin-bottom: 4px;
@@ -1849,40 +1878,40 @@ nav.purple .nav__icon {
   background-color: #eee;
   border: solid 2px #222;
 }
-.indicator__select.greenred #sampleA {
+.indicator__button.greenred #sampleA {
   background-color: var(--GR_greenIndA);
 }
-.indicator__select.greenred #sampleB {
+.indicator__button.greenred #sampleB {
   background-color: var(--GR_redIndA);
 }
-.indicator__select.blueyellow #sampleA {
+.indicator__button.blueyellow #sampleA {
   background-color: var(--BY_blueIndA);
 }
-.indicator__select.blueyellow #sampleB {
+.indicator__button.blueyellow #sampleB {
   background-color: var(--BY_yellowIndA);
 }
-.indicator__select.tealtan #sampleA {
+.indicator__button.tealtan #sampleA {
   background-color: var(--TT_tealIndA);
 }
-.indicator__select.tealtan #sampleB {
+.indicator__button.tealtan #sampleB {
   background-color: var(--TT_tanIndA);
 }
-.indicator__select.orangeblue #sampleA {
+.indicator__button.orangeblue #sampleA {
   background-color: var(--OB_orangeIndA);
 }
-.indicator__select.orangeblue #sampleB {
+.indicator__button.orangeblue #sampleB {
   background-color: var(--OB_blueIndA);
 }
-.indicator__select.bluepink #sampleA {
+.indicator__button.bluepink #sampleA {
   background-color: var(--BP_blueIndA);
 }
-.indicator__select.bluepink #sampleB {
+.indicator__button.bluepink #sampleB {
   background-color: var(--BP_pinkIndA);
 }
-.indicator__select.yellowpink #sampleA {
+.indicator__button.yellowpink #sampleA {
   background-color: var(--YP_yellowIndA);
 }
-.indicator__select.yellowpink #sampleB {
+.indicator__button.yellowpink #sampleB {
   background-color: var(--YP_pinkIndA);
 }
 .indicator__samples {
@@ -1897,11 +1926,30 @@ nav.purple .nav__icon {
   border: 1px solid #222;
 }
 
-.theme__select.active, .indicator__select.active {
-  opacity: 0.85;
+.unit {
+  display: flex;
+  width: 95%;
+  margin-inline: auto;
+}
+.unit__button {
+  width: 50%;
+  margin: 1px auto;
+  padding: 4px;
+  background-color: #eee;
+  color: #222;
+  font-size: 0.8rem;
+  border: solid 2px #222;
+  border-radius: 5px;
+}
+
+.theme__button, .indicator__button, .unit__button {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", sans-serif;
+}
+.theme__button.active, .indicator__button.active, .unit__button.active {
+  opacity: 0.7;
   transform: scale(0.97);
 }
-.theme__select:hover, .indicator__select:hover {
+.theme__button:hover, .indicator__button:hover, .unit__button:hover {
   opacity: 0.85;
   transform: scale(0.97);
 }

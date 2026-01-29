@@ -33,6 +33,8 @@ a, a:visited, a:active {
 }
 
 meter {
+  -webkit-appearance: none;
+  appearance: none;
   border: solid 1px #222;
   border-radius: 10px;
   height: 15px;
@@ -41,6 +43,18 @@ meter {
   max-width: 600px;
   margin-bottom: 0;
   @include mixins.meterThemes();
+
+  &::-webkit-meter-bar {
+    background: rgb(226, 226, 226);
+    height: 13px;
+    border-radius: 10px;
+  }
+
+  &::-webkit-meter-optimum-value {
+    height: 5px;
+    background: green;
+    border-radius: 10px;
+  }
 }
 
 .meterdiv p {

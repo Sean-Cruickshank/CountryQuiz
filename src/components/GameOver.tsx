@@ -47,7 +47,12 @@ export default function GameOver({ gameLength, answersLog, answerStats, score, h
       });
   }
   
-  // Generates the HTML for the Answers Log
+  const logHeaders = [
+    {title: '', width: 10},
+    {title: 'Category', width: 20},
+    {title: 'You Guessed', width: 35},
+    {title: 'Correct Answer', width: 35},
+  ]
   let questionCount = 0
   const logHTML = answersLog.map((question) => {
     let classname = ''
@@ -152,15 +157,15 @@ export default function GameOver({ gameLength, answersLog, answerStats, score, h
 
           <button
             title="View Stats"
-            className={`button button__stats ${preferences.theme}`}
+            className={`button ${preferences.theme}`}
             onClick={() => viewPage('stats')}
             >View Stats</button>
         </div>
       </div>
       {answersLog.length > 0 &&
         <Log
-          pageTitles={['Question', 'Category', 'You Guessed', 'Correct Answer']}
-          pageContent={logHTML}
+          headers={logHeaders}
+          content={logHTML}
           lastPage={Math.ceil(answersLog.length / 10)}
         />}
     </div>

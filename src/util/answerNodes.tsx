@@ -17,7 +17,6 @@ export function generateAnswerNodes(answerNodes: string[], gameLength: number, i
   })
 }
 
-// Sets the answer node for the previous question (the little red or green ball)
 export function updateAnswerNodes(
   round: number,
   setAnswerNodes: React.Dispatch<React.SetStateAction<string[]>>,

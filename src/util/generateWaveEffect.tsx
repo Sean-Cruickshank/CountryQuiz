@@ -5,7 +5,6 @@ export default function generateWaveEffect(message: string, effect: string) {
     let wordSplit = message?.split(' ').map(word => {
         let letterSplit = word?.split('').map(letter => {
             position !== 6 ? position++ : position = 1
-            // if (letter === ' ') return <span key={nanoid()} className={`pos-${position}`}>&nbsp;</span>
             return <span key={nanoid()} className={`pos-${position}`}>{letter}</span>
         })
         return <div key={nanoid()}>{letterSplit}</div>

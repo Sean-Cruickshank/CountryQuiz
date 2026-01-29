@@ -3,13 +3,18 @@ import React, { JSX } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { useOutletContext } from "react-router-dom";
 
+interface headerProps {
+  title: string,
+  width: number
+}
+
 interface LogProps {
-  pageTitles: string[],
-  pageContent: (JSX.Element | undefined)[],
+  headers: headerProps[],
+  content: (JSX.Element | undefined)[],
   lastPage: number
 }
 
-export default function Log({ pageTitles, pageContent, lastPage } : LogProps) {
+export default function Log({ headers, content, lastPage } : LogProps) {
     
   const context: {theme: string, indicator: string, unit: string} = useOutletContext()
   
@@ -20,10 +25,10 @@ export default function Log({ pageTitles, pageContent, lastPage } : LogProps) {
   }
 
   const [page, setPage] = React.useState(0)
-  const [selectedLog, setSelectedLog] = React.useState(pageContent.slice(page * 10, (page + 1) * 10))
+  const [selectedLog, setSelectedLog] = React.useState(content.slice(page * 10, (page + 1) * 10))
 
   React.useEffect(() => {
-    setSelectedLog(pageContent.slice(page * 10, (page + 1) * 10))
+    setSelectedLog(content.slice(page * 10, (page + 1) * 10))
   },[page])
 
   function changePage(type: string) {
@@ -37,7 +42,7 @@ export default function Log({ pageTitles, pageContent, lastPage } : LogProps) {
       <table>
         <thead>
           <tr>
-            {pageTitles.map(title => <th key={nanoid()}>{title}:</th>)}
+            {headers.map(header => <th style={{ width: `${header.width}%` }} key={nanoid()}>{header.title}</th>)}
           </tr>
         </thead>
         <tbody>

@@ -99,7 +99,7 @@ export default function Layout() {
   return (
     <>
       <Navbar
-        theme={theme} indicator={indicator}
+        theme={theme} indicator={indicator} unit={unit}
         handleSettings={handleSettings}
         redirectWarning={redirectWarning}
       />

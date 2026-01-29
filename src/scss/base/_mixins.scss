@@ -22,7 +22,6 @@ $yellowpink: ('title': 'yellowpink', 'correct': 'YP_yellow', 'incorrect': 'YP_pi
 
 $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpink;
 
-// Sets styles for the nodes and recap when a question is answered correctly
 @mixin recapCorrect() {
   @each $indicator in $indicators {
     &.#{map-get($indicator, 'title')} {
@@ -34,7 +33,6 @@ $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpi
   }
 }
 
-// Does the same as above but for when a question is answered incorrectly
 @mixin recapIncorrect() {
   @each $indicator in $indicators {
     &.#{map-get($indicator, 'title')} {
@@ -46,7 +44,6 @@ $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpi
   }
 }
 
-// Sets styles for the answer log when a question is answered correctly
 @mixin logEntryCorrect() {
   @each $indicator in $indicators {
     &.#{map-get($indicator, 'title')} {
@@ -55,7 +52,6 @@ $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpi
   }
 }
 
-// Does the same as above but for when a question is answered incorrectly
 @mixin logEntryIncorrect() {
   @each $indicator in $indicators {
     &.#{map-get($indicator, 'title')} {
@@ -64,7 +60,6 @@ $indicators: $greenred, $blueyellow, $tealtan, $orangeblue, $bluepink, $yellowpi
   }
 }
 
-// Sets the correct and incorrect sample colours for indicators in the theme dropdown
 @mixin themeDropdownIndicators() {
   @each $indicator in $indicators {
     &.#{map-get($indicator, 'title')} {
@@ -183,7 +178,10 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
     &.#{$theme} {
       &::-moz-meter-bar, &::-webkit-meter-optimum-value {
       background: linear-gradient(90deg, var(--#{$theme}C), var(--#{$theme}Gradient) 100%);
-    }
+      }
+      &::-webkit-meter-optimum-value {
+        background: linear-gradient(90deg, var(--#{$theme}C), var(--#{$theme}Gradient) 100%);
+      }
     }
   }
 }

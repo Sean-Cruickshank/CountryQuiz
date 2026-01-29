@@ -79,27 +79,12 @@ nav {
   }
 }
 
-.theme {
+.settings {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 50px;
-  
-  &__icon {
-    width: 30px;
-    transition: 0.25s;
-    cursor: pointer;
-  }
-  
-  &__icon:hover {
-    transform: scale(0.95);
-    box-shadow: 0px 0px 10px white;
-  }
-
-  &__icon:active {
-    transform: scale(0.9);
-  }
 
   &__dropdown {
     position: absolute;
@@ -142,8 +127,10 @@ nav {
       grid-template-columns: 1fr;
     }
   }
+}
 
-  &__select {
+.theme {
+  &__button {
     cursor: pointer;
     margin-inline: auto;
     margin-bottom: 4px;
@@ -151,11 +138,12 @@ nav {
     width: 80%;
     border-radius: 5px;
     color: #222;
+    font-size: 1rem;
     display: flex;
     justify-content: space-between;
-
+  
     @include mixins.themeDropdownThemes();
-
+  
     & div {
       width: 20px;
       aspect-ratio: 1;
@@ -171,7 +159,7 @@ nav {
     grid-template-columns: 1fr 1fr 1fr;
   }
   
-  &__select {
+  &__button {
     cursor: pointer;
     margin-inline: auto;
     margin-bottom: 4px;
@@ -201,10 +189,28 @@ nav {
   }
 }
 
-.theme__select, .indicator__select {
+.unit {
+  display: flex;
+  width: 95%;
+  margin-inline: auto;
+
+  &__button {
+    width: 50%;
+    margin: 1px auto;
+    padding: 4px;
+    background-color: #eee;
+    color: #222;
+    font-size: 0.8rem;
+    border: solid 2px #222;
+    border-radius: 5px;
+  }
+}
+
+.theme__button, .indicator__button, .unit__button {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', sans-serif;
 
   &.active {
-    opacity: 0.85;
+    opacity: 0.7;
     transform: scale(0.97);
   }
 

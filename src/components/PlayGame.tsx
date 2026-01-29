@@ -43,21 +43,12 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   const [timer, setTimer] = React.useState<number>(timerLength)
   let timeoutAnswer: Country = { id: 999, name: 'No Answer', population: 99, area: 99 }
 
-  // Contains an array of all category IDs for that match
   const [category, setCategory] = React.useState<string[]>([])
-
-  // Contains the country object for the previous questions guess
   const [prevGuess, setPrevGuess] = React.useState<Country>()
-
-  // Contains the country object for the previous questions answer
   const [prevAnswer, setPrevAnswer] = React.useState<Country>()
   const [prevAnswers, setPrevAnswers] = React.useState<Country[]>()
-
   const [answerNodes, setAnswerNodes] = React.useState<string[]>([])
-
-  // Contains an object array with the names and values of all previous guesses and answers
   const [answersLog, setAnswersLog] = React.useState<AnswersLog[]>([])
-
   const [answerStats, setAnswerStats] = React.useState<AnswerStats>({
     highpopulation: { Q: 0, A: 0 },
     lowpopulation: { Q: 0, A: 0 },
@@ -77,7 +68,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
   }
   const setRedirectWarning = context && context.setRedirectWarning
 
-  // Generates a new question when the category is selected
   function categoryOnUpdate() {
     generateQuestion()
     updateAnswerNodes(round, setAnswerNodes, prevGuess, prevAnswer)
@@ -88,7 +78,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     setTimer(timerLength)
   }
 
-  // Handles logic for the timer
   React.useEffect(() => {
     let interval: number | undefined = undefined
     if (timer > 0 && timerActive) {
@@ -108,7 +97,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     return () => clearInterval(interval)
   },[timer])
 
-  // Custom useEffect for skipping the first render
   useEffectOnUpdate(categoryOnUpdate, [category])
 
   React.useEffect(() => {
@@ -121,7 +109,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
 
   function generateQuestionHTML() {
     const answer = generateAnswer(category[category.length - 1], countryAnswers)
-    // Generates the HTML for the four answers
     const alpha = ['A','B','C','D']
     let index = 0
     const countryAnswersHTML = countryAnswers.map((country) => {
@@ -150,12 +137,10 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     let tempCountryAnswers: Country[] = []
     setCountryAnswers([])
     if (countryData.length > 0) {
-      // Selects four countries at random from the array
       let breakpoint = 0
       while (tempCountryAnswers.length < 4) {
         const num = Math.floor(Math.random() * countryData.length)
         const country = countryData[num]
-        // Filters out any duplicate answers
         const compare = tempCountryAnswers.some((item) => {
           return country === item
         })
@@ -169,8 +154,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     }
   }
 
-  // The onClick function for the four answer buttons
-  // Determines whether to award a point based on the users selected answer, increments round counter
   function answerCheck(categoryString: string, answer: number, country: Country, countryAnswers: Country[]) {
     const [type, size] = breakCategory(categoryString)
 
@@ -180,11 +163,6 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     } else {
       sizetype = 'highpopulation'
     }
-
-    // If the answer matches the category value for the country selected (correct answer)
-    //    Add a point to the score
-    //    Add a point to the Q and the A tally for the respective     category in AnswerStats
-    // Otherwise just add a point to the Q tally (incorrect answer)
     if (answer && answer === country[type]) {
       setScore(prev => prev + 1)
       setAnswerStats({
@@ -199,15 +177,12 @@ export default function PlayGame({ countryData }: PlayGameProps) {
       })
     }
 
-    // Grabs the corresponding country for the correct answer and saves it to state, also saves the guessed country to state
     const answerCountry = countryAnswers.find((country) => {
       return country[type] === answer
     })
     setPrevAnswer(answerCountry)
     setPrevAnswers(countryAnswers)
     setPrevGuess(country)
-
-    // Generates the category for the next round (useEffect triggers the next question to also generate)
     setCategory(generateCategory(category))
     setRound(prev => prev + 1)
   }
@@ -229,12 +204,8 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     if (score > highscore) {
       setHighscore(score)
     }
-    // document.querySelector('.gameover')?.classList.remove('hidden')
-    // document.getElementById('gameover__title')?.scrollIntoView({behavior: "smooth"})
   }
 
-  // Resets all stats when a new game is started
-  // Passed as a prop to GameOver for the "Play Again" button
   function resetGame(): void {
     setGameActive(true)
     setCategory(generateCategory(category))
@@ -247,14 +218,11 @@ export default function PlayGame({ countryData }: PlayGameProps) {
     setScore(0)
     setRound(1)
     setAnswerNodes([])
-    // document.querySelector('.gameover')?.classList.add('hidden')
     window.scrollTo({
       top: 0
     });
   }
 
-  // When true (game has ended) regenerates the question buttons so that disabled = true
-  // When false (new game started) refreshes the answers log
   React.useEffect(() => {
     if (gameActive) {
       setAnswersLog([])
@@ -279,7 +247,7 @@ export default function PlayGame({ countryData }: PlayGameProps) {
           <p>Question {round}/{gameLength}</p>
           <div className="scoreboard">
             <p>Score: {score}</p>
-            {highscore > 0 && <p><i>( Highscore: {highscore} )</i></p>}
+            {highscore > 0 && <p><i>(Highscore: {highscore})</i></p>}
           </div>
         </div>
         

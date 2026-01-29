@@ -1,5 +1,5 @@
 import { useNavigate, useOutletContext } from "react-router-dom"
-import { FaPalette } from "react-icons/fa";
+import { FaGear } from "react-icons/fa6";
 
 export default function Home() {
 
@@ -31,7 +31,7 @@ export default function Home() {
         <p>Correctly pick the country that matches the criteria to score points!</p>
         <button
           title="New Game"
-          className={`button button__stats ${preferences.theme}`}
+          className={`button ${preferences.theme}`}
           onClick={() => viewPage('start')}
           >New Game
         </button>
@@ -44,7 +44,7 @@ export default function Home() {
         <p>This information is stored locally on your browser and is not visible to other users</p>
         <button
           title="View Stats"
-          className={`button button__stats ${preferences.theme}`}
+          className={`button ${preferences.theme}`}
           onClick={() => viewPage('stats')}
           >View Stats
         </button>
@@ -70,7 +70,7 @@ export default function Home() {
             <p>P - Play Again</p>
           </div>
         </div>
-        <p>You can modify the colour scheme of the website itself, as well as the colours for correct/incorrect guesses by using the theme selector <FaPalette /> at the top of the page</p>
+        <p>You can modify the colour scheme of the website itself, as well as the colours for correct/incorrect guesses in the settings menu <FaGear /></p>
       </div>
 
       <div className="home__text-container">

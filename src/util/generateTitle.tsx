@@ -1,6 +1,5 @@
 import breakCategory from "./breakCategory"
 
-// Generates the question title based on the category selected
 export default function generateTitle(num: number, category: string[]) {
   if (category.length - num < 0) return null
   if (category.length > 0) {
