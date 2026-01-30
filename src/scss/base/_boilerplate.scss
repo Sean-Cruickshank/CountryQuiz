@@ -35,24 +35,25 @@ a, a:visited, a:active {
 meter {
   -webkit-appearance: none;
   appearance: none;
+  width: 80%;
+  height: 15px;
+  max-width: 600px;
+  background: rgb(226, 226, 226);
   border: solid 1px #222;
   border-radius: 10px;
-  height: 15px;
-  background: rgb(226, 226, 226);
-  width: 80%;
-  max-width: 600px;
+  box-sizing: border-box;
+  padding: 0;
   margin-bottom: 0;
   @include mixins.meterThemes();
 
   &::-webkit-meter-bar {
     background: rgb(226, 226, 226);
-    height: 13px;
+    height: 100%;
     border-radius: 10px;
   }
 
   &::-webkit-meter-optimum-value {
-    height: 13px;
-    background: green;
+    height: 100%;
     border-radius: 10px;
   }
 }
