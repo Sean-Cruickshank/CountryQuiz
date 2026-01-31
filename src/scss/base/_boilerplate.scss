@@ -43,7 +43,6 @@ meter {
   border-radius: 10px;
   box-sizing: border-box;
   padding: 0;
-  margin-bottom: 0;
   @include mixins.meterThemes();
 
   &::-webkit-meter-bar {
