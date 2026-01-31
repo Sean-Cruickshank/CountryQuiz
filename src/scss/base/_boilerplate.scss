@@ -32,33 +32,6 @@ a, a:visited, a:active {
   opacity: 1 !important;
 }
 
-// meter {
-//   -webkit-appearance: none;
-//   appearance: none;
-
-//   box-sizing: border-box;
-//   padding: 0;
-
-//   width: 80%;
-//   max-width: 600px;
-//   height: 15px;
-
-//   background: rgb(226, 226, 226);
-//   border: solid 1px #222;
-//   border-radius: 10px;
-  
-//   @include mixins.meterThemes();
-
-//   &::-webkit-meter-bar {
-//     background: rgb(226, 226, 226);
-//     border-radius: 10px;
-//   }
-
-//   &::-webkit-meter-optimum-value {
-//     border-radius: 10px;
-//   }
-// }
-
 .meterdiv p {
   margin-bottom: 3px;
 }

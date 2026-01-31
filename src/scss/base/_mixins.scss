@@ -173,19 +173,6 @@ $themes: 'blue', 'yellow', 'green', 'orange', 'pink', 'teal', 'purple';
   }
 }
 
-// @mixin meterThemes() {
-//   @each $theme in $themes {
-//     &.#{$theme} {
-//       &::-moz-meter-bar, &::-webkit-meter-optimum-value {
-//       background: linear-gradient(90deg, var(--#{$theme}C), var(--#{$theme}Gradient) 100%);
-//       }
-//       &::-webkit-meter-optimum-value {
-//         background: linear-gradient(90deg, var(--#{$theme}C), var(--#{$theme}Gradient) 100%);
-//       }
-//     }
-//   }
-// }
-
 @mixin newMeterThemes() {
   @each $theme in $themes {
     &.#{$theme} {
