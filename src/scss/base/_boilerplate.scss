@@ -32,34 +32,64 @@ a, a:visited, a:active {
   opacity: 1 !important;
 }
 
-meter {
+// meter {
+//   -webkit-appearance: none;
+//   appearance: none;
+
+//   box-sizing: border-box;
+//   padding: 0;
+
+//   width: 80%;
+//   max-width: 600px;
+//   height: 15px;
+
+//   background: rgb(226, 226, 226);
+//   border: solid 1px #222;
+//   border-radius: 10px;
+  
+//   @include mixins.meterThemes();
+
+//   &::-webkit-meter-bar {
+//     background: rgb(226, 226, 226);
+//     border-radius: 10px;
+//   }
+
+//   &::-webkit-meter-optimum-value {
+//     border-radius: 10px;
+//   }
+// }
+
+.meterdiv p {
+  margin-bottom: 3px;
+}
+
+.new-meter {
   -webkit-appearance: none;
   appearance: none;
+
+  box-sizing: border-box;
+  margin-inline: auto;
+
   width: 80%;
-  height: 15px;
   max-width: 600px;
+  height: 15px;
+
   background: rgb(226, 226, 226);
   border: solid 1px #222;
   border-radius: 10px;
-  box-sizing: border-box;
-  padding: 0;
-  @include mixins.meterThemes();
 
-  &::-webkit-meter-bar {
-    background: rgb(226, 226, 226);
+  overflow: hidden;
+  
+  @include mixins.newMeterThemes();
+
+  &__fill {
     height: 100%;
     border-radius: 10px;
-  }
-
-  &::-webkit-meter-optimum-value {
-    height: 100%;
-    border-radius: 10px;
+    // transition: 1.0s;
+    // transition-timing-function: linear;
   }
 }
 
-.meterdiv p {
-  margin-bottom: 0;
-}
 
 input[type="range"] {
   -webkit-appearance: none;

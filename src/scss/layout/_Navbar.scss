@@ -12,7 +12,7 @@ nav {
   z-index: 99;
   @include mixins.navThemes();
 
-  @include mixins.breakpoint('small') {
+  @include mixins.breakpoint('medium') {
     justify-content: center;
   }
 }
@@ -25,7 +25,7 @@ nav {
 
     & h1 {
       color: white;
-      font-size: clamp(0.9rem, 0.6158rem + 1.2632vw, 1.5rem);
+      font-size: clamp(0.8rem, 0.4684rem + 1.4737vw, 1.5rem);
       font-weight: 900;
       margin-inline: 10px;
     }
@@ -38,10 +38,10 @@ nav {
   }
   
   &__icon {
-    width: 22px;
+    width: 24px;
     aspect-ratio: 1;
     border-radius: 100%;
-    margin-inline: 4px;
+    margin-inline: 6px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,16 +49,11 @@ nav {
     cursor: pointer;
 
     @include mixins.breakpoint('medium') {
-      width: 24px;
-      margin-inline: 6px;
-    }
-
-    @include mixins.breakpoint('large') {
       width: 28px;
       margin-inline: 8px;
     }
 
-    @include mixins.breakpoint('xlarge') {
+    @include mixins.breakpoint('large') {
       width: 30px;
       margin-inline: 10px;
     }
@@ -74,7 +69,7 @@ nav {
 
     & svg {
       color: #222;
-      font-size: clamp(0.8rem, 0.3765rem + 1.1765vw, 1.2rem);
+      font-size: clamp(0.9rem, 0.7579rem + 0.6316vw, 1.2rem);
     }
   }
 }

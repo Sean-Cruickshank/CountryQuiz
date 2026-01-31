@@ -17,7 +17,7 @@ export default function Layout() {
   const themeUpdateList = [
     'html', '.nav', '.footer',
     '.home', '.play-game', '.recap',
-    '.meter', '.button', '.range', '.switch', '.log', '.panel'
+    '.meter', '.new-meter', '.button', '.range', '.switch', '.log', '.panel'
   ]
 
   const indicatorUpdateList = [

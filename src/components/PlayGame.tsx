@@ -257,12 +257,10 @@ export default function PlayGame({ countryData }: PlayGameProps) {
         >{generateTitle(1, category)}</h2>
 
         {timerActive && gameActive && <div className="timer">
-          <p className="timer__text">{timer}</p>
-          <meter
-            className={`timer__meter ${preferences.theme}`}
-            value={timer}
-            max={timerLength}
-          >{timer}</meter>
+          <div className={`new-meter timer__meter ${preferences.theme}`} aria-valuemin={0} aria-valuemax={timerLength} aria-valuenow={timer}>
+            <p className="timer__text">{timer}</p>
+            <div className="new-meter__fill" style={{width: `${(timer / timerLength) * 100}%`}}></div>
+          </div>
         </div>}
         
         <div className="answers">
